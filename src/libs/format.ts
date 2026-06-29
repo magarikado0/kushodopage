@@ -16,6 +16,14 @@ export function formatDateJP(iso: string | Date): string {
   return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日（${dow}）`;
 }
 
+/** 日付を「12月13日（金）」形式に整形 */
+export function formatDateJPWithoutYear(iso: string | Date): string {
+  const d = typeof iso === 'string' ? new Date(iso) : iso;
+  if (Number.isNaN(d.getTime())) return '';
+  const dow = ['日', '月', '火', '水', '木', '金', '土'][d.getDay()];
+  return `${d.getMonth() + 1}月${d.getDate()}日（${dow}）`;
+}
+
 /** 開始日〜終了日 を表示用文字列に */
 export function formatDateRange(startIso: string, endIso: string): string {
   const s = new Date(startIso);
@@ -23,7 +31,7 @@ export function formatDateRange(startIso: string, endIso: string): string {
   if (Number.isNaN(s.getTime()) || Number.isNaN(e.getTime())) return '';
   const sameDay = s.toDateString() === e.toDateString();
   if (sameDay) return formatDateJP(startIso);
-  return `${formatDateJP(startIso)} 〜 ${formatDateJP(endIso)}`;
+  return `${formatDateJP(startIso)}〜${formatDateJPWithoutYear(endIso)}`;
 }
 
 /** HTML本文をプレーンテキストに（お知らせ一覧の抜粋用） */

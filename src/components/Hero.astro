@@ -8,9 +8,6 @@ const exhibition = await getFeaturedExhibition();
 
 <section class="hero">
   <div class="hero-left">
-    <div>
-      <h1 class="hero-title">{SITE.name}</h1>
-    </div>
     <div class="hero-bottom">
       {
         exhibition ? (
@@ -20,7 +17,7 @@ const exhibition = await getFeaturedExhibition();
               {exhibition.title}
             </a>
             <div class="ex-meta">
-              {formatDateRange(exhibition.startDate, exhibition.endDate)}
+              <span class="ex-date">{formatDateRange(exhibition.startDate, exhibition.endDate)}</span>
               <br />
               {exhibition.venue}
               {exhibition.address ? `　${exhibition.address}` : ''}
@@ -52,7 +49,7 @@ const exhibition = await getFeaturedExhibition();
 <style>
   .hero {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
     width: calc(100% - var(--gutter) - var(--gutter));
     max-width: var(--content-width);
     margin: 0 auto;
@@ -67,45 +64,65 @@ const exhibition = await getFeaturedExhibition();
 
   .hero-left {
     padding: 2.5rem var(--gutter);
-    background: #fff;
+    background:
+      linear-gradient(135deg, rgba(245, 239, 229, 0.65), rgba(255, 255, 255, 0) 42%),
+      #fff;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
     border-right: 1px solid var(--color-line);
+    position: relative;
   }
 
-  .hero-title {
-    font-size: 28px;
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    line-height: 1.6;
-    margin-bottom: 0;
-    color: var(--color-ink);
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    right: 1.4rem;
+    bottom: 1.3rem;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(186, 173, 152, 0.16), transparent 70%);
+    pointer-events: none;
   }
 
   .hero-bottom {
-    margin-top: 2rem;
-    padding-left: 1.4rem;
-    border-left: 3px solid var(--color-primary);
+    margin-top: 0;
+    padding-left: 1.2rem;
+    border-left: 2px solid rgba(155, 35, 53, 0.7);
+    position: relative;
+    max-width: 30rem;
+    width: 100%;
+  }
+
+  .hero-bottom::before {
+    content: '';
+    position: absolute;
+    left: -0.4rem;
+    top: 0.15rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: rgba(155, 35, 53, 0.55);
   }
 
   .ex-label {
     font-size: 12px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.14em;
     color: var(--color-primary);
     font-family: var(--font-sans);
-    font-weight: 400;
-    margin-bottom: 0.65rem;
+    font-weight: 500;
+    margin-bottom: 0.7rem;
+    opacity: 0.86;
   }
 
   .ex-title {
     display: block;
-    font-size: 20px;
-    font-weight: 400;
-    letter-spacing: 0.08em;
+    font-size: 21px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
     color: var(--color-ink);
-    line-height: 1.5;
-    margin-bottom: 0.55rem;
+    line-height: 1.6;
+    margin-bottom: 0.7rem;
     transition: color 0.2s ease;
   }
 
@@ -118,21 +135,26 @@ const exhibition = await getFeaturedExhibition();
     color: var(--color-muted);
     font-family: var(--font-sans);
     font-weight: 400;
-    line-height: 1.9;
-    letter-spacing: 0.05em;
+    line-height: 1.95;
+    letter-spacing: 0.02em;
+  }
+
+  .ex-date {
+    display: block;
+    white-space: nowrap;
   }
 
   .ex-link {
-    margin-top: 1rem;
+    margin-top: 1.15rem;
     font-size: 13px;
     color: #fff;
     background: var(--color-black);
     font-family: var(--font-sans);
     font-weight: 400;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.08em;
     display: inline-block;
     padding: 0.55rem 1.2rem;
-    border-radius: 3px;
+    border-radius: 5px;
     box-shadow: 0 2px 6px rgba(10, 10, 10, 0.08);
     transition: opacity 0.2s ease;
   }
@@ -144,6 +166,18 @@ const exhibition = await getFeaturedExhibition();
   .hero-right {
     overflow: hidden;
     background: #ddd6cb;
+    position: relative;
+  }
+
+  .hero-right::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(26, 20, 14, 0.12), transparent 14%),
+      linear-gradient(180deg, rgba(26, 20, 14, 0.06), transparent 12%, transparent 88%, rgba(26, 20, 14, 0.08)),
+      linear-gradient(270deg, rgba(26, 20, 14, 0.08), transparent 10%);
+    pointer-events: none;
   }
 
   .hero-image {
@@ -163,11 +197,20 @@ const exhibition = await getFeaturedExhibition();
       border-bottom: 1px solid var(--color-line);
       padding: 2.5rem 1.2rem;
     }
+    .hero-left::after {
+      right: 0.6rem;
+      bottom: 1rem;
+      width: 90px;
+      height: 90px;
+    }
     .hero-bottom {
       padding-left: 1rem;
     }
     .hero-right {
-      min-height: 220px;
+      min-height: 0;
+    }
+    .hero-image {
+      min-height: 180px;
     }
   }
 </style>
