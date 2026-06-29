@@ -9,11 +9,7 @@ const exhibition = await getFeaturedExhibition();
 <section class="hero">
   <div class="hero-left">
     <div>
-      <div class="hero-label">京都大学公認団体　創部 {SITE.founded}年</div>
       <h1 class="hero-title">{SITE.name}</h1>
-      <p class="hero-body">
-        毎年初夏と冬の2回、建仁寺にて学外書展を開催しています。漢字・かな・篆刻など多様な書体に取り組む部員が、古典の臨書から自由作品まで幅広く活動しています。経験の有無は問いません。
-      </p>
     </div>
     <div class="hero-bottom">
       {
@@ -42,15 +38,14 @@ const exhibition = await getFeaturedExhibition();
     </div>
   </div>
   <div class="hero-right">
-    <div class="placeholder-frame">
-      <div class="placeholder-works">
-        <div class="p-scroll" style="width:48px;height:140px"><span class="p-scroll-text">天地</span></div>
-        <div class="p-scroll" style="width:48px;height:160px"><span class="p-scroll-text">山川</span></div>
-        <div class="p-scroll" style="width:48px;height:130px"><span class="p-scroll-text">風雅</span></div>
-      </div>
-      <div class="placeholder-floor"></div>
-    </div>
-    <div class="placeholder-caption">← 書展会場の写真が入ります →</div>
+    <img
+      class="hero-image"
+      src="/H30_shoka_header.jpg"
+      alt="書展会場に展示された書作品"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
   </div>
 </section>
 
@@ -58,15 +53,18 @@ const exhibition = await getFeaturedExhibition();
   .hero {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    width: calc(100% - var(--gutter) - var(--gutter));
+    max-width: var(--content-width);
+    margin: 0 auto;
     border-bottom: 1px solid var(--color-line);
-    min-height: 380px;
+    min-height: 330px;
     position: relative;
     z-index: 1;
     box-shadow: var(--shadow-paper);
   }
 
   .hero-left {
-    padding: 3.5rem var(--gutter);
+    padding: 2.5rem var(--gutter);
     background: #fff;
     display: flex;
     flex-direction: column;
@@ -74,55 +72,38 @@ const exhibition = await getFeaturedExhibition();
     border-right: 1px solid var(--color-line);
   }
 
-  .hero-label {
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    color: var(--color-primary);
-    font-family: var(--font-sans);
-    font-weight: 300;
-    margin-bottom: 1.2rem;
-  }
-
   .hero-title {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 400;
     letter-spacing: 0.08em;
     line-height: 1.6;
-    margin-bottom: 1.4rem;
+    margin-bottom: 0;
     color: var(--color-ink);
   }
 
-  .hero-body {
-    font-size: 12px;
-    font-family: var(--font-sans);
-    font-weight: 300;
-    line-height: 2.1;
-    color: var(--color-subtext);
-    letter-spacing: 0.05em;
-  }
-
   .hero-bottom {
-    margin-top: 2.5rem;
+    margin-top: 2rem;
+    padding-left: 1.4rem;
+    border-left: 3px solid var(--color-primary);
   }
 
   .ex-label {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.2em;
     color: var(--color-primary);
     font-family: var(--font-sans);
-    font-weight: 300;
-    margin-bottom: 0.5rem;
+    font-weight: 400;
+    margin-bottom: 0.65rem;
   }
 
   .ex-title {
     display: block;
-    font-size: 13px;
+    font-size: 20px;
     font-weight: 400;
     letter-spacing: 0.08em;
     color: var(--color-ink);
-    margin-bottom: 0.3rem;
-    border-left: 2px solid var(--color-primary);
-    padding-left: 0.75rem;
+    line-height: 1.5;
+    margin-bottom: 0.55rem;
     transition: color 0.2s ease;
   }
 
@@ -131,28 +112,26 @@ const exhibition = await getFeaturedExhibition();
   }
 
   .ex-meta {
-    font-size: 11px;
+    font-size: 14px;
     color: var(--color-muted);
     font-family: var(--font-sans);
-    font-weight: 300;
-    line-height: 1.8;
+    font-weight: 400;
+    line-height: 1.9;
     letter-spacing: 0.05em;
-    padding-left: 0.75rem;
-    border-left: 2px solid var(--color-primary-soft);
   }
 
   .ex-link {
-    margin-top: 0.6rem;
-    font-size: 11px;
+    margin-top: 1rem;
+    font-size: 13px;
     color: #fff;
     background: var(--color-black);
     font-family: var(--font-sans);
-    font-weight: 300;
+    font-weight: 400;
     letter-spacing: 0.15em;
     display: inline-block;
-    padding: 0.4rem 1rem;
+    padding: 0.55rem 1.2rem;
     border-radius: 3px;
-    box-shadow: 0 3px 8px rgba(10, 10, 10, 0.14);
+    box-shadow: 0 2px 6px rgba(10, 10, 10, 0.08);
     transition: opacity 0.2s ease;
   }
 
@@ -162,62 +141,15 @@ const exhibition = await getFeaturedExhibition();
 
   .hero-right {
     overflow: hidden;
-    background: var(--color-panel);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 1rem;
+    background: #ddd6cb;
   }
 
-  .placeholder-frame {
-    width: 75%;
-    height: 240px;
-    border: 1px solid var(--color-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-
-  .placeholder-works {
-    display: flex;
-    gap: 8px;
-    align-items: flex-end;
-  }
-
-  .p-scroll {
-    background: var(--color-panel-soft);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .p-scroll-text {
-    font-size: 18px;
-    font-weight: 300;
-    color: var(--color-primary-soft);
-    writing-mode: vertical-rl;
-    letter-spacing: 0.1em;
-    font-family: var(--font-serif);
-  }
-
-  .placeholder-floor {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 28%;
-    background: var(--color-primary);
-    opacity: 0.18;
-  }
-
-  .placeholder-caption {
-    font-size: 10px;
-    color: var(--color-panel-muted);
-    font-family: var(--font-sans);
-    font-weight: 300;
-    letter-spacing: 0.15em;
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    min-height: 330px;
+    object-fit: cover;
+    object-position: center;
   }
 
   @media (max-width: 760px) {
@@ -229,11 +161,11 @@ const exhibition = await getFeaturedExhibition();
       border-bottom: 1px solid var(--color-line);
       padding: 2.5rem 1.2rem;
     }
-    .hero-right {
-      padding: 2rem 1.2rem;
+    .hero-bottom {
+      padding-left: 1rem;
     }
-    .placeholder-frame {
-      width: 100%;
+    .hero-right {
+      min-height: 220px;
     }
   }
 </style>

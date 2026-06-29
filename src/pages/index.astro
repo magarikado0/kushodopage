@@ -27,6 +27,9 @@ const exhibitions = await getExhibitions(3);
 
 <style>
   .home-accent {
+    width: calc(100% - var(--gutter) - var(--gutter));
+    max-width: var(--content-width);
+    margin: 0 auto;
     height: 12px;
     background: var(--color-primary);
     display: flex;

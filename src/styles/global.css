@@ -8,8 +8,8 @@
   --color-subtext: #333;
   --color-muted: #666;
   --color-faint: #888;
-  --color-line: #d6d6d6;
-  --color-line-soft: #ececec;
+  --color-line: #e0dbd2;
+  --color-line-soft: #eee9e1;
   --color-page: #f6f3ed;
   --color-panel: var(--color-black);
   --color-panel-soft: #1a1a1a;
@@ -22,7 +22,7 @@
   --color-footer-text: #f0f0f0;
   --color-footer-muted: #9a9a9a;
   --color-footer-copy: #666;
-  --shadow-paper: 0 8px 24px rgba(26, 20, 14, 0.07);
+  --shadow-paper: 0 5px 16px rgba(26, 20, 14, 0.045);
 
   --font-serif: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
   --font-sans: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
@@ -71,9 +71,15 @@ button {
 
 .container {
   width: 100%;
-  max-width: var(--content-width);
+  max-width: calc(var(--content-width) + var(--gutter) + var(--gutter));
   margin: 0 auto;
   padding-inline: var(--gutter);
+}
+
+@media (max-width: 760px) {
+  :root {
+    --gutter: 1.2rem;
+  }
 }
 
 .visually-hidden {

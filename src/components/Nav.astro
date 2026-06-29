@@ -41,13 +41,18 @@ const { current } = Astro.props;
     align-items: center;
     padding: 1.4rem 2.5rem;
     background: #fff;
-    border-top: 4px solid var(--color-black);
-    border-bottom: 3px solid var(--color-primary);
-    border-left: 6px solid var(--color-black);
+    border-top: 3px solid var(--color-black);
+    border-right: 1px solid var(--color-line);
+    border-bottom: 2px solid var(--color-primary);
+    border-left: 3px solid var(--color-black);
+    border-radius: 7px;
+    width: calc(100% - var(--gutter) - var(--gutter));
+    max-width: var(--content-width);
+    margin: 0.75rem auto;
     gap: 1.5rem;
     position: relative;
     z-index: 30;
-    box-shadow: 0 5px 18px rgba(26, 20, 14, 0.08);
+    box-shadow: 0 5px 16px rgba(26, 20, 14, 0.06);
   }
 
   .nav-logo {
@@ -67,35 +72,44 @@ const { current } = Astro.props;
 
   .nav-links {
     display: flex;
-    gap: 2.2rem;
+    gap: 1.1rem;
     list-style: none;
-    font-size: 14px;
+    font-size: 15px;
     letter-spacing: 0.1em;
     font-family: var(--font-sans);
-    font-weight: 300;
+    font-weight: 400;
     color: var(--color-text);
   }
 
   .nav-links a {
     display: inline-block;
-    padding: 0.2rem 0;
-    transition: color 0.2s ease;
+    padding: 0.35rem 0.55rem;
+    border-radius: 4px;
+    transition:
+      color 0.2s ease,
+      background 0.2s ease;
   }
 
   .nav-links a:hover {
     color: var(--color-primary);
+    background: rgba(155, 35, 53, 0.06);
   }
 
   .nav-links li.is-active a {
     color: var(--color-primary);
+    background: rgba(155, 35, 53, 0.08);
   }
 
   .nav-links li:last-child {
     color: var(--color-black);
     border: 1px solid var(--color-black);
     border-radius: 3px;
-    padding: 0.3rem 0.9rem;
-    box-shadow: 0 2px 6px rgba(26, 20, 14, 0.08);
+    padding: 0;
+    box-shadow: 0 1px 4px rgba(26, 20, 14, 0.04);
+  }
+
+  .nav-links li:last-child a {
+    padding: 0.45rem 0.9rem;
   }
 
   .nav-links li:last-child a:hover {
@@ -106,6 +120,7 @@ const { current } = Astro.props;
   @media (max-width: 760px) {
     .nav {
       padding: 1rem 1.2rem;
+      margin: 0.5rem auto;
       position: relative;
       gap: 1rem;
     }
@@ -123,6 +138,9 @@ const { current } = Astro.props;
       margin-left: auto;
       color: var(--color-black);
       border: 1px solid var(--color-black);
+      border-radius: 4px;
+      background: #fbfaf7;
+      box-shadow: 0 1px 4px rgba(26, 20, 14, 0.04);
     }
 
     .nav-toggle-line {
@@ -151,18 +169,20 @@ const { current } = Astro.props;
       display: none;
       position: absolute;
       z-index: 20;
-      top: 100%;
-      right: -3px;
-      left: -6px;
+      top: calc(100% + 7px);
+      right: 0;
+      left: 0;
       flex-direction: column;
       gap: 0;
       padding: 0.75rem 1.2rem 1rem;
       background: #fff;
-      border-right: 3px solid var(--color-primary);
-      border-bottom: 3px solid var(--color-primary);
-      border-left: 6px solid var(--color-black);
-      font-size: 13px;
-      box-shadow: 0 12px 24px rgba(10, 10, 10, 0.12);
+      border-top: 1px solid var(--color-line);
+      border-right: 1px solid var(--color-line);
+      border-bottom: 2px solid var(--color-primary);
+      border-left: 3px solid var(--color-black);
+      border-radius: 6px;
+      font-size: 14px;
+      box-shadow: 0 8px 18px rgba(10, 10, 10, 0.07);
     }
 
     .nav-links.is-open {
