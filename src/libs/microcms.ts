@@ -1,5 +1,5 @@
 import { createClient, type MicroCMSQueries } from 'microcms-js-sdk';
-import type { Exhibition, NewsItem, Work } from '~/types/content';
+import type { Exhibition, NewsItem } from '~/types/content';
 
 /**
  * MicroCMS クライアント。
@@ -44,15 +44,6 @@ export async function getNews(limit = 12): Promise<NewsItem[]> {
 export async function getNewsById(id: string): Promise<NewsItem | null> {
   if (!configured) return mockNews.find((n) => n.id === id) ?? null;
   return fetchOne<NewsItem>('news', id);
-}
-
-/** 作品一覧（新着順） */
-export async function getWorks(limit = 30): Promise<Work[]> {
-  if (!configured) return mockWorks.slice(0, limit);
-  return fetchList<Work>('works', {
-    limit,
-    orders: '-publishedAt',
-  });
 }
 
 /** 書展一覧（開催日が新しい順） */
@@ -126,36 +117,6 @@ const mockNews: NewsItem[] = [
     content:
       '2024年6月に開催した第135回 鴨夏展には多くの方にご来場いただき、誠にありがとうございました。',
     publishedAt: '2024-06-20T00:00:00.000Z',
-  },
-];
-
-const mockWorks: Work[] = [
-  {
-    id: 'ko-jungunsho',
-    title: '古従軍行',
-    style: '草書',
-    exhibition: '高大展 2024',
-    image: { url: '', alt: '古従軍行 草書' },
-    caption: '李頎の古従軍行を草書で臨書。',
-    publishedAt: '2024-11-01T00:00:00.000Z',
-  },
-  {
-    id: 'san-u',
-    title: '山雨',
-    style: '行書',
-    exhibition: '冬樟展 2023',
-    image: { url: '', alt: '山雨 行書' },
-    caption: '王維の詩句を行書で表現した。',
-    publishedAt: '2023-12-01T00:00:00.000Z',
-  },
-  {
-    id: 'shun-gyo',
-    title: '春暁',
-    style: '楷書',
-    exhibition: '鴨夏展 2024',
-    image: { url: '', alt: '春暁 楷書' },
-    caption: '孟浩然「春暁」を楷書で。',
-    publishedAt: '2024-06-01T00:00:00.000Z',
   },
 ];
 

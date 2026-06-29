@@ -1,0 +1,60 @@
+---
+import Base from '~/layouts/Base.astro';
+import Section from '~/components/Section.astro';
+import ExhibitionList from '~/components/ExhibitionList.astro';
+import { getExhibitions } from '~/libs/microcms';
+
+const exhibitions = await getExhibitions(20);
+---
+
+<Base
+  title="書展"
+  description="京都大学書道部が開催してきた書展の一覧です。"
+  current="/exhibitions"
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-label">Exhibitions</div>
+      <h1 class="page-hero-title">書展</h1>
+      <p class="page-hero-sub">
+        これまでに開催した書展の記録です。
+      </p>
+    </div>
+  </section>
+
+  <Section title="書展一覧" flush>
+    <ExhibitionList exhibitions={exhibitions} />
+  </Section>
+</Base>
+
+<style>
+  .page-hero {
+    padding: 3rem var(--gutter) 1.5rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .page-hero-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    margin-bottom: 0.8rem;
+  }
+
+  .page-hero-title {
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-hero-sub {
+    font-size: 12px;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    color: var(--color-subtext);
+    line-height: 1.8;
+  }
+
+</style>

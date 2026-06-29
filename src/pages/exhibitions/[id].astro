@@ -1,8 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Base from '~/layouts/Base.astro';
-import WorksGrid from '~/components/WorksGrid.astro';
-import { getAllExhibitionIds, getExhibitionById, getWorks } from '~/libs/microcms';
+import { getAllExhibitionIds, getExhibitionById } from '~/libs/microcms';
 import { formatDateRange, excerpt } from '~/libs/format';
 
 export const getStaticPaths = (async () => {
@@ -14,24 +13,18 @@ const { id } = Astro.params;
 const exhibition = id ? await getExhibitionById(id) : null;
 
 if (!exhibition) {
-  return Astro.redirect('/works');
+  return Astro.redirect('/exhibitions');
 }
-
-// 書展名に合致する作品（exhibition テキストが部分一致）を取得
-const allWorks = await getWorks(100);
-const relatedWorks = allWorks.filter(
-  (w) => w.exhibition && exhibition.title.includes(w.exhibition.split(' ')[0])
-);
 ---
 
 <Base
   title={exhibition.title}
   description={excerpt(exhibition.description, 120)}
-  current="/works"
+  current="/exhibitions"
 >
   <article class="ex">
     <div class="container ex-head">
-      <a class="ex-back" href="/works">← 書展一覧</a>
+      <a class="ex-back" href="/exhibitions">← 書展一覧</a>
       <div class="ex-label">書展アーカイブ</div>
       <h1 class="ex-title">{exhibition.title}</h1>
       <dl class="ex-info">
@@ -78,15 +71,6 @@ const relatedWorks = allWorks.filter(
                 </figure>
               ))}
             </div>
-          </div>
-        )
-      }
-
-      {
-        relatedWorks.length > 0 && (
-          <div class="ex-related">
-            <h2 class="ex-h2">展示作品</h2>
-            <WorksGrid works={relatedWorks} columns={3} />
           </div>
         )
       }
@@ -173,7 +157,7 @@ const relatedWorks = allWorks.filter(
     font-weight: 400;
     letter-spacing: 0.15em;
     color: #fff;
-    background: var(--color-primary);
+    background: var(--color-black);
     padding: 0.25rem 0.75rem;
     display: inline-block;
     margin-bottom: 1.2rem;
@@ -211,10 +195,6 @@ const relatedWorks = allWorks.filter(
     font-family: var(--font-sans);
     margin-top: 0.4rem;
     letter-spacing: 0.05em;
-  }
-
-  .ex-related {
-    margin-top: 3rem;
   }
 
   @media (max-width: 600px) {

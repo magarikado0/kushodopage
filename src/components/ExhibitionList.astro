@@ -1,0 +1,129 @@
+---
+import type { Exhibition } from '~/types/content';
+import { formatDateRange } from '~/libs/format';
+
+interface Props {
+  exhibitions: Exhibition[];
+}
+
+const { exhibitions } = Astro.props;
+---
+
+<ul class="ex-list">
+  {
+    exhibitions.length === 0 ? (
+      <li class="empty">書展情報はまだありません。</li>
+    ) : (
+      exhibitions.map((exhibition) => (
+        <li class="ex-item">
+          <div class="ex-meta">
+            <div class="ex-year">{exhibition.year}</div>
+            <div class="ex-venue">
+              {exhibition.venue}
+              {exhibition.address ? <span>　{exhibition.address}</span> : null}
+            </div>
+          </div>
+          <div class="ex-body">
+            <a class="ex-title" href={`/exhibitions/${exhibition.id}`}>
+              {exhibition.title}
+            </a>
+            <div class="ex-date">
+              {formatDateRange(exhibition.startDate, exhibition.endDate)}
+            </div>
+            <p class="ex-description">{exhibition.description}</p>
+          </div>
+          <a class="ex-arrow" href={`/exhibitions/${exhibition.id}`}>詳細 →</a>
+        </li>
+      ))
+    )
+  }
+</ul>
+
+<style>
+  .ex-list {
+    list-style: none;
+  }
+
+  .ex-item {
+    display: grid;
+    grid-template-columns: 9rem 1fr auto;
+    gap: 1.5rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--color-line-soft);
+    align-items: start;
+  }
+
+  .ex-item:first-child {
+    border-top: 1px solid var(--color-line-soft);
+  }
+
+  .ex-year {
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--color-primary);
+    font-family: var(--font-serif);
+    letter-spacing: 0.05em;
+  }
+
+  .ex-venue {
+    font-size: 11px;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    color: var(--color-faint);
+    margin-top: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .ex-title {
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--color-ink);
+    transition: color 0.2s ease;
+  }
+
+  .ex-title:hover {
+    color: var(--color-primary);
+  }
+
+  .ex-date {
+    font-size: 11px;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    color: var(--color-muted);
+    margin: 0.4rem 0 0.6rem;
+    letter-spacing: 0.04em;
+  }
+
+  .ex-description {
+    font-size: 12px;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--color-subtext);
+    letter-spacing: 0.04em;
+  }
+
+  .ex-arrow {
+    font-size: 11px;
+    font-family: var(--font-sans);
+    color: var(--color-primary);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .empty {
+    padding: 2rem 0;
+    color: var(--color-faint);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    text-align: center;
+  }
+
+  @media (max-width: 760px) {
+    .ex-item {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+  }
+</style>

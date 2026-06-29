@@ -4,11 +4,11 @@ import Hero from '~/components/Hero.astro';
 import NewsBanner from '~/components/NewsBanner.astro';
 import Section from '~/components/Section.astro';
 import NewsList from '~/components/NewsList.astro';
-import WorksGrid from '~/components/WorksGrid.astro';
-import { getNews, getWorks } from '~/libs/microcms';
+import ExhibitionList from '~/components/ExhibitionList.astro';
+import { getExhibitions, getNews } from '~/libs/microcms';
 
 const news = await getNews(5);
-const works = await getWorks(6);
+const exhibitions = await getExhibitions(3);
 const latest = news[0];
 ---
 
@@ -25,7 +25,7 @@ const latest = news[0];
     <NewsList items={news} />
   </Section>
 
-  <Section title="作品・書展" moreHref="/works" flush>
-    <WorksGrid works={works} columns={3} />
+  <Section title="書展" moreHref="/exhibitions" flush>
+    <ExhibitionList exhibitions={exhibitions} />
   </Section>
 </Base>

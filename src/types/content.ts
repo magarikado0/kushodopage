@@ -18,30 +18,11 @@ export interface NewsItem {
   revisedAt?: string;
 }
 
-/** 作品 (works) — 書展に限らず活動作品も登録可能 */
-export type WorkStyle = '楷書' | '行書' | '草書' | 'かな' | '篆刻' | 'その他';
-
 export interface WorkImage {
   url: string;
   width?: number;
   height?: number;
   alt?: string;
-}
-
-export interface Work {
-  id: string;
-  title: string;
-  style: WorkStyle;
-  /** 展示した書展名（テキスト。例: "冬樟展 2024"） */
-  exhibition?: string;
-  /** 筆者（任意） */
-  author?: string;
-  /** 作品画像（必須） */
-  image: WorkImage;
-  /** 作品の説明（任意） */
-  caption?: string;
-  publishedAt: string;
-  revisedAt?: string;
 }
 
 /** 書展 (exhibitions) */
