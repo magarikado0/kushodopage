@@ -1,0 +1,5 @@
+# Cloudflare Pages のビルド設定ファイル
+# (リポジトリから Cloudflare Pages に接続する際、自動で読み込まれます)
+name = "kushodo-club"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "dist"

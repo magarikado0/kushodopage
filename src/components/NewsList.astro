@@ -1,0 +1,99 @@
+---
+import type { NewsItem } from '~/types/content';
+import { formatDate } from '~/libs/format';
+
+interface Props {
+  items: NewsItem[];
+  /** 末尾の区切り線を表示しない（ページ末尾用） */
+  flush?: boolean;
+}
+
+const { items, flush = false } = Astro.props;
+---
+
+<div class="news-list">
+  {
+    items.length === 0 ? (
+      <p class="news-empty">お知らせはまだありません。</p>
+    ) : (
+      items.map((item) => (
+        <a class="news-item" href={`/news/${item.id}`}>
+          <span class="news-date">{formatDate(item.publishedAt)}</span>
+          <span class="news-tag">{item.category}</span>
+          <span class="news-ttl">{item.title}</span>
+        </a>
+      ))
+    )
+  }
+</div>
+
+<style>
+  .news-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .news-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--color-line-soft);
+    transition: background 0.2s ease;
+  }
+
+  .news-item:first-child {
+    border-top: 1px solid var(--color-line-soft);
+  }
+
+  .news-item:hover {
+    background: rgba(155, 35, 53, 0.04);
+  }
+
+  .news-date {
+    font-size: 11px;
+    color: var(--color-faint);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    white-space: nowrap;
+    min-width: 76px;
+  }
+
+  .news-tag {
+    font-size: 10px;
+    color: #fff;
+    background: var(--color-primary);
+    padding: 1px 7px;
+    letter-spacing: 0.08em;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    white-space: nowrap;
+  }
+
+  .news-ttl {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--color-ink);
+    line-height: 1.5;
+    font-family: var(--font-sans);
+  }
+
+  .news-empty {
+    padding: 2rem 0;
+    color: var(--color-faint);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .news-item {
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+    }
+    .news-ttl {
+      width: 100%;
+    }
+  }
+</style>

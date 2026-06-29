@@ -1,0 +1,76 @@
+---
+import { NAV_ITEMS, SITE } from '~/libs/site';
+---
+
+<footer class="footer">
+  <div>
+    <div class="footer-accent"></div>
+    <div class="footer-logo">{SITE.name}</div>
+  </div>
+  <ul class="footer-links">
+    {
+      NAV_ITEMS.map((item) => (
+        <li>
+          <a href={item.href}>{item.label}</a>
+        </li>
+      ))
+    }
+  </ul>
+  <div class="footer-copy">© {SITE.name} All Rights Reserved.</div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-footer-bg);
+    padding: 1.8rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-logo {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--color-footer-text);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    font-size: 10px;
+    color: var(--color-footer-muted);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a:hover {
+    color: var(--color-footer-text);
+  }
+
+  .footer-copy {
+    font-size: 10px;
+    color: var(--color-footer-copy);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    letter-spacing: 0.06em;
+  }
+
+  .footer-accent {
+    width: 24px;
+    height: 3px;
+    background: var(--color-primary);
+    margin-bottom: 0.4rem;
+  }
+
+  @media (max-width: 760px) {
+    .footer {
+      padding: 1.4rem 1.2rem;
+    }
+  }
+</style>

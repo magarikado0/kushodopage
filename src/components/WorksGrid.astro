@@ -1,0 +1,143 @@
+---
+import type { Work } from '~/types/content';
+
+interface Props {
+  works: Work[];
+  /** グリッドの列数 */
+  columns?: 3 | 4;
+}
+
+const { works, columns = 3 } = Astro.props;
+---
+
+<div class:list={['works-grid', `is-cols-${columns}`]}>
+  {
+    works.map((work) => (
+      <a class="work-cell" href={`/works/${work.id}`}>
+        {work.image?.url ? (
+          <img
+            class="work-image"
+            src={work.image.url}
+            alt={work.image.alt ?? work.title}
+            loading="lazy"
+          />
+        ) : (
+          <div class="work-kanji">{work.title}</div>
+        )}
+        <div class="work-hanko">
+          <span>京</span>
+        </div>
+        <div class="work-overlay">
+          <div class="work-lbl">
+            {work.style}
+            {work.exhibition ? `　${work.exhibition}` : ''}
+          </div>
+          <div class="work-ttl">{work.title}</div>
+        </div>
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 3), 1fr);
+    gap: 1px;
+    background: var(--color-line);
+  }
+
+  .works-grid.is-cols-3 {
+    --cols: 3;
+  }
+  .works-grid.is-cols-4 {
+    --cols: 4;
+  }
+
+  .work-cell {
+    background: var(--color-work);
+    aspect-ratio: 3 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .work-cell:hover .work-image {
+    transform: scale(1.04);
+  }
+
+  .work-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .work-kanji {
+    font-size: 52px;
+    font-weight: 300;
+    color: var(--color-work-ink);
+    writing-mode: vertical-rl;
+    opacity: 0.85;
+    letter-spacing: 0.06em;
+    font-family: var(--font-serif);
+  }
+
+  .work-hanko {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    width: 28px;
+    height: 28px;
+    background: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .work-hanko span {
+    font-size: 11px;
+    color: #fff;
+    font-family: var(--font-serif);
+    font-weight: 300;
+    writing-mode: vertical-rl;
+    letter-spacing: 0.05em;
+  }
+
+  .work-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.6rem 0.9rem;
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .work-lbl {
+    font-size: 10px;
+    color: #aaa;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+  }
+
+  .work-ttl {
+    font-size: 12px;
+    color: var(--color-work-ink);
+    font-family: var(--font-serif);
+    margin-top: 0.15rem;
+  }
+
+  @media (max-width: 760px) {
+    .works-grid,
+    .works-grid.is-cols-4 {
+      --cols: 2;
+    }
+    .work-kanji {
+      font-size: 40px;
+    }
+  }
+</style>

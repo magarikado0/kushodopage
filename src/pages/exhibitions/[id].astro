@@ -1,0 +1,225 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '~/layouts/Base.astro';
+import WorksGrid from '~/components/WorksGrid.astro';
+import { getAllExhibitionIds, getExhibitionById, getWorks } from '~/libs/microcms';
+import { formatDateRange, excerpt } from '~/libs/format';
+
+export const getStaticPaths = (async () => {
+  const ids = await getAllExhibitionIds();
+  return ids.map((id) => ({ params: { id } }));
+}) satisfies GetStaticPaths;
+
+const { id } = Astro.params;
+const exhibition = id ? await getExhibitionById(id) : null;
+
+if (!exhibition) {
+  return Astro.redirect('/works');
+}
+
+// 書展名に合致する作品（exhibition テキストが部分一致）を取得
+const allWorks = await getWorks(100);
+const relatedWorks = allWorks.filter(
+  (w) => w.exhibition && exhibition.title.includes(w.exhibition.split(' ')[0])
+);
+---
+
+<Base
+  title={exhibition.title}
+  description={excerpt(exhibition.description, 120)}
+  current="/works"
+>
+  <article class="ex">
+    <div class="container ex-head">
+      <a class="ex-back" href="/works">← 書展一覧</a>
+      <div class="ex-label">書展アーカイブ</div>
+      <h1 class="ex-title">{exhibition.title}</h1>
+      <dl class="ex-info">
+        <div>
+          <dt>会期</dt>
+          <dd>{formatDateRange(exhibition.startDate, exhibition.endDate)}</dd>
+        </div>
+        <div>
+          <dt>会場</dt>
+          <dd>
+            {exhibition.venue}
+            {exhibition.address ? `（${exhibition.address}）` : ''}
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    {
+      exhibition.heroImage?.url && (
+        <div class="ex-hero">
+          <img
+            src={exhibition.heroImage.url}
+            alt={exhibition.heroImage.alt ?? exhibition.title}
+          />
+        </div>
+      )
+    }
+
+    <div class="container">
+      <div class="ex-body">
+        <h2 class="ex-h2">書展について</h2>
+        <p>{exhibition.description}</p>
+      </div>
+
+      {
+        exhibition.works && exhibition.works.length > 0 && (
+          <div class="ex-works">
+            <h2 class="ex-h2">展示風景</h2>
+            <div class="ex-photos">
+              {exhibition.works.map((w) => (
+                <figure>
+                  <img src={w.url} alt={w.alt ?? ''} loading="lazy" />
+                  {w.alt ? <figcaption>{w.alt}</figcaption> : null}
+                </figure>
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+      {
+        relatedWorks.length > 0 && (
+          <div class="ex-related">
+            <h2 class="ex-h2">展示作品</h2>
+            <WorksGrid works={relatedWorks} columns={3} />
+          </div>
+        )
+      }
+    </div>
+  </article>
+</Base>
+
+<style>
+  .ex {
+    padding-bottom: 4rem;
+  }
+
+  .ex-head {
+    padding-top: 2.5rem;
+  }
+
+  .ex-back {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+
+  .ex-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+    margin-bottom: 0.6rem;
+  }
+
+  .ex-title {
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--color-primary);
+  }
+
+  .ex-info {
+    font-family: var(--font-sans);
+  }
+
+  .ex-info div {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: 1rem;
+    padding: 0.5rem 0;
+  }
+
+  .ex-info dt {
+    font-size: 10px;
+    color: var(--color-primary);
+    letter-spacing: 0.15em;
+    font-weight: 300;
+  }
+
+  .ex-info dd {
+    font-size: 13px;
+    color: var(--color-ink);
+    font-weight: 300;
+  }
+
+  .ex-hero {
+    margin: 2rem 0;
+  }
+
+  .ex-hero img {
+    width: 100%;
+    max-height: 480px;
+    object-fit: cover;
+    border: 1px solid var(--color-line);
+  }
+
+  .ex-body {
+    margin-top: 2rem;
+  }
+
+  .ex-h2 {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: #fff;
+    background: var(--color-primary);
+    padding: 0.25rem 0.75rem;
+    display: inline-block;
+    margin-bottom: 1.2rem;
+  }
+
+  .ex-body p {
+    font-size: 14px;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    line-height: 2;
+    color: var(--color-ink);
+    letter-spacing: 0.04em;
+  }
+
+  .ex-photos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .ex-photos figure {
+    margin: 0;
+  }
+
+  .ex-photos img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 1px solid var(--color-line);
+  }
+
+  .ex-photos figcaption {
+    font-size: 10px;
+    color: var(--color-faint);
+    font-family: var(--font-sans);
+    margin-top: 0.4rem;
+    letter-spacing: 0.05em;
+  }
+
+  .ex-related {
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 600px) {
+    .ex-photos {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

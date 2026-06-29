@@ -1,0 +1,201 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '~/layouts/Base.astro';
+import { getAllNewsIds, getNewsById, getNews } from '~/libs/microcms';
+import { formatDate, excerpt } from '~/libs/format';
+
+export const getStaticPaths = (async () => {
+  const ids = await getAllNewsIds();
+  return ids.map((id) => ({ params: { id } }));
+}) satisfies GetStaticPaths;
+
+const { id } = Astro.params;
+const item = id ? await getNewsById(id) : null;
+
+if (!item) {
+  return Astro.redirect('/news');
+}
+
+// 前後のお知らせ（簡易: 全件取得して位置を探す）
+const all = await getNews(100);
+const idx = all.findIndex((n) => n.id === item.id);
+const prev = idx > 0 ? all[idx - 1] : null;
+const next = idx < all.length - 1 ? all[idx + 1] : null;
+---
+
+<Base title={item.title} description={excerpt(item.content, 120)} current="/news">
+  <article class="article">
+    <div class="container article-head">
+      <a class="article-back" href="/news">← お知らせ一覧</a>
+      <div class="article-meta">
+        <span class="news-date">{formatDate(item.publishedAt)}</span>
+        <span class="news-tag">{item.category}</span>
+      </div>
+      <h1 class="article-title">{item.title}</h1>
+    </div>
+
+    <div class="container">
+      <div class="article-body" set:html={item.content}></div>
+      {
+        !item.content?.includes('<') && item.content ? (
+          <div class="article-body">
+            {item.content.split('\n').map((line) => (
+              <p>{line}</p>
+            ))}
+          </div>
+        ) : null
+      }
+    </div>
+
+    <nav class="container article-nav">
+      {
+        prev ? (
+          <a class="article-nav-item is-prev" href={`/news/${prev.id}`}>
+            <span>前の記事</span>
+            <strong>{prev.title}</strong>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        next ? (
+          <a class="article-nav-item is-next" href={`/news/${next.id}`}>
+            <span>次の記事</span>
+            <strong>{next.title}</strong>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .article {
+    padding: 2.5rem 0 4rem;
+  }
+
+  .article-back {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .news-date {
+    font-size: 11px;
+    color: var(--color-faint);
+    font-family: var(--font-sans);
+    font-weight: 300;
+  }
+
+  .news-tag {
+    font-size: 10px;
+    color: #fff;
+    background: var(--color-primary);
+    padding: 1px 7px;
+    letter-spacing: 0.08em;
+    font-family: var(--font-sans);
+    font-weight: 300;
+  }
+
+  .article-title {
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--color-primary);
+  }
+
+  .article-body {
+    margin-top: 2rem;
+    font-size: 14px;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    line-height: 2;
+    color: var(--color-ink);
+    letter-spacing: 0.04em;
+  }
+
+  .article-body :global(p) {
+    margin-bottom: 1.2rem;
+  }
+
+  .article-body :global(h2) {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 500;
+    margin: 2rem 0 1rem;
+    padding-left: 0.75rem;
+    border-left: 3px solid var(--color-primary);
+  }
+
+  .article-body :global(a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .article-body :global(img) {
+    margin: 1.5rem 0;
+    border: 1px solid var(--color-line);
+  }
+
+  .article-nav {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-line);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .article-nav-item {
+    display: block;
+    padding: 0.8rem 1rem;
+    background: var(--color-cream);
+    transition: opacity 0.2s ease;
+  }
+
+  .article-nav-item:hover {
+    opacity: 0.7;
+  }
+
+  .article-nav-item.is-next {
+    text-align: right;
+  }
+
+  .article-nav-item span {
+    display: block;
+    font-size: 10px;
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.3rem;
+  }
+
+  .article-nav-item strong {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 600px) {
+    .article-nav {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,31 @@
+---
+import Base from '~/layouts/Base.astro';
+import Hero from '~/components/Hero.astro';
+import NewsBanner from '~/components/NewsBanner.astro';
+import Section from '~/components/Section.astro';
+import NewsList from '~/components/NewsList.astro';
+import WorksGrid from '~/components/WorksGrid.astro';
+import { getNews, getWorks } from '~/libs/microcms';
+
+const news = await getNews(5);
+const works = await getWorks(6);
+const latest = news[0];
+---
+
+<Base current="/">
+  <Hero />
+
+  {
+    latest && (
+      <NewsBanner item={latest} />
+    )
+  }
+
+  <Section title="お知らせ" moreHref="/news">
+    <NewsList items={news} />
+  </Section>
+
+  <Section title="作品・書展" moreHref="/works" flush>
+    <WorksGrid works={works} columns={3} />
+  </Section>
+</Base>

@@ -1,0 +1,68 @@
+---
+interface Props {
+  title: string;
+  /** 「一覧を見る」等のリンク先。未指定ならリンクを表示しない */
+  moreHref?: string;
+  moreLabel?: string;
+  /** 下線を引かない（ページ末尾のセクション用） */
+  flush?: boolean;
+}
+
+const { title, moreHref, moreLabel = '一覧を見る →', flush = false } = Astro.props;
+---
+
+<section class:list={['section', { 'is-flush': flush }]}>
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">{title}</h2>
+      {
+        moreHref && (
+          <a class="section-more" href={moreHref}>
+            {moreLabel}
+          </a>
+        )
+      }
+    </div>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .section.is-flush {
+    border-bottom: none;
+  }
+
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.4rem;
+    gap: 1rem;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: #fff;
+    background: var(--color-primary);
+    padding: 0.25rem 0.75rem;
+  }
+
+  .section-more {
+    font-size: 10px;
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+  }
+
+  .section-more:hover {
+    opacity: 0.7;
+  }
+</style>
