@@ -10,6 +10,7 @@
   --color-faint: #888;
   --color-line: #d6d6d6;
   --color-line-soft: #ececec;
+  --color-page: #f6f3ed;
   --color-panel: var(--color-black);
   --color-panel-soft: #1a1a1a;
   --color-panel-text: #f0f0f0;
@@ -21,6 +22,7 @@
   --color-footer-text: #f0f0f0;
   --color-footer-muted: #9a9a9a;
   --color-footer-copy: #666;
+  --shadow-paper: 0 8px 24px rgba(26, 20, 14, 0.07);
 
   --font-serif: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
   --font-sans: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
@@ -44,7 +46,7 @@ html {
 body {
   font-family: var(--font-serif);
   color: var(--color-ink);
-  background: #fff;
+  background: var(--color-page);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

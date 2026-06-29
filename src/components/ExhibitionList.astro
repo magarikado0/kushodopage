@@ -42,19 +42,28 @@ const { exhibitions } = Astro.props;
 <style>
   .ex-list {
     list-style: none;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--color-line-soft);
+    border-radius: 6px;
+    box-shadow: var(--shadow-paper);
   }
 
   .ex-item {
     display: grid;
     grid-template-columns: 9rem 1fr auto;
     gap: 1.5rem;
-    padding: 1.4rem 0;
+    padding: 1.4rem 1.2rem;
     border-bottom: 1px solid var(--color-line-soft);
     align-items: start;
   }
 
   .ex-item:first-child {
-    border-top: 1px solid var(--color-line-soft);
+    border-top: 0;
+  }
+
+  .ex-item:last-child {
+    border-bottom: 0;
   }
 
   .ex-year {

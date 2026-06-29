@@ -45,6 +45,9 @@ const { current } = Astro.props;
     border-bottom: 3px solid var(--color-primary);
     border-left: 6px solid var(--color-black);
     gap: 1.5rem;
+    position: relative;
+    z-index: 30;
+    box-shadow: 0 5px 18px rgba(26, 20, 14, 0.08);
   }
 
   .nav-logo {
@@ -90,7 +93,9 @@ const { current } = Astro.props;
   .nav-links li:last-child {
     color: var(--color-black);
     border: 1px solid var(--color-black);
+    border-radius: 3px;
     padding: 0.3rem 0.9rem;
+    box-shadow: 0 2px 6px rgba(26, 20, 14, 0.08);
   }
 
   .nav-links li:last-child a:hover {

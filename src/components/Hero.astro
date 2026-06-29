@@ -60,10 +60,14 @@ const exhibition = await getFeaturedExhibition();
     grid-template-columns: 1fr 1fr;
     border-bottom: 1px solid var(--color-line);
     min-height: 380px;
+    position: relative;
+    z-index: 1;
+    box-shadow: var(--shadow-paper);
   }
 
   .hero-left {
     padding: 3.5rem var(--gutter);
+    background: #fff;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -147,6 +151,8 @@ const exhibition = await getFeaturedExhibition();
     letter-spacing: 0.15em;
     display: inline-block;
     padding: 0.4rem 1rem;
+    border-radius: 3px;
+    box-shadow: 0 3px 8px rgba(10, 10, 10, 0.14);
     transition: opacity 0.2s ease;
   }
 
