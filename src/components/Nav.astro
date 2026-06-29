@@ -9,11 +9,21 @@ const { current } = Astro.props;
 ---
 
 <header class="nav">
-  <a class="nav-logo" href="/">
-    {SITE.name}
-    <span>{SITE.nameEn}</span>
+  <a class="nav-logo" href="/" aria-label={`${SITE.name} トップページ`}>
+    <img src="/header.png" alt={SITE.name} />
   </a>
-  <ul class="nav-links">
+  <button
+    class="nav-toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="global-navigation"
+    aria-label="メニューを開く"
+  >
+    <span class="nav-toggle-line"></span>
+    <span class="nav-toggle-line"></span>
+    <span class="nav-toggle-line"></span>
+  </button>
+  <ul class="nav-links" id="global-navigation">
     {
       NAV_ITEMS.map((item) => (
         <li class={current === item.href ? 'is-active' : ''}>
@@ -38,28 +48,25 @@ const { current } = Astro.props;
   }
 
   .nav-logo {
-    font-size: 15px;
-    font-weight: 400;
-    letter-spacing: 0.12em;
-    color: var(--color-ink);
-    line-height: 1.2;
+    display: block;
+    flex: 0 1 230px;
   }
 
-  .nav-logo span {
-    font-size: 10px;
-    color: var(--color-primary);
+  .nav-logo img {
     display: block;
-    letter-spacing: 0.08em;
-    font-family: var(--font-sans);
-    font-weight: 300;
-    margin-top: 2px;
+    width: 100%;
+    height: auto;
+  }
+
+  .nav-toggle {
+    display: none;
   }
 
   .nav-links {
     display: flex;
     gap: 2.2rem;
     list-style: none;
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: 0.1em;
     font-family: var(--font-sans);
     font-weight: 300;
@@ -94,13 +101,123 @@ const { current } = Astro.props;
   @media (max-width: 760px) {
     .nav {
       padding: 1rem 1.2rem;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-    .nav-links {
+      position: relative;
       gap: 1rem;
-      font-size: 11px;
-      flex-wrap: wrap;
+    }
+
+    .nav-logo {
+      flex-basis: 190px;
+    }
+
+    .nav-toggle {
+      display: grid;
+      place-content: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      margin-left: auto;
+      color: var(--color-black);
+      border: 1px solid var(--color-black);
+    }
+
+    .nav-toggle-line {
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: currentColor;
+      transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+    .nav-toggle[aria-expanded='true'] .nav-toggle-line:nth-child(1) {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    .nav-toggle[aria-expanded='true'] .nav-toggle-line:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle[aria-expanded='true'] .nav-toggle-line:nth-child(3) {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+
+    .nav-links {
+      display: none;
+      position: absolute;
+      z-index: 20;
+      top: 100%;
+      right: -3px;
+      left: -6px;
+      flex-direction: column;
+      gap: 0;
+      padding: 0.75rem 1.2rem 1rem;
+      background: #fff;
+      border-right: 3px solid var(--color-primary);
+      border-bottom: 3px solid var(--color-primary);
+      border-left: 6px solid var(--color-black);
+      font-size: 13px;
+      box-shadow: 0 12px 24px rgba(10, 10, 10, 0.12);
+    }
+
+    .nav-links.is-open {
+      display: flex;
+    }
+
+    .nav-links li {
+      border-bottom: 1px solid var(--color-line-soft);
+    }
+
+    .nav-links li a {
+      display: block;
+      padding: 0.85rem 0.2rem;
+    }
+
+    .nav-links li:last-child {
+      margin-top: 0.7rem;
+      padding: 0;
+      text-align: center;
+      border: 1px solid var(--color-black);
+    }
+
+    .nav-links li:last-child a {
+      padding: 0.65rem 0.9rem;
     }
   }
 </style>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('.nav');
+  const toggle = nav?.querySelector<HTMLButtonElement>('.nav-toggle');
+  const links = nav?.querySelector<HTMLElement>('.nav-links');
+
+  const closeMenu = () => {
+    toggle?.setAttribute('aria-expanded', 'false');
+    toggle?.setAttribute('aria-label', 'メニューを開く');
+    links?.classList.remove('is-open');
+  };
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    toggle.setAttribute('aria-label', isOpen ? 'メニューを開く' : 'メニューを閉じる');
+    links?.classList.toggle('is-open', !isOpen);
+  });
+
+  links?.addEventListener('click', (event) => {
+    if ((event.target as HTMLElement).closest('a')) closeMenu();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (nav && !nav.contains(event.target as Node)) closeMenu();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeMenu();
+      toggle?.focus();
+    }
+  });
+
+  window.matchMedia('(min-width: 761px)').addEventListener('change', closeMenu);
+</script>

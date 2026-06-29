@@ -1,7 +1,6 @@
 ---
 import Base from '~/layouts/Base.astro';
 import Hero from '~/components/Hero.astro';
-import NewsBanner from '~/components/NewsBanner.astro';
 import Section from '~/components/Section.astro';
 import NewsList from '~/components/NewsList.astro';
 import ExhibitionList from '~/components/ExhibitionList.astro';
@@ -9,17 +8,13 @@ import { getExhibitions, getNews } from '~/libs/microcms';
 
 const news = await getNews(5);
 const exhibitions = await getExhibitions(3);
-const latest = news[0];
 ---
 
 <Base current="/">
   <Hero />
-
-  {
-    latest && (
-      <NewsBanner item={latest} />
-    )
-  }
+  <div class="home-accent" aria-hidden="true">
+    <span></span>
+  </div>
 
   <Section title="お知らせ" moreHref="/news">
     <NewsList items={news} />
@@ -29,3 +24,23 @@ const latest = news[0];
     <ExhibitionList exhibitions={exhibitions} />
   </Section>
 </Base>
+
+<style>
+  .home-accent {
+    height: 12px;
+    background: var(--color-primary);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .home-accent span {
+    width: clamp(56px, 9vw, 120px);
+    background: var(--color-black);
+  }
+
+  @media (max-width: 760px) {
+    .home-accent {
+      height: 9px;
+    }
+  }
+</style>
