@@ -12,6 +12,10 @@ const exhibition = await getFeaturedExhibition();
       {
         exhibition ? (
           <>
+            <a class="ex-corner-link" href={`/exhibitions/${exhibition.id}`} aria-label={`${exhibition.title} の詳細を見る`}>
+              <span>詳細</span>
+              <span aria-hidden="true">↗</span>
+            </a>
             <div class="ex-label">次回の書展</div>
             <a class="ex-title" href={`/exhibitions/${exhibition.id}`}>
               {exhibition.title}
@@ -22,7 +26,6 @@ const exhibition = await getFeaturedExhibition();
               {exhibition.venue}
               {exhibition.address ? `　${exhibition.address}` : ''}
             </div>
-            <a class="ex-link" href={`/exhibitions/${exhibition.id}`}>詳細を見る →</a>
           </>
         ) : (
           <>
@@ -35,14 +38,16 @@ const exhibition = await getFeaturedExhibition();
     </div>
   </div>
   <div class="hero-right">
-    <img
-      class="hero-image"
-      src="/H30_shoka_header.jpg"
-      alt="書展会場に展示された書作品"
-      loading="eager"
-      fetchpriority="high"
-      decoding="async"
-    />
+    <div class="hero-image-frame">
+      <img
+        class="hero-image"
+        src="/H30_shoka_header.jpg"
+        alt="書展会場に展示された書作品"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </div>
   </div>
 </section>
 
@@ -105,8 +110,31 @@ const exhibition = await getFeaturedExhibition();
     background: rgba(155, 35, 53, 0.55);
   }
 
-  .ex-label {
+  .ex-corner-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    position: absolute;
+    top: -0.1rem;
+    right: 7.5rem;
+    min-width: 4.5rem;
+    height: 2.15rem;
+    padding: 0 0.7rem;
     font-size: 12px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    border: 1px solid rgba(155, 35, 53, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94);
+    line-height: 1;
+    box-shadow: 0 1px 4px rgba(26, 20, 14, 0.05);
+  }
+
+  .ex-label {
+    font-size: 13px;
     letter-spacing: 0.14em;
     color: var(--color-primary);
     font-family: var(--font-sans);
@@ -144,32 +172,20 @@ const exhibition = await getFeaturedExhibition();
     white-space: nowrap;
   }
 
-  .ex-link {
-    margin-top: 1.15rem;
-    font-size: 13px;
-    color: #fff;
-    background: var(--color-black);
-    font-family: var(--font-sans);
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    display: inline-block;
-    padding: 0.55rem 1.2rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 6px rgba(10, 10, 10, 0.08);
-    transition: opacity 0.2s ease;
-  }
-
-  .ex-link:hover {
-    opacity: 0.85;
-  }
-
   .hero-right {
-    overflow: hidden;
     background: #ddd6cb;
     position: relative;
   }
 
-  .hero-right::after {
+  .hero-image-frame {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    position: relative;
+  }
+
+  .hero-image-frame::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -191,26 +207,56 @@ const exhibition = await getFeaturedExhibition();
   @media (max-width: 760px) {
     .hero {
       grid-template-columns: 1fr;
+      min-height: 0;
     }
     .hero-left {
+      order: 2;
       border-right: 0;
-      border-bottom: 1px solid var(--color-line);
-      padding: 2.5rem 1.2rem;
+      border-bottom: 0;
+      border-top: 0;
+      padding: 1.8rem 1rem;
     }
     .hero-left::after {
       right: 0.6rem;
-      bottom: 1rem;
-      width: 90px;
-      height: 90px;
+      bottom: 0.75rem;
+      width: 72px;
+      height: 72px;
     }
     .hero-bottom {
-      padding-left: 1rem;
+      padding-left: 0.9rem;
+    }
+    .ex-label {
+      font-size: 12px;
+      margin-bottom: 0.5rem;
+    }
+    .ex-corner-link {
+      position: absolute;
+      top: -0.15rem;
+      right: 0;
+      min-width: 4rem;
+      height: 2rem;
+      padding: 0 0.55rem;
+      font-size: 12px;
+    }
+    .ex-title {
+      font-size: 18px;
+      margin-bottom: 0.55rem;
+    }
+    .ex-meta {
+      font-size: 13px;
+      line-height: 1.8;
     }
     .hero-right {
+      order: 1;
+      margin-top: 0.45rem;
       min-height: 0;
+      background: transparent;
+      padding-inline: 0.7rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--color-line);
     }
     .hero-image {
-      min-height: 180px;
+      min-height: 150px;
     }
   }
 </style>

@@ -78,7 +78,7 @@ button {
 
 @media (max-width: 760px) {
   :root {
-    --gutter: 1.2rem;
+    --gutter: 1rem;
   }
 }
 

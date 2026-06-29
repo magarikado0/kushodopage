@@ -132,7 +132,27 @@ const { exhibitions } = Astro.props;
   @media (max-width: 760px) {
     .ex-item {
       grid-template-columns: 1fr;
-      gap: 0.5rem;
+      gap: 0.4rem;
+      padding: 1rem 0.9rem;
+    }
+
+    .ex-year {
+      font-size: 18px;
+    }
+
+    .ex-venue,
+    .ex-date,
+    .ex-arrow {
+      font-size: 11px;
+    }
+
+    .ex-title {
+      font-size: 15px;
+    }
+
+    .ex-description {
+      font-size: 12px;
+      line-height: 1.7;
     }
   }
 </style>
