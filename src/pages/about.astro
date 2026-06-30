@@ -64,6 +64,59 @@ import { SITE } from '~/libs/site';
     </ul>
   </Section>
 
+  <Section title="年間行事">
+    <ol class="annual-list">
+      <li>
+        <span class="annual-month">4月</span>
+        <div><strong>新歓</strong><p>書道体験や新歓書道パフォーマンスなど、新入生に向けた企画を行います。</p></div>
+      </li>
+      <li>
+        <span class="annual-month">6月</span>
+        <div><strong>鴨夏展</strong><p>初夏に開催する学外書展です。日頃の練習や制作の成果を展示します。</p></div>
+      </li>
+      <li>
+        <span class="annual-month">8月</span>
+        <div><strong>夏合宿</strong><p>まとまった時間を使って作品制作や品評を行い、学年を越えて交流します。参加は任意です。</p></div>
+      </li>
+      <li>
+        <span class="annual-month">10月</span>
+        <div><strong>響都展</strong><p>京都の大学書道団体が集まって開催する合同書展です。</p></div>
+      </li>
+      <li>
+        <span class="annual-month">11月</span>
+        <div><strong>京都大学11月祭（NF）</strong><p>学内での書展や、音楽に合わせて作品を書き上げるNF書道パフォーマンスを行います。</p></div>
+      </li>
+      <li>
+        <span class="annual-month">12月</span>
+        <div><strong>冬樟展</strong><p>冬に開催する学外書展です。一年の制作の締めくくりとして作品を展示します。</p></div>
+      </li>
+      <li>
+        <span class="annual-month">2月</span>
+        <div><strong>春合宿</strong><p>次の学外書展に向けて作品制作や品評を行います。夏合宿と同様に参加は任意です。</p></div>
+      </li>
+    </ol>
+    <p class="annual-note">※ 開催時期や内容は年度によって変更する場合があります。</p>
+  </Section>
+
+  <Section title="部室・活動場所">
+    <div class="place-grid">
+      <div class="place-item">
+        <span class="place-label">部室</span>
+        <h3>西部課外活動棟 E201</h3>
+        <p>
+          ルネの隣にある西部課外活動棟E棟の2階です。紙や墨、書道に関する本などを置いています。
+        </p>
+      </div>
+      <div class="place-item">
+        <span class="place-label">練習場所</span>
+        <h3>西部課外活動棟 E305</h3>
+        <p>
+          E棟3階の共用室です。水曜日と土曜日の一斉練習日を中心に、作品制作や品評会を行います。
+        </p>
+      </div>
+    </div>
+  </Section>
+
   <Section title="入部案内" flush>
     <div class="join" id="join">
       <div class="join-lead">
@@ -201,6 +254,95 @@ import { SITE } from '~/libs/site';
     letter-spacing: 0.04em;
   }
 
+  .annual-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 2.5rem;
+    list-style: none;
+  }
+
+  .annual-list li {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: 1rem;
+    padding: 1rem 0.25rem;
+    border-top: 1px solid var(--color-line-soft);
+  }
+
+  .annual-month {
+    color: var(--color-primary);
+    font-family: var(--font-serif);
+    font-size: 18px;
+    letter-spacing: 0.06em;
+  }
+
+  .annual-list div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .annual-list strong {
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .annual-list p {
+    color: var(--color-subtext);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+  }
+
+  .annual-note {
+    color: var(--color-muted);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .annual-note {
+    margin-top: 0.75rem;
+  }
+
+  .place-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem;
+  }
+
+  .place-item {
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-line-soft);
+  }
+
+  .place-label {
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    letter-spacing: 0.15em;
+  }
+
+  .place-item h3 {
+    margin: 0.45rem 0 0.65rem;
+    color: var(--color-ink);
+    font-size: 19px;
+    font-weight: 400;
+    letter-spacing: 0.07em;
+  }
+
+  .place-item p {
+    color: var(--color-subtext);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+  }
+
   .join {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
@@ -320,6 +462,16 @@ import { SITE } from '~/libs/site';
     }
     .activity-list {
       grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .annual-list,
+    .place-grid {
+      grid-template-columns: 1fr;
+    }
+    .annual-list {
+      gap: 0;
+    }
+    .place-grid {
       gap: 1.5rem;
     }
   }

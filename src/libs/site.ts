@@ -5,7 +5,7 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { label: '書道部について', href: '/about' },
-  { label: '活動記録', href: '/activities' },
+  { label: '作品紹介', href: '/activities' },
   { label: 'お知らせ', href: '/news' },
   { label: '入部案内', href: '/about#join' },
 ];
