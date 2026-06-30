@@ -36,14 +36,18 @@ async function fetchOne<T>(endpoint: string, id: string): Promise<T | null> {
 /** お知らせ一覧（新着順） */
 export async function getNews(limit = 12): Promise<NewsItem[]> {
   if (!configured) return localNews.slice(0, limit);
-  const cmsNews = await fetchList<NewsItem>('news', {
-    limit: Math.min(limit, 100),
-    orders: '-publishedAt',
-  });
-  const cmsIds = new Set(cmsNews.map((item) => item.id));
-  return [...cmsNews, ...localNews.filter((item) => !cmsIds.has(item.id))]
-    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
-    .slice(0, limit);
+  try {
+    const cmsNews = await fetchList<NewsItem>('news', {
+      limit: Math.min(limit, 100),
+      orders: '-publishedAt',
+    });
+    const cmsIds = new Set(cmsNews.map((item) => item.id));
+    return [...cmsNews, ...localNews.filter((item) => !cmsIds.has(item.id))]
+      .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+      .slice(0, limit);
+  } catch {
+    return localNews.slice(0, limit);
+  }
 }
 
 /** お知らせ詳細 */
