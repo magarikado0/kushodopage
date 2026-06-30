@@ -17,7 +17,7 @@ const { exhibitions } = Astro.props;
       exhibitions.map((exhibition) => (
         <li class="ex-item">
           <div class="ex-meta">
-            <div class="ex-year">{exhibition.year}</div>
+            <div class="ex-year">{new Date(exhibition.startDate).getFullYear()}</div>
             <div class="ex-venue">
               {exhibition.venue}
               {exhibition.address ? <span>　{exhibition.address}</span> : null}

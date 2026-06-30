@@ -1,5 +1,6 @@
 import { createClient, type MicroCMSQueries } from 'microcms-js-sdk';
-import type { Exhibition, NewsItem } from '~/types/content';
+import type { Exhibition, NewsItem, Performance } from '~/types/content';
+import legacyNews from '~/content/legacy-news.json';
 
 /**
  * MicroCMS クライアント。
@@ -15,6 +16,7 @@ function getClient() {
 
 const client = getClient();
 const configured = client !== null;
+const localNews = legacyNews as NewsItem[];
 
 async function fetchList<T>(endpoint: string, queries?: MicroCMSQueries): Promise<T[]> {
   if (!client) return [];
@@ -33,26 +35,39 @@ async function fetchOne<T>(endpoint: string, id: string): Promise<T | null> {
 
 /** お知らせ一覧（新着順） */
 export async function getNews(limit = 12): Promise<NewsItem[]> {
-  if (!configured) return mockNews.slice(0, limit);
-  return fetchList<NewsItem>('news', {
-    limit,
+  if (!configured) return localNews.slice(0, limit);
+  const cmsNews = await fetchList<NewsItem>('news', {
+    limit: Math.min(limit, 100),
     orders: '-publishedAt',
   });
+  const cmsIds = new Set(cmsNews.map((item) => item.id));
+  return [...cmsNews, ...localNews.filter((item) => !cmsIds.has(item.id))]
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+    .slice(0, limit);
 }
 
 /** お知らせ詳細 */
 export async function getNewsById(id: string): Promise<NewsItem | null> {
-  if (!configured) return mockNews.find((n) => n.id === id) ?? null;
-  return fetchOne<NewsItem>('news', id);
+  const localItem = localNews.find((item) => item.id === id) ?? null;
+  if (!configured) return localItem;
+  return (await fetchOne<NewsItem>('news', id)) ?? localItem;
 }
 
 /** 書展一覧（開催日が新しい順） */
 export async function getExhibitions(limit = 20): Promise<Exhibition[]> {
   if (!configured) return mockExhibitions.slice(0, limit);
-  return fetchList<Exhibition>('exhibitions', {
-    limit,
-    orders: '-startDate',
-  });
+  try {
+    const cmsExhibitions = await fetchList<Exhibition>('exhibitions', {
+      limit: Math.min(limit, 100),
+      orders: '-startDate',
+    });
+    const cmsIds = new Set(cmsExhibitions.map((item) => item.id));
+    return [...cmsExhibitions, ...mockExhibitions.filter((item) => !cmsIds.has(item.id))]
+      .sort((a, b) => b.startDate.localeCompare(a.startDate))
+      .slice(0, limit);
+  } catch {
+    return mockExhibitions.slice(0, limit);
+  }
 }
 
 /** 次回/注目の書展（featured=true を優先、なければ最新） */
@@ -63,13 +78,32 @@ export async function getFeaturedExhibition(): Promise<Exhibition | null> {
 
 /** 書展詳細 */
 export async function getExhibitionById(id: string): Promise<Exhibition | null> {
-  if (!configured) return mockExhibitions.find((e) => e.id === id) ?? null;
-  return fetchOne<Exhibition>('exhibitions', id);
+  const localItem = mockExhibitions.find((item) => item.id === id) ?? null;
+  if (!configured) return localItem;
+  return (await fetchOne<Exhibition>('exhibitions', id)) ?? localItem;
+}
+
+/** 書道パフォーマンスの記録（年度が新しい順） */
+export async function getPerformances(limit = 20): Promise<Performance[]> {
+  if (!client) return [];
+  try {
+    const performances = await fetchList<Performance>('performances', {
+      limit: Math.min(limit, 100),
+      orders: '-year',
+    });
+    const typeOrder = (item: Performance) => {
+      const types = Array.isArray(item.type) ? item.type : [item.type];
+      return types.includes('NF書道パフォーマンス') ? 0 : 1;
+    };
+    return performances.sort((a, b) => b.year - a.year || typeOrder(a) - typeOrder(b));
+  } catch {
+    return [];
+  }
 }
 
 /** 全 news id（静的ルート生成用） */
 export async function getAllNewsIds(): Promise<string[]> {
-  const list = await getNews(100);
+  const list = await getNews(200);
   return list.map((n) => n.id);
 }
 
@@ -85,48 +119,12 @@ export const isCmsConfigured = configured;
 /* モックデータ（MicroCMS 未接続時のみ使用。本番では無視される）          */
 /* ------------------------------------------------------------------ */
 
-const mockNews: NewsItem[] = [
-  {
-    id: 'fuyusho-136',
-    title: '第136回 冬樟展のお知らせ',
-    category: '書展',
-    content:
-      '2024年12月13日（金）〜15日（日）の3日間、建仁寺 両足院にて第136回 冬樟展を開催いたします。部員による漢字・かな・篆刻の作品約80点を展示いたします。入場無料・事前予約不要です。皆様のお越しを心よりお待ちしております。',
-    publishedAt: '2024-11-02T00:00:00.000Z',
-  },
-  {
-    id: 'kyoto-2024',
-    title: '響都展 2024 出品報告',
-    category: '活動',
-    content:
-      '京都の学生書道団体が集う「響都展 2024」に当部から5名が出品いたしました。当日の様子をレポートします。',
-    publishedAt: '2024-10-15T00:00:00.000Z',
-  },
-  {
-    id: 'recruit-always',
-    title: '随時入部受付中です。お気軽にご連絡ください。',
-    category: '入部',
-    content:
-      '京都大学書道部では随時入部を受け付けています。経験の有無は問いません。見学だけでも大歓迎です。お問い合わせフォームまたは X（旧 Twitter）の DM からご連絡ください。',
-    publishedAt: '2024-09-01T00:00:00.000Z',
-  },
-  {
-    id: 'kamona-135',
-    title: '第135回 鴨夏展 ご来場ありがとうございました',
-    category: '書展',
-    content:
-      '2024年6月に開催した第135回 鴨夏展には多くの方にご来場いただき、誠にありがとうございました。',
-    publishedAt: '2024-06-20T00:00:00.000Z',
-  },
-];
-
 const mockExhibitions: Exhibition[] = [
   {
     id: 'fuyusho-136',
     title: '第136回 冬樟展',
-    year: 2024,
-    startDate: '2024-12-13T00:00:00.000Z',
-    endDate: '2024-12-15T00:00:00.000Z',
+    startDate: '2024-12-13',
+    endDate: '2024-12-15',
     venue: '建仁寺 両足院',
     address: '京都市東山区',
     description:
@@ -137,9 +135,8 @@ const mockExhibitions: Exhibition[] = [
   {
     id: 'kamona-135',
     title: '第135回 鴨夏展',
-    year: 2024,
-    startDate: '2024-06-14T00:00:00.000Z',
-    endDate: '2024-06-16T00:00:00.000Z',
+    startDate: '2024-06-14',
+    endDate: '2024-06-16',
     venue: '建仁寺 両足院',
     address: '京都市東山区',
     description: '初夏に開催した書展。新入部員の初作品も含め、約60点を展示しました。',

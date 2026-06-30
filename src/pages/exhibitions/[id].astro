@@ -13,18 +13,18 @@ const { id } = Astro.params;
 const exhibition = id ? await getExhibitionById(id) : null;
 
 if (!exhibition) {
-  return Astro.redirect('/exhibitions');
+  return Astro.redirect('/activities');
 }
 ---
 
 <Base
   title={exhibition.title}
   description={excerpt(exhibition.description, 120)}
-  current="/exhibitions"
+  current="/activities"
 >
   <article class="ex">
     <div class="container ex-head">
-      <a class="ex-back" href="/exhibitions">← 書展一覧</a>
+      <a class="ex-back" href="/activities">← 活動記録</a>
       <div class="ex-label">書展アーカイブ</div>
       <h1 class="ex-title">{exhibition.title}</h1>
       <dl class="ex-info">
@@ -60,16 +60,22 @@ if (!exhibition) {
       </div>
 
       {
-        exhibition.works && exhibition.works.length > 0 && (
-          <div class="ex-works">
-            <h2 class="ex-h2">展示風景</h2>
-            <div class="ex-photos">
-              {exhibition.works.map((w) => (
-                <figure>
-                  <img src={w.url} alt={w.alt ?? ''} loading="lazy" />
-                  {w.alt ? <figcaption>{w.alt}</figcaption> : null}
-                </figure>
-              ))}
+        (exhibition.brochureUrl || exhibition.artoirUrl) && (
+          <div class="ex-links">
+            <h2 class="ex-h2">作品と記録</h2>
+            <div class="ex-link-list">
+              {exhibition.artoirUrl && (
+                <a href={exhibition.artoirUrl} target="_blank" rel="noreferrer">
+                  <span>展示作品</span>
+                  <strong>Artoirで作品を見る ↗</strong>
+                </a>
+              )}
+              {exhibition.brochureUrl && (
+                <a href={exhibition.brochureUrl} target="_blank" rel="noreferrer">
+                  <span>書展資料</span>
+                  <strong>パンフレットを見る ↗</strong>
+                </a>
+              )}
             </div>
           </div>
         )
@@ -172,33 +178,50 @@ if (!exhibition) {
     letter-spacing: 0.04em;
   }
 
-  .ex-photos {
+  .ex-links {
+    margin-top: 3rem;
+  }
+
+  .ex-link-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
 
-  .ex-photos figure {
-    margin: 0;
-  }
-
-  .ex-photos img {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
+  .ex-link-list a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1.2rem;
     border: 1px solid var(--color-line);
+    background: #fff;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
   }
 
-  .ex-photos figcaption {
-    font-size: 13px;
+  .ex-link-list a:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+
+  .ex-link-list span {
+    font-size: 12px;
     color: var(--color-faint);
     font-family: var(--font-sans);
-    margin-top: 0.4rem;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.15em;
+  }
+
+  .ex-link-list strong {
+    font-size: 16px;
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    letter-spacing: 0.06em;
   }
 
   @media (max-width: 600px) {
-    .ex-photos {
+    .ex-link-list {
       grid-template-columns: 1fr;
     }
   }

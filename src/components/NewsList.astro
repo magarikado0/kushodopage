@@ -1,14 +1,16 @@
 ---
 import type { NewsItem } from '~/types/content';
-import { formatDate } from '~/libs/format';
+import { excerpt, formatDate } from '~/libs/format';
 
 interface Props {
   items: NewsItem[];
   /** 末尾の区切り線を表示しない（ページ末尾用） */
   flush?: boolean;
+  /** トップページ向けに本文の抜粋を表示する */
+  showDescription?: boolean;
 }
 
-const { items, flush = false } = Astro.props;
+const { items, flush = false, showDescription = false } = Astro.props;
 ---
 
 <div class="news-list">
@@ -17,10 +19,23 @@ const { items, flush = false } = Astro.props;
       <p class="news-empty">お知らせはまだありません。</p>
     ) : (
       items.map((item) => (
-        <a class="news-item" href={`/news/${item.id}`}>
+        <a class:list={['news-item', { 'is-rich': showDescription }]} href={`/news/${item.id}`}>
           <span class="news-date">{formatDate(item.publishedAt)}</span>
-          <span class="news-tag">{item.category}</span>
-          <span class="news-ttl">{item.title}</span>
+          <span class="news-tag">
+            {Array.isArray(item.category) ? item.category.join('・') : item.category}
+          </span>
+          {
+            showDescription ? (
+              <span class="news-copy">
+                <span class="news-ttl">{item.title}</span>
+                <span class="news-description">
+                  {item.description?.trim() || excerpt(item.content, 96)}
+                </span>
+              </span>
+            ) : (
+              <span class="news-ttl">{item.title}</span>
+            )
+          }
         </a>
       ))
     )
@@ -59,6 +74,12 @@ const { items, flush = false } = Astro.props;
     background: rgba(155, 35, 53, 0.04);
   }
 
+  .news-item.is-rich {
+    align-items: start;
+    gap: 1.25rem;
+    padding: 1.15rem 1.25rem;
+  }
+
   .news-date {
     font-size: 14px;
     color: var(--color-faint);
@@ -80,12 +101,32 @@ const { items, flush = false } = Astro.props;
   }
 
   .news-ttl {
+    display: block;
     font-size: 16px;
     font-weight: 400;
     letter-spacing: 0.04em;
     color: var(--color-ink);
     line-height: 1.5;
     font-family: var(--font-sans);
+  }
+
+  .news-copy {
+    display: block;
+    min-width: 0;
+  }
+
+  .news-description {
+    display: -webkit-box;
+    margin-top: 0.35rem;
+    overflow: hidden;
+    color: var(--color-muted);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.75;
+    letter-spacing: 0.035em;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .news-empty {
@@ -102,6 +143,12 @@ const { items, flush = false } = Astro.props;
       gap: 0.35rem 0.8rem;
       padding: 0.7rem 0.9rem;
     }
+    .news-item.is-rich {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.4rem 0.75rem;
+      padding: 0.95rem;
+    }
     .news-date {
       font-size: 11px;
       min-width: 70px;
@@ -114,6 +161,20 @@ const { items, flush = false } = Astro.props;
       width: 100%;
       font-size: 13px;
       line-height: 1.45;
+    }
+    .is-rich .news-copy {
+      grid-column: 1 / -1;
+      margin-top: 0.15rem;
+    }
+    .is-rich .news-ttl {
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .news-description {
+      margin-top: 0.3rem;
+      font-size: 12px;
+      line-height: 1.65;
+      -webkit-line-clamp: 3;
     }
   }
 </style>

@@ -1,0 +1,83 @@
+---
+import Base from '~/layouts/Base.astro';
+import Section from '~/components/Section.astro';
+import ExhibitionList from '~/components/ExhibitionList.astro';
+import PerformanceList from '~/components/PerformanceList.astro';
+import { getExhibitions, getPerformances } from '~/libs/microcms';
+
+const [exhibitions, performances] = await Promise.all([
+  getExhibitions(100),
+  getPerformances(100),
+]);
+---
+
+<Base
+  title="活動記録"
+  description="京都大学書道部の書展と書道パフォーマンスの記録です。"
+  current="/activities"
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-label">Archive</div>
+      <h1 class="page-hero-title">活動記録</h1>
+      <p class="page-hero-sub">
+        京都大学書道部が重ねてきた、書展と書道パフォーマンスの記録です。
+      </p>
+    </div>
+  </section>
+
+  <Section title="書展">
+    <p class="section-lead">
+      各書展のページから、パンフレットとArtoirの作品アーカイブをご覧いただけます。
+    </p>
+    <ExhibitionList exhibitions={exhibitions} />
+  </Section>
+
+  <Section title="書道パフォーマンス" flush>
+    <p class="section-lead">
+      NFと新歓で披露してきた書道パフォーマンスの写真や動画をご覧いただけます。
+    </p>
+    <PerformanceList performances={performances} />
+  </Section>
+</Base>
+
+<style>
+  .page-hero {
+    padding: 3rem var(--gutter) 1.5rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .page-hero-label {
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+  }
+
+  .page-hero-label {
+    margin-bottom: 0.8rem;
+  }
+
+  .page-hero-title {
+    font-size: 31px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-hero-sub,
+  .section-lead {
+    color: var(--color-subtext);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.9;
+  }
+
+  .section-lead {
+    max-width: 48rem;
+    margin: 0 0 1.5rem;
+  }
+
+</style>

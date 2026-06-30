@@ -17,10 +17,10 @@ const exhibitions = await getExhibitions(3);
   </div>
 
   <Section title="お知らせ" moreHref="/news">
-    <NewsList items={news} />
+    <NewsList items={news} showDescription />
   </Section>
 
-  <Section title="書展" moreHref="/exhibitions" flush>
+  <Section title="書展" moreHref="/activities" flush>
     <ExhibitionList exhibitions={exhibitions} />
   </Section>
 </Base>

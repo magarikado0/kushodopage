@@ -1,0 +1,134 @@
+---
+import type { Performance } from '~/types/content';
+
+interface Props {
+  performances: Performance[];
+}
+
+const { performances } = Astro.props;
+---
+
+<div class="performance-list">
+  {
+    performances.length === 0 ? (
+      <p class="empty">書道パフォーマンスの記録は順次掲載します。</p>
+    ) : (
+      performances.map((performance) => {
+        const type = Array.isArray(performance.type)
+          ? performance.type.join('・')
+          : performance.type;
+
+        return (
+          <a
+            class="performance-item"
+            href={performance.url}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span class="performance-year">{performance.year}</span>
+            <span class="performance-body">
+              <strong>{type}</strong>
+              {performance.description ? <small>{performance.description}</small> : null}
+            </span>
+            <span class="performance-link">写真・動画を見る ↗</span>
+          </a>
+        );
+      })
+    )
+  }
+</div>
+
+<style>
+  .performance-list {
+    overflow: hidden;
+    border: 1px solid var(--color-line-soft);
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: var(--shadow-paper);
+  }
+
+  .performance-item {
+    display: grid;
+    grid-template-columns: 6rem 1fr auto;
+    gap: 1.4rem;
+    align-items: center;
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--color-line-soft);
+    transition: background 0.2s ease;
+  }
+
+  .performance-item:last-child {
+    border-bottom: 0;
+  }
+
+  .performance-item:hover {
+    background: rgba(155, 35, 53, 0.04);
+  }
+
+  .performance-year {
+    color: var(--color-primary);
+    font-family: var(--font-serif);
+    font-size: 24px;
+    letter-spacing: 0.05em;
+  }
+
+  .performance-body {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .performance-body strong {
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  .performance-body small {
+    color: var(--color-muted);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .performance-link {
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .empty {
+    padding: 2rem 1rem;
+    color: var(--color-faint);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .performance-item {
+      grid-template-columns: 4rem 1fr;
+      gap: 0.5rem 0.75rem;
+      align-items: start;
+      padding: 1rem 0.9rem;
+    }
+
+    .performance-year {
+      font-size: 18px;
+    }
+
+    .performance-body strong {
+      font-size: 14px;
+    }
+
+    .performance-link {
+      grid-column: 2;
+      font-size: 12px;
+    }
+  }
+</style>

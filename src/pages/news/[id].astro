@@ -29,7 +29,9 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
       <a class="article-back" href="/news">← お知らせ一覧</a>
       <div class="article-meta">
         <span class="news-date">{formatDate(item.publishedAt)}</span>
-        <span class="news-tag">{item.category}</span>
+        <span class="news-tag">
+          {Array.isArray(item.category) ? item.category.join('・') : item.category}
+        </span>
       </div>
       <h1 class="article-title">{item.title}</h1>
     </div>
@@ -150,6 +152,40 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
   .article-body :global(img) {
     margin: 1.5rem 0;
     border: 1px solid var(--color-line);
+    height: auto;
+  }
+
+  .article-body :global(h3) {
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 500;
+    margin: 1.8rem 0 0.8rem;
+  }
+
+  .article-body :global(ul),
+  .article-body :global(ol) {
+    margin: 0 0 1.2rem 1.5rem;
+  }
+
+  .article-body :global(table) {
+    width: 100%;
+    margin: 1.5rem 0;
+    border-collapse: collapse;
+  }
+
+  .article-body :global(th),
+  .article-body :global(td) {
+    padding: 0.65rem;
+    border-bottom: 1px solid var(--color-line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .article-body :global(iframe) {
+    width: 100%;
+    max-width: 100%;
+    min-height: 360px;
+    border: 0;
   }
 
   .article-nav {

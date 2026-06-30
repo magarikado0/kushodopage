@@ -10,12 +10,16 @@ export type NewsCategory = '書展' | '活動' | '入部' | 'お知らせ';
 export interface NewsItem {
   id: string;
   title: string;
-  category: NewsCategory;
+  category: NewsCategory | NewsCategory[];
+  /** トップページなど一覧表示用の短い広報文 */
+  description?: string;
   /** 本文: リッチエディタ または マークダウン */
   content: string;
   /** MicroCMS のシステムフィールド */
   publishedAt: string;
   revisedAt?: string;
+  /** 旧サイトから移行した記事の出典URL */
+  legacyUrl?: string;
 }
 
 export interface WorkImage {
@@ -30,8 +34,6 @@ export interface Exhibition {
   id: string;
   /** 例: 第136回 冬樟展 */
   title: string;
-  /** 取材対象年（例: 2024）。一覧表示用 */
-  year: number;
   /** 開催日（ISO 文字列） */
   startDate: string;
   /** 終了日（ISO 文字列） */
@@ -44,10 +46,25 @@ export interface Exhibition {
   description: string;
   /** メインビジュアル（任意） */
   heroImage?: WorkImage;
-  /** 今回の書展で展示された作品（任意。works API と重複登録しても OK） */
-  works?: WorkImage[];
+  /** 書展パンフレットへのリンク */
+  brochureUrl?: string;
+  /** Artoir 上の作品アーカイブへのリンク */
+  artoirUrl?: string;
   /** 次回の書展としてトップに表示するか */
   featured?: boolean;
+  publishedAt: string;
+  revisedAt?: string;
+}
+
+export type PerformanceType = 'NF書道パフォーマンス' | '新歓書道パフォーマンス';
+
+/** 書道パフォーマンスの記録 (performances) */
+export interface Performance {
+  id: string;
+  year: number;
+  type: PerformanceType | PerformanceType[];
+  url: string;
+  description?: string;
   publishedAt: string;
   revisedAt?: string;
 }

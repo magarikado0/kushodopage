@@ -4,16 +4,7 @@ import Section from '~/components/Section.astro';
 import NewsList from '~/components/NewsList.astro';
 import { getNews } from '~/libs/microcms';
 
-const news = await getNews(100);
-const byYear = new Map<number, typeof news>();
-
-for (const item of news) {
-  const year = new Date(item.publishedAt).getFullYear();
-  if (!byYear.has(year)) byYear.set(year, []);
-  byYear.get(year)!.push(item);
-}
-
-const years = [...byYear.keys()].sort((a, b) => b - a);
+const news = await getNews(200);
 ---
 
 <Base
@@ -29,19 +20,9 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
     </div>
   </section>
 
-  {
-    years.length === 0 ? (
-      <Section title="お知らせ" flush>
-        <p class="empty">お知らせはまだありません。</p>
-      </Section>
-    ) : (
-      years.map((year, i) => (
-        <Section title={`${year}年`} flush={i === years.length - 1}>
-          <NewsList items={byYear.get(year)!} />
-        </Section>
-      ))
-    )
-  }
+  <Section title="お知らせ一覧" flush>
+    <NewsList items={news} />
+  </Section>
 </Base>
 
 <style>
@@ -72,13 +53,5 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
     font-weight: 400;
     color: var(--color-subtext);
     line-height: 1.8;
-  }
-
-  .empty {
-    padding: 2rem 0;
-    color: var(--color-faint);
-    font-family: var(--font-sans);
-    font-size: 15px;
-    text-align: center;
   }
 </style>
