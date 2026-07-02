@@ -76,53 +76,70 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
 
 <style>
   .article {
-    padding: 2.5rem 0 4rem;
+    padding: 3rem 0 4rem;
   }
 
   .article-back {
     display: inline-block;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--color-primary);
     font-family: var(--font-sans);
-    letter-spacing: 0.1em;
-    margin-bottom: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    margin-bottom: 2rem;
+    padding-bottom: 2px;
+    border-bottom: 1px solid currentColor;
   }
 
   .article-meta {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
   }
 
   .news-date {
-    font-size: 14px;
+    font-family: var(--font-mono);
+    font-size: 13px;
     color: var(--color-faint);
-    font-family: var(--font-sans);
     font-weight: 400;
+    letter-spacing: 0.05em;
   }
 
   .news-tag {
-    font-size: 13px;
-    color: #fff;
-    background: var(--color-primary);
-    padding: 1px 7px;
-    letter-spacing: 0.08em;
+    font-size: 11px;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    padding: 2px 8px;
+    letter-spacing: 0.1em;
     font-family: var(--font-sans);
-    font-weight: 400;
+    font-weight: 500;
   }
 
   .article-title {
-    font-size: 29px;
-    font-weight: 400;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.4vw, 2.1rem);
+    font-weight: 600;
     letter-spacing: 0.05em;
     line-height: 1.5;
+    color: var(--color-ink);
     padding-bottom: 1.5rem;
-    border-bottom: 2px solid var(--color-primary);
+    border-bottom: 1px solid var(--color-line);
+    position: relative;
+  }
+
+  .article-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 80px;
+    height: 2px;
+    background: var(--color-primary);
   }
 
   .article-body {
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     font-size: 15px;
     font-family: var(--font-sans);
     font-weight: 400;
@@ -136,17 +153,19 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
   }
 
   .article-body :global(h2) {
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-size: 22px;
     font-weight: 500;
-    margin: 2rem 0 1rem;
-    padding-left: 0.75rem;
+    margin: 2.5rem 0 1rem;
+    padding-left: 0.85rem;
     border-left: 3px solid var(--color-primary);
+    letter-spacing: 0.08em;
   }
 
   .article-body :global(a) {
     color: var(--color-primary);
     text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   .article-body :global(img) {
@@ -156,10 +175,11 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
   }
 
   .article-body :global(h3) {
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-size: 19px;
     font-weight: 500;
     margin: 1.8rem 0 0.8rem;
+    letter-spacing: 0.06em;
   }
 
   .article-body :global(ul),
@@ -189,7 +209,7 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
   }
 
   .article-nav {
-    margin-top: 3rem;
+    margin-top: 3.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--color-line);
     display: grid;
@@ -199,13 +219,17 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
 
   .article-nav-item {
     display: block;
-    padding: 0.8rem 1rem;
-    background: var(--color-panel);
-    transition: opacity 0.2s ease;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper);
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease;
   }
 
   .article-nav-item:hover {
-    opacity: 0.7;
+    border-color: var(--color-primary);
+    background: #fff;
   }
 
   .article-nav-item.is-next {
@@ -214,19 +238,22 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
 
   .article-nav-item span {
     display: block;
-    font-size: 13px;
-    color: var(--color-primary-soft);
+    font-size: 11px;
+    color: var(--color-primary);
     font-family: var(--font-sans);
-    letter-spacing: 0.15em;
-    margin-bottom: 0.3rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
   }
 
   .article-nav-item strong {
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--color-panel-text);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-ink);
     font-family: var(--font-sans);
     line-height: 1.5;
+    letter-spacing: 0.03em;
   }
 
   @media (max-width: 600px) {

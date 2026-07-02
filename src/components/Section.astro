@@ -6,15 +6,26 @@ interface Props {
   moreLabel?: string;
   /** 下線を引かない（ページ末尾のセクション用） */
   flush?: boolean;
+  /** セクション番号（01, 02…）を表示する */
+  index?: string;
 }
 
-const { title, moreHref, moreLabel = '一覧を見る →', flush = false } = Astro.props;
+const {
+  title,
+  moreHref,
+  moreLabel = '一覧を見る →',
+  flush = false,
+  index,
+} = Astro.props;
 ---
 
 <section class:list={['section', { 'is-flush': flush }]}>
   <div class="container">
     <div class="section-head">
-      <h2 class="section-title">{title}</h2>
+      <div class="section-title-wrap">
+        {index && <span class="section-index">{index}</span>}
+        <h2 class="section-title">{title}</h2>
+      </div>
       {
         moreHref && (
           <a class="section-more" href={moreHref}>
@@ -29,7 +40,7 @@ const { title, moreHref, moreLabel = '一覧を見る →', flush = false } = As
 
 <style>
   .section {
-    padding: 2.5rem 0;
+    padding: 3.5rem 0;
     border-bottom: 1px solid var(--color-line);
   }
 
@@ -41,47 +52,68 @@ const { title, moreHref, moreLabel = '一覧を見る →', flush = false } = As
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 1.4rem;
+    margin-bottom: 2rem;
     gap: 1rem;
   }
 
+  .section-title-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    position: relative;
+    padding-left: 0.95rem;
+    border-left: 2px solid var(--color-primary);
+  }
+
+  .section-index {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
   .section-title {
-    font-size: 19px;
-    font-weight: 400;
-    letter-spacing: 0.15em;
-    color: #fff;
-    background: var(--color-black);
-    padding: 0.25rem 0.75rem;
-    border-radius: 3px;
-    box-shadow: 0 2px 6px rgba(26, 20, 14, 0.06);
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.4vw, 1.7rem);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--color-ink);
+    line-height: 1.3;
   }
 
   .section-more {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--color-primary);
     font-family: var(--font-sans);
-    font-weight: 400;
-    letter-spacing: 0.1em;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding-bottom: 2px;
+    border-bottom: 1px solid currentColor;
+    transition: opacity 0.2s ease;
   }
 
   .section-more:hover {
-    opacity: 0.7;
+    opacity: 0.6;
   }
 
   @media (max-width: 760px) {
     .section {
-      padding: 1.8rem 0;
+      padding: 2.4rem 0;
     }
 
     .section-head {
-      margin-bottom: 1rem;
+      margin-bottom: 1.4rem;
       gap: 0.7rem;
     }
 
-    .section-title {
-      font-size: 14px;
-      letter-spacing: 0.12em;
-      padding: 0.2rem 0.65rem;
+    .section-title-wrap {
+      gap: 0.6rem;
+      padding-left: 0.75rem;
+    }
+
+    .section-index {
+      font-size: 11px;
     }
 
     .section-more {

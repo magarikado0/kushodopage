@@ -16,23 +16,23 @@ const { exhibitions } = Astro.props;
     ) : (
       exhibitions.map((exhibition) => (
         <li class="ex-item">
-          <div class="ex-meta">
-            <div class="ex-year">{new Date(exhibition.startDate).getFullYear()}</div>
-            <div class="ex-venue">
-              {exhibition.venue}
-              {exhibition.address ? <span>　{exhibition.address}</span> : null}
+          <a class="ex-link" href={`/exhibitions/${exhibition.id}`}>
+            <div class="ex-meta">
+              <div class="ex-year">{new Date(exhibition.startDate).getFullYear()}</div>
+              <div class="ex-venue">
+                {exhibition.venue}
+                {exhibition.address ? <span>　{exhibition.address}</span> : null}
+              </div>
             </div>
-          </div>
-          <div class="ex-body">
-            <a class="ex-title" href={`/exhibitions/${exhibition.id}`}>
-              {exhibition.title}
-            </a>
-            <div class="ex-date">
-              {formatDateRange(exhibition.startDate, exhibition.endDate)}
+            <div class="ex-body">
+              <h3 class="ex-title">{exhibition.title}</h3>
+              <div class="ex-date">
+                {formatDateRange(exhibition.startDate, exhibition.endDate)}
+              </div>
+              <p class="ex-description">{exhibition.description}</p>
             </div>
-            <p class="ex-description">{exhibition.description}</p>
-          </div>
-          <a class="ex-arrow" href={`/exhibitions/${exhibition.id}`}>詳細 →</a>
+            <span class="ex-arrow" aria-hidden="true">→</span>
+          </a>
         </li>
       ))
     )
@@ -42,117 +42,152 @@ const { exhibitions } = Astro.props;
 <style>
   .ex-list {
     list-style: none;
-    overflow: hidden;
-    background: #fff;
-    border: 1px solid var(--color-line-soft);
-    border-radius: 6px;
-    box-shadow: var(--shadow-paper);
+    border-top: 1px solid var(--color-line);
   }
 
   .ex-item {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .ex-link {
     display: grid;
     grid-template-columns: 9rem 1fr auto;
-    gap: 1.5rem;
-    padding: 1.4rem 1.2rem;
-    border-bottom: 1px solid var(--color-line-soft);
+    gap: 2rem;
+    padding: 1.8rem 0.25rem;
     align-items: start;
+    transition: background 0.2s ease;
   }
 
-  .ex-item:first-child {
-    border-top: 0;
+  .ex-link:hover {
+    background: rgba(155, 35, 53, 0.035);
   }
 
-  .ex-item:last-child {
-    border-bottom: 0;
+  .ex-meta {
+    padding-top: 0.3rem;
   }
 
   .ex-year {
-    font-size: 26px;
-    font-weight: 400;
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 600;
     color: var(--color-primary);
-    font-family: var(--font-serif);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.03em;
+    line-height: 1;
   }
 
   .ex-venue {
-    font-size: 14px;
     font-family: var(--font-sans);
+    font-size: 12px;
     font-weight: 400;
     color: var(--color-faint);
-    margin-top: 0.3rem;
-    letter-spacing: 0.05em;
+    margin-top: 0.5rem;
+    letter-spacing: 0.08em;
+    line-height: 1.6;
   }
 
   .ex-title {
-    font-size: 19px;
-    font-weight: 400;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
     letter-spacing: 0.06em;
     color: var(--color-ink);
+    line-height: 1.4;
     transition: color 0.2s ease;
   }
 
-  .ex-title:hover {
+  .ex-link:hover .ex-title {
     color: var(--color-primary);
   }
 
   .ex-date {
-    font-size: 14px;
     font-family: var(--font-sans);
-    font-weight: 400;
-    color: var(--color-muted);
-    margin: 0.4rem 0 0.6rem;
-    letter-spacing: 0.04em;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0.5rem 0 0.8rem;
+    letter-spacing: 0.05em;
   }
 
   .ex-description {
-    font-size: 15px;
     font-family: var(--font-sans);
+    font-size: 14px;
     font-weight: 400;
-    line-height: 1.8;
-    color: var(--color-subtext);
-    letter-spacing: 0.04em;
+    line-height: 1.85;
+    color: var(--color-muted);
+    letter-spacing: 0.03em;
   }
 
   .ex-arrow {
-    font-size: 14px;
-    font-family: var(--font-sans);
+    align-self: center;
+    font-size: 16px;
+    color: var(--color-faint);
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .ex-link:hover .ex-arrow {
     color: var(--color-primary);
-    letter-spacing: 0.1em;
-    white-space: nowrap;
+    transform: translateX(3px);
   }
 
   .empty {
-    padding: 2rem 0;
+    padding: 2.5rem 0;
     color: var(--color-faint);
     font-family: var(--font-sans);
-    font-size: 15px;
+    font-size: 14px;
     text-align: center;
   }
 
   @media (max-width: 760px) {
-    .ex-item {
-      grid-template-columns: 1fr;
-      gap: 0.4rem;
-      padding: 1rem 0.9rem;
+    .ex-link {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        'meta arrow'
+        'body body';
+      gap: 0.6rem 0.8rem;
+      padding: 1.3rem 0.2rem;
+    }
+
+    .ex-meta {
+      grid-area: meta;
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+      padding-top: 0;
+    }
+
+    .ex-body {
+      grid-area: body;
+    }
+
+    .ex-arrow {
+      grid-area: arrow;
+      align-self: start;
+      padding-top: 0.4rem;
     }
 
     .ex-year {
-      font-size: 18px;
+      font-size: 22px;
     }
 
-    .ex-venue,
-    .ex-date,
-    .ex-arrow {
+    .ex-venue {
+      margin-top: 0;
       font-size: 11px;
     }
 
     .ex-title {
-      font-size: 15px;
+      font-size: 16px;
+    }
+
+    .ex-date {
+      font-size: 12px;
+      margin: 0.4rem 0 0.6rem;
     }
 
     .ex-description {
-      font-size: 12px;
-      line-height: 1.7;
+      font-size: 12.5px;
+      line-height: 1.75;
     }
   }
 </style>

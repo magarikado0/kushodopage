@@ -11,12 +11,16 @@ import { SITE } from '~/libs/site';
 >
   <section class="page-hero">
     <div class="container">
-      <div class="page-hero-label">About</div>
+      <div class="page-hero-meta">
+        <span class="page-hero-label">About</span>
+        <span class="page-hero-divider" aria-hidden="true"></span>
+        <span class="page-hero-en">kyoto-u calligraphy club</span>
+      </div>
       <h1 class="page-hero-title">書道部について</h1>
     </div>
   </section>
 
-  <Section title="部の紹介">
+  <Section title="部の紹介" index="01">
     <div class="about-grid">
       <div class="about-lead">
         <p>
@@ -38,7 +42,7 @@ import { SITE } from '~/libs/site';
     </div>
   </Section>
 
-  <Section title="活動内容">
+  <Section title="活動内容" index="02">
     <ul class="activity-list">
       <li>
         <span class="activity-num">01</span>
@@ -64,7 +68,7 @@ import { SITE } from '~/libs/site';
     </ul>
   </Section>
 
-  <Section title="年間行事">
+  <Section title="年間行事" index="03">
     <ol class="annual-list">
       <li>
         <span class="annual-month">4月</span>
@@ -98,7 +102,7 @@ import { SITE } from '~/libs/site';
     <p class="annual-note">※ 開催時期や内容は年度によって変更する場合があります。</p>
   </Section>
 
-  <Section title="部室・活動場所">
+  <Section title="部室・活動場所" index="04">
     <div class="place-grid">
       <div class="place-item">
         <span class="place-label">部室</span>
@@ -117,7 +121,7 @@ import { SITE } from '~/libs/site';
     </div>
   </Section>
 
-  <Section title="入部案内" flush>
+  <Section title="入部案内" index="05" flush>
     <div class="join" id="join">
       <div class="join-lead">
         <h2 class="join-title">入部をご希望の方へ</h2>
@@ -151,33 +155,56 @@ import { SITE } from '~/libs/site';
 
 <style>
   .page-hero {
-    padding: 3rem var(--gutter) 1rem;
+    padding: 4rem var(--gutter) 1.8rem;
     border-bottom: 1px solid var(--color-line);
   }
 
-  .page-hero-label {
-    font-size: 13px;
-    letter-spacing: 0.25em;
-    color: var(--color-primary);
+  .page-hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
     font-family: var(--font-sans);
-    font-weight: 400;
-    margin-bottom: 0.8rem;
+  }
+
+  .page-hero-label {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--color-primary);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .page-hero-divider {
+    width: 28px;
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  .page-hero-en {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--color-faint);
+    text-transform: uppercase;
   }
 
   .page-hero-title {
-    font-size: 31px;
-    font-weight: 400;
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    font-weight: 600;
     letter-spacing: 0.08em;
+    color: var(--color-ink);
+    line-height: 1.3;
   }
 
   .about-grid {
     display: grid;
     grid-template-columns: 1.4fr 1fr;
-    gap: 3rem;
+    gap: 3.5rem;
   }
 
   .about-lead p {
-    font-size: 16px;
+    font-size: 15px;
     font-family: var(--font-sans);
     font-weight: 400;
     line-height: 2;
@@ -193,30 +220,27 @@ import { SITE } from '~/libs/site';
 
   .about-table {
     font-family: var(--font-sans);
+    border-top: 1px solid var(--color-line);
   }
 
   .about-table div {
     display: grid;
     grid-template-columns: 6rem 1fr;
     gap: 1rem;
-    padding: 0.7rem 0;
-    border-bottom: 1px solid var(--color-line-soft);
-  }
-
-  .about-table div:first-child {
-    border-top: 1px solid var(--color-line-soft);
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--color-line);
   }
 
   .about-table dt {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--color-primary);
     letter-spacing: 0.15em;
-    font-weight: 400;
-    padding-top: 0.15rem;
+    font-weight: 500;
+    padding-top: 0.2rem;
   }
 
   .about-table dd {
-    font-size: 15px;
+    font-size: 14px;
     color: var(--color-ink);
     font-weight: 400;
     line-height: 1.7;
@@ -226,32 +250,35 @@ import { SITE } from '~/libs/site';
     list-style: none;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    gap: 2.5rem;
   }
 
   .activity-num {
-    font-size: 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
     color: var(--color-primary);
-    letter-spacing: 0.2em;
-    font-family: var(--font-sans);
+    letter-spacing: 0.15em;
+    font-weight: 500;
   }
 
   .activity-ttl {
-    font-size: 19px;
-    font-weight: 400;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
     letter-spacing: 0.08em;
-    margin: 0.5rem 0 0.75rem;
-    padding-left: 0.75rem;
+    margin: 0.6rem 0 0.85rem;
+    padding-left: 0.85rem;
     border-left: 2px solid var(--color-primary);
+    color: var(--color-ink);
   }
 
   .activity-list p {
-    font-size: 15px;
+    font-size: 14px;
     font-family: var(--font-sans);
     font-weight: 400;
     line-height: 1.9;
-    color: var(--color-subtext);
-    letter-spacing: 0.04em;
+    color: var(--color-muted);
+    letter-spacing: 0.03em;
   }
 
   .annual-list {
@@ -265,48 +292,51 @@ import { SITE } from '~/libs/site';
     display: grid;
     grid-template-columns: 4rem 1fr;
     gap: 1rem;
-    padding: 1rem 0.25rem;
-    border-top: 1px solid var(--color-line-soft);
+    padding: 1.1rem 0.25rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .annual-list li:nth-last-child(-n + 2) {
+    border-bottom: 1px solid var(--color-line);
   }
 
   .annual-month {
     color: var(--color-primary);
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-size: 18px;
-    letter-spacing: 0.06em;
+    font-weight: 600;
+    letter-spacing: 0.05em;
   }
 
   .annual-list div {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.3rem;
   }
 
   .annual-list strong {
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.04em;
   }
 
   .annual-list p {
-    color: var(--color-subtext);
+    color: var(--color-muted);
     font-family: var(--font-sans);
-    font-size: 14px;
-    line-height: 1.9;
-    letter-spacing: 0.04em;
+    font-size: 13px;
+    line-height: 1.85;
+    letter-spacing: 0.03em;
   }
 
   .annual-note {
     color: var(--color-muted);
     font-family: var(--font-sans);
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.7;
-  }
-
-  .annual-note {
-    margin-top: 0.75rem;
+    margin-top: 1rem;
+    letter-spacing: 0.04em;
   }
 
   .place-grid {
@@ -316,77 +346,84 @@ import { SITE } from '~/libs/site';
   }
 
   .place-item {
-    padding-top: 1rem;
-    border-top: 1px solid var(--color-line-soft);
+    padding-top: 1.2rem;
+    border-top: 2px solid var(--color-ink);
   }
 
   .place-label {
     color: var(--color-primary);
     font-family: var(--font-sans);
-    font-size: 13px;
-    letter-spacing: 0.15em;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    font-weight: 500;
+    text-transform: uppercase;
   }
 
   .place-item h3 {
-    margin: 0.45rem 0 0.65rem;
+    margin: 0.5rem 0 0.7rem;
     color: var(--color-ink);
-    font-size: 19px;
-    font-weight: 400;
-    letter-spacing: 0.07em;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
   }
 
   .place-item p {
-    color: var(--color-subtext);
+    color: var(--color-muted);
     font-family: var(--font-sans);
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.9;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
   }
 
   .join {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
-    gap: 3rem;
+    gap: 3.5rem;
     align-items: start;
   }
 
   .join-title {
-    font-size: 22px;
-    font-weight: 400;
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.4vw, 1.7rem);
+    font-weight: 500;
     letter-spacing: 0.1em;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
     color: var(--color-ink);
   }
 
   .join-lead p {
-    font-size: 16px;
+    font-size: 15px;
     font-family: var(--font-sans);
     font-weight: 400;
     line-height: 2;
     color: var(--color-subtext);
     margin-bottom: 1.2rem;
+    letter-spacing: 0.04em;
   }
 
   .join-points {
     list-style: none;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.8rem;
   }
 
   .join-points li {
-    font-size: 15px;
+    font-size: 14px;
     font-family: var(--font-sans);
     font-weight: 400;
     color: var(--color-subtext);
-    padding: 0.4rem 0 0.4rem 1.2rem;
+    padding: 0.55rem 0 0.55rem 1.3rem;
     position: relative;
     line-height: 1.7;
+    border-bottom: 1px solid var(--color-line-soft);
+    letter-spacing: 0.03em;
   }
 
   .join-points li::before {
     content: '';
     position: absolute;
     left: 0;
-    top: 0.85rem;
+    top: 1rem;
     width: 6px;
     height: 6px;
     background: var(--color-primary);
@@ -394,17 +431,18 @@ import { SITE } from '~/libs/site';
 
   .join-cta {
     display: inline-block;
-    font-size: 14px;
+    font-size: 13px;
     color: #fff;
-    background: var(--color-black);
+    background: var(--color-primary);
     font-family: var(--font-sans);
-    font-weight: 400;
-    letter-spacing: 0.15em;
-    padding: 0.5rem 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    padding: 0.7rem 1.5rem;
+    transition: background 0.2s ease;
   }
 
   .join-cta:hover {
-    opacity: 0.85;
+    background: var(--color-primary-ink);
   }
 
   .join-card {
@@ -414,31 +452,37 @@ import { SITE } from '~/libs/site';
   }
 
   .join-card-label {
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0.2em;
     color: var(--color-primary-soft);
     font-family: var(--font-sans);
+    font-weight: 500;
     margin-bottom: 1rem;
+    text-transform: uppercase;
   }
 
   .join-card-row {
     display: flex;
     justify-content: space-between;
-    padding: 0.6rem 0;
+    padding: 0.7rem 0;
     border-bottom: 1px solid var(--color-panel-line);
     font-family: var(--font-sans);
-    font-size: 15px;
+    font-size: 14px;
+    gap: 1rem;
   }
 
   .join-card-row span {
     color: var(--color-panel-muted);
     letter-spacing: 0.15em;
-    font-size: 13px;
+    font-size: 12px;
+    flex-shrink: 0;
   }
 
   .join-card-row a {
     color: var(--color-panel-text);
     transition: color 0.2s ease;
+    word-break: break-all;
+    text-align: right;
   }
 
   .join-card-row a:hover {
@@ -446,31 +490,40 @@ import { SITE } from '~/libs/site';
   }
 
   .join-card-note {
-    font-size: 13px;
+    font-size: 12px;
     font-family: var(--font-sans);
     font-weight: 400;
     color: var(--color-panel-muted);
     margin-top: 1rem;
     line-height: 1.7;
+    letter-spacing: 0.03em;
   }
 
   @media (max-width: 760px) {
+    .page-hero {
+      padding: 2.5rem var(--gutter) 1.4rem;
+    }
+
     .about-grid,
     .join {
       grid-template-columns: 1fr;
       gap: 2rem;
     }
+
     .activity-list {
       grid-template-columns: 1fr;
       gap: 1.5rem;
     }
+
     .annual-list,
     .place-grid {
       grid-template-columns: 1fr;
     }
+
     .annual-list {
       gap: 0;
     }
+
     .place-grid {
       gap: 1.5rem;
     }

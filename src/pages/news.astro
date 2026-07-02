@@ -14,7 +14,11 @@ const news = await getNews(200);
 >
   <section class="page-hero">
     <div class="container">
-      <div class="page-hero-label">News</div>
+      <div class="page-hero-meta">
+        <span class="page-hero-label">News</span>
+        <span class="page-hero-divider" aria-hidden="true"></span>
+        <span class="page-hero-en">latest updates</span>
+      </div>
       <h1 class="page-hero-title">お知らせ</h1>
       <p class="page-hero-sub">書展や活動、入部関連の最新情報をお届けします。</p>
     </div>
@@ -27,31 +31,61 @@ const news = await getNews(200);
 
 <style>
   .page-hero {
-    padding: 3rem var(--gutter) 1.5rem;
+    padding: 4rem var(--gutter) 1.8rem;
     border-bottom: 1px solid var(--color-line);
   }
 
-  .page-hero-label {
-    font-size: 13px;
-    letter-spacing: 0.25em;
-    color: var(--color-primary);
+  .page-hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
     font-family: var(--font-sans);
-    font-weight: 400;
-    margin-bottom: 0.8rem;
+  }
+
+  .page-hero-label {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--color-primary);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .page-hero-divider {
+    width: 28px;
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  .page-hero-en {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--color-faint);
+    text-transform: uppercase;
   }
 
   .page-hero-title {
-    font-size: 31px;
-    font-weight: 400;
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    font-weight: 600;
     letter-spacing: 0.08em;
+    color: var(--color-ink);
+    line-height: 1.3;
     margin-bottom: 0.75rem;
   }
 
   .page-hero-sub {
-    font-size: 15px;
+    font-size: 14px;
     font-family: var(--font-sans);
     font-weight: 400;
-    color: var(--color-subtext);
+    color: var(--color-muted);
     line-height: 1.8;
+    letter-spacing: 0.03em;
+  }
+
+  @media (max-width: 760px) {
+    .page-hero {
+      padding: 2.5rem var(--gutter) 1.4rem;
+    }
   }
 </style>

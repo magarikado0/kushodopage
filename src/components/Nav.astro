@@ -9,52 +9,57 @@ const { current } = Astro.props;
 ---
 
 <header class="nav">
-  <a class="nav-logo" href="/" aria-label={`${SITE.name} トップページ`}>
-    <img src="/header.png" alt={SITE.name} />
-  </a>
-  <button
-    class="nav-toggle"
-    type="button"
-    aria-expanded="false"
-    aria-controls="global-navigation"
-    aria-label="メニューを開く"
-  >
-    <span class="nav-toggle-line"></span>
-    <span class="nav-toggle-line"></span>
-    <span class="nav-toggle-line"></span>
-  </button>
-  <ul class="nav-links" id="global-navigation">
-    {
-      NAV_ITEMS.map((item) => (
-        <li class={current === item.href ? 'is-active' : ''}>
-          <a href={item.href}>{item.label}</a>
-        </li>
-      ))
-    }
-  </ul>
+  <div class="nav-inner">
+    <a class="nav-logo" href="/" aria-label={`${SITE.name} トップページ`}>
+      <img src="/header.png" alt={SITE.name} />
+    </a>
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="global-navigation"
+      aria-label="メニューを開く"
+    >
+      <span class="nav-toggle-line"></span>
+      <span class="nav-toggle-line"></span>
+      <span class="nav-toggle-line"></span>
+    </button>
+    <nav class="nav-links" id="global-navigation" aria-label="グローバルナビゲーション">
+      <ul>
+        {
+          NAV_ITEMS.map((item) => (
+            <li class={current === item.href ? 'is-active' : ''}>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
 </header>
 
 <style>
   .nav {
+    position: relative;
+    z-index: 30;
+    background: var(--color-page);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .nav-inner {
+    width: 100%;
+    max-width: calc(var(--content-width) + var(--gutter) + var(--gutter));
+    margin: 0 auto;
+    padding: 1.1rem var(--gutter);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.4rem 2.5rem;
-    background: #fff;
-    border: 2px solid var(--color-black);
-    border-radius: 7px;
-    width: calc(100% - var(--gutter) - var(--gutter));
-    max-width: var(--content-width);
-    margin: 0.75rem auto 0;
     gap: 1.5rem;
-    position: relative;
-    z-index: 30;
-    box-shadow: 0 8px 18px rgba(26, 20, 14, 0.08);
   }
 
   .nav-logo {
     display: block;
-    flex: 0 1 230px;
+    flex: 0 1 240px;
   }
 
   .nav-logo img {
@@ -67,82 +72,106 @@ const { current } = Astro.props;
     display: none;
   }
 
-  .nav-links {
+  .nav-links ul {
     display: flex;
-    gap: 1.1rem;
+    align-items: center;
+    gap: 1.75rem;
     list-style: none;
-    font-size: 15px;
-    letter-spacing: 0.1em;
     font-family: var(--font-sans);
+    font-size: 13px;
     font-weight: 400;
+    letter-spacing: 0.08em;
     color: var(--color-text);
   }
 
+  /* 下線式ナビ（ホバーで朱の下線が伸びる） */
   .nav-links a {
+    position: relative;
     display: inline-block;
-    padding: 0.35rem 0.55rem;
-    border-radius: 4px;
-    transition:
-      color 0.2s ease,
-      background 0.2s ease;
+    padding: 0.5rem 0.1rem;
+    transition: color 0.25s ease;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: 0.15rem;
+    height: 1px;
+    background: var(--color-primary);
+    transition: right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .nav-links a:hover {
     color: var(--color-primary);
-    background: rgba(155, 35, 53, 0.06);
+  }
+
+  .nav-links a:hover::after {
+    right: 0;
   }
 
   .nav-links li.is-active a {
     color: var(--color-primary);
-    background: rgba(155, 35, 53, 0.08);
   }
 
+  .nav-links li.is-active a::after {
+    right: 0;
+  }
+
+  /* 最後の項目（入部案内）だけ朱の塗りボタン */
   .nav-links li:last-child {
-    color: var(--color-black);
-    border: 1px solid var(--color-black);
-    border-radius: 3px;
-    padding: 0;
-    box-shadow: 0 1px 4px rgba(26, 20, 14, 0.04);
+    margin-left: 0.5rem;
   }
 
   .nav-links li:last-child a {
-    padding: 0.45rem 0.9rem;
+    padding: 0.5rem 1.1rem;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .nav-links li:last-child a::after {
+    display: none;
   }
 
   .nav-links li:last-child a:hover {
-    background: var(--color-black);
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  .nav-links li.is-active:last-child a {
+    background: var(--color-primary);
     color: #fff;
   }
 
   @media (max-width: 760px) {
-    .nav {
-      padding: 0.8rem 0.95rem;
-      margin: 0.4rem auto 0;
-      position: relative;
+    .nav-inner {
+      padding: 0.85rem var(--gutter);
       gap: 0.8rem;
     }
 
     .nav-logo {
-      flex-basis: 168px;
+      flex-basis: 180px;
     }
 
     .nav-toggle {
       display: grid;
       place-content: center;
       gap: 5px;
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       margin-left: auto;
-      color: var(--color-black);
-      border: 1px solid var(--color-black);
-      border-radius: 4px;
-      background: #fbfaf7;
-      box-shadow: 0 1px 4px rgba(26, 20, 14, 0.04);
+      color: var(--color-ink);
+      border: 1px solid var(--color-line);
+      background: var(--color-paper);
     }
 
     .nav-toggle-line {
       display: block;
-      width: 20px;
+      width: 18px;
       height: 1px;
       background: currentColor;
       transition:
@@ -164,43 +193,49 @@ const { current } = Astro.props;
 
     .nav-links {
       display: none;
-      position: absolute;
-      z-index: 20;
-      top: calc(100% + 7px);
-      right: 0;
-      left: 0;
-      flex-direction: column;
-      gap: 0;
-      padding: 0.6rem 0.95rem 0.8rem;
-      background: #fff;
-      border: 2px solid var(--color-black);
-      border-radius: 6px;
-      font-size: 13px;
-      box-shadow: 0 10px 22px rgba(10, 10, 10, 0.09);
     }
 
     .nav-links.is-open {
-      display: flex;
+      display: block;
+      position: absolute;
+      z-index: 20;
+      top: 100%;
+      right: 0;
+      left: 0;
+      background: var(--color-page);
+      border-bottom: 1px solid var(--color-line);
+      padding: 0.5rem var(--gutter) 1.1rem;
+    }
+
+    .nav-links ul {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      font-size: 13px;
     }
 
     .nav-links li {
       border-bottom: 1px solid var(--color-line-soft);
     }
 
-    .nav-links li a {
-      display: block;
-      padding: 0.7rem 0.2rem;
+    .nav-links li:last-child {
+      margin: 0.6rem 0 0;
+      border: 0;
     }
 
-    .nav-links li:last-child {
-      margin-top: 0.7rem;
-      padding: 0;
-      text-align: center;
-      border: 1px solid var(--color-black);
+    .nav-links li a {
+      display: block;
+      padding: 0.85rem 0.1rem;
+    }
+
+    .nav-links li a::after {
+      display: none;
     }
 
     .nav-links li:last-child a {
-      padding: 0.65rem 0.9rem;
+      border: 1px solid var(--color-primary);
+      text-align: center;
+      padding: 0.75rem 0.9rem;
     }
   }
 </style>

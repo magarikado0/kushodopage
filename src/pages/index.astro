@@ -12,38 +12,12 @@ const exhibitions = await getExhibitions(3);
 
 <Base current="/">
   <Hero />
-  <div class="home-accent" aria-hidden="true">
-    <span></span>
-  </div>
 
-  <Section title="お知らせ" moreHref="/news">
+  <Section title="お知らせ" index="01" moreHref="/news">
     <NewsList items={news} showDescription />
   </Section>
 
-  <Section title="書展" moreHref="/activities" flush>
+  <Section title="書展" index="02" moreHref="/activities" flush>
     <ExhibitionList exhibitions={exhibitions} />
   </Section>
 </Base>
-
-<style>
-  .home-accent {
-    width: calc(100% - var(--gutter) - var(--gutter));
-    max-width: var(--content-width);
-    margin: 0 auto;
-    height: 12px;
-    background: var(--color-primary);
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .home-accent span {
-    width: clamp(56px, 9vw, 120px);
-    background: var(--color-black);
-  }
-
-  @media (max-width: 760px) {
-    .home-accent {
-      height: 7px;
-    }
-  }
-</style>

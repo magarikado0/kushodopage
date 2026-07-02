@@ -1,34 +1,50 @@
 :root {
+  /* --- 朱・墨・和紙 のパレット（維持、微調整のみ） --- */
   --color-primary: #9b2335;
   --color-primary-soft: #e0c0c4;
   --color-primary-tint: #f5c0c0;
-  --color-black: #0a0a0a;
-  --color-ink: #0a0a0a;
-  --color-text: #222;
-  --color-subtext: #333;
-  --color-muted: #666;
-  --color-faint: #888;
-  --color-line: #e0dbd2;
-  --color-line-soft: #eee9e1;
-  --color-page: #f8f7f4;
-  --color-panel: var(--color-black);
-  --color-panel-soft: #1a1a1a;
-  --color-panel-text: #f0f0f0;
-  --color-panel-muted: #9a9a9a;
-  --color-panel-line: rgba(255, 255, 255, 0.12);
-  --color-work: #111;
-  --color-work-ink: #f0ede8;
-  --color-footer-bg: var(--color-black);
-  --color-footer-text: #f0f0f0;
-  --color-footer-muted: #9a9a9a;
-  --color-footer-copy: #666;
-  --shadow-paper: 0 5px 16px rgba(26, 20, 14, 0.045);
+  --color-primary-ink: #7a1b2a;
 
-  --font-serif: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  --color-black: #14110d;
+  --color-ink: #1c1814; /* 墨、ほんのり暖色 */
+  --color-text: #2a2520;
+  --color-subtext: #3a342e;
+  --color-muted: #6b635a;
+  --color-faint: #9a9089;
+
+  --color-line: #d6cfc1; /* 境界線：暖ベージュグレー */
+  --color-line-soft: #e7e1d4;
+  --color-line-faint: #efe9dd;
+
+  --color-page: #f4f1e9; /* 和紙クリーム */
+  --color-paper: #fbf9f3; /* より白い和紙 */
+
+  --color-panel: var(--color-black);
+  --color-panel-soft: #1f1b16;
+  --color-panel-text: #f1ede4;
+  --color-panel-muted: #9a9089;
+  --color-panel-line: rgba(241, 237, 228, 0.12);
+
+  --color-footer-bg: var(--color-black);
+  --color-footer-text: #f1ede4;
+  --color-footer-muted: #9a9089;
+  --color-footer-copy: #6b635a;
+
+  /* --- シャドウは原則使わない。階層は罫線で作る --- */
+  --shadow-paper: none;
+  --shadow-lift: 0 1px 0 var(--color-line);
+
+  /* --- タイポグラフィ --- */
+  --font-display: 'Shippori Mincho B1', 'Noto Serif JP', 'Hiragino Mincho ProN',
+    'Yu Mincho', serif;
+  --font-serif: 'Shippori Mincho B1', 'Noto Serif JP', 'Hiragino Mincho ProN',
+    'Yu Mincho', serif;
   --font-sans: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', 'Shippori Mincho B1', monospace;
 
   --content-width: 1180px;
   --gutter: 2.5rem;
+  --radius: 2px;
 }
 
 *,
@@ -44,12 +60,18 @@ html {
 }
 
 body {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   color: var(--color-ink);
   background: var(--color-page);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* 和紙の極めて繊細な粒子感（書道文脈ではなく、紙の質感として） */
+  background-image: radial-gradient(
+    rgba(28, 24, 20, 0.018) 1px,
+    transparent 1px
+  );
+  background-size: 3px 3px;
 }
 
 img {
@@ -69,6 +91,11 @@ button {
   background: none;
 }
 
+::selection {
+  background: var(--color-primary);
+  color: #fff;
+}
+
 .container {
   width: 100%;
   max-width: calc(var(--content-width) + var(--gutter) + var(--gutter));
@@ -78,7 +105,7 @@ button {
 
 @media (max-width: 760px) {
   :root {
-    --gutter: 1rem;
+    --gutter: 1.15rem;
   }
 }
 
@@ -89,4 +116,12 @@ button {
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
+}
+
+/* 共通：本文のリッチテキスト見出し等我儀する場所用の日本語組版ベース */
+.prose-jp {
+  font-size: 15px;
+  line-height: 2;
+  color: var(--color-ink);
+  letter-spacing: 0.04em;
 }
