@@ -246,18 +246,49 @@ const exhibitions = [
   },
 ];
 
+// 会期・会場が分からない回（パンフレットのみ旧サイトに残っていたもの）
+const bibBook = (n) => (n === 134 ? '134.epub' : String(n).padStart(3, '0'));
+exhibitions.push(
+  {
+    id: 'shoten-127',
+    title: '第127回 初夏書展',
+    venue: 'オンライン開催',
+    description: '前回の冬樟展に続き、新型コロナウイルスの影響でオンラインで開催しました。',
+    brochureUrl: bib('127'),
+  },
+  {
+    id: 'shoten-126',
+    title: '第126回 冬樟展',
+    venue: 'オンライン開催',
+    description: '新型コロナウイルスの影響で、オンラインで開催しました。',
+    brochureUrl: bib('126'),
+  },
+  {
+    id: 'shoten-125',
+    title: '第125回 初夏書展（中止）',
+    startDate: '2020-06-13',
+    endDate: '2020-06-14',
+    description: '新型コロナウイルス感染症の拡大を受けて、開催を中止しました。',
+  },
+  ...[134, 130, 128, ...Array.from({ length: 23 }, (_, i) => 120 - i)].map((n) => ({
+    id: `shoten-${n}`,
+    title: `第${n}回 書展`,
+    description: '会期・会場の記録が残っていないため、パンフレットのみ掲載しています。',
+    brochureUrl: bib(bibBook(n)),
+  })),
+);
+
 /** 日付を microCMS の日付フィールド形式（JST 0時）にする */
 const jstMidnight = (date) => new Date(`${date}T00:00:00+09:00`).toISOString();
 
 async function migrateExhibitions() {
   for (const { id, heroImage, startDate, endDate, ...rest } of exhibitions) {
-    const body = {
-      ...rest,
-      startDate: jstMidnight(startDate),
-      endDate: jstMidnight(endDate),
-      featured: false,
-      publishedAt: jstMidnight(startDate),
-    };
+    const body = { ...rest, featured: false };
+    if (startDate) {
+      body.startDate = jstMidnight(startDate);
+      body.endDate = jstMidnight(endDate);
+      body.publishedAt = jstMidnight(startDate);
+    }
     if (heroImage) body.heroImage = await uploadImage(heroImage);
     await putContent('exhibitions', id, body);
     console.log(`exhibition  ${id}`);

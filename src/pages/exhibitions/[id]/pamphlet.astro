@@ -1,0 +1,283 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '~/layouts/Base.astro';
+import { getAllExhibitions } from '~/libs/microcms';
+import { resolvePamphlet } from '~/libs/pamphlet';
+
+export const getStaticPaths = (async () => {
+  const exhibitions = await getAllExhibitions();
+  return exhibitions.flatMap((exhibition) => {
+    const pamphlet = resolvePamphlet(exhibition.id, exhibition.brochureUrl);
+    if (pamphlet?.kind !== 'viewer') return [];
+    return [{ params: { id: exhibition.id }, props: { exhibition, pdfUrl: pamphlet.pdfUrl } }];
+  });
+}) satisfies GetStaticPaths;
+
+const { exhibition, pdfUrl } = Astro.props;
+---
+
+<Base title={`${exhibition.title} パンフレット`} current="/activities">
+  <section class="pamphlet" data-src={pdfUrl}>
+    <div class="container pamphlet-head">
+      <a class="pamphlet-back" href={`/exhibitions/${exhibition.id}`}>{exhibition.title}に戻る</a>
+      <h1 class="pamphlet-title">{exhibition.title} パンフレット</h1>
+    </div>
+
+    <div class="pamphlet-stage" aria-live="polite">
+      <p class="pamphlet-status">読み込んでいます…</p>
+      <div class="pamphlet-spread" hidden></div>
+      <button class="pamphlet-hit is-next" type="button" aria-label="次のページ"></button>
+      <button class="pamphlet-hit is-prev" type="button" aria-label="前のページ"></button>
+    </div>
+
+    <div class="container pamphlet-controls">
+      <button class="pamphlet-btn" type="button" data-action="next">次のページ</button>
+      <span class="pamphlet-page"></span>
+      <button class="pamphlet-btn" type="button" data-action="prev">前のページ</button>
+    </div>
+    <p class="container pamphlet-download">
+      <a href={pdfUrl} download>PDFをダウンロード</a>
+    </p>
+  </section>
+</Base>
+
+<script>
+  import * as pdfjs from 'pdfjs-dist';
+  import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+
+  pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
+
+  const root = document.querySelector<HTMLElement>('.pamphlet')!;
+  const stage = root.querySelector<HTMLElement>('.pamphlet-stage')!;
+  const spreadEl = root.querySelector<HTMLElement>('.pamphlet-spread')!;
+  const statusEl = root.querySelector<HTMLElement>('.pamphlet-status')!;
+  const pageEl = root.querySelector<HTMLElement>('.pamphlet-page')!;
+
+  // 縦書きのパンフレットなので右から左へめくる。
+  // 広い画面では表紙だけ1ページ、以降は見開き（右が若いページ）で表示する。
+  const wide = window.matchMedia('(min-width: 900px)');
+  let doc: pdfjs.PDFDocumentProxy;
+  let spreads: number[][] = [];
+  let index = 0;
+  let renderToken = 0;
+
+  function buildSpreads() {
+    const pages = Array.from({ length: doc.numPages }, (_, i) => i + 1);
+    if (!wide.matches) return pages.map((p) => [p]);
+    const result = [[1]];
+    for (let p = 2; p <= doc.numPages; p += 2) {
+      result.push(p + 1 <= doc.numPages ? [p, p + 1] : [p]);
+    }
+    return result;
+  }
+
+  async function renderPage(number: number, maxWidth: number, maxHeight: number) {
+    const page = await doc.getPage(number);
+    const base = page.getViewport({ scale: 1 });
+    const scale = Math.min(maxWidth / base.width, maxHeight / base.height);
+    const ratio = window.devicePixelRatio || 1;
+    const viewport = page.getViewport({ scale: scale * ratio });
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.floor(viewport.width);
+    canvas.height = Math.floor(viewport.height);
+    canvas.style.width = `${Math.floor(viewport.width / ratio)}px`;
+    canvas.style.height = `${Math.floor(viewport.height / ratio)}px`;
+    await page.render({ canvas, viewport }).promise;
+    return canvas;
+  }
+
+  async function show() {
+    const token = ++renderToken;
+    const pages = spreads[index];
+    const gap = 4;
+    const style = getComputedStyle(stage);
+    const innerWidth =
+      stage.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    const maxWidth = (innerWidth - gap * (pages.length - 1)) / pages.length;
+    const maxHeight = stage.clientHeight;
+    // 右から左に並べる：DOM では後ろのページを先に置く
+    const canvases = await Promise.all([...pages].reverse().map((p) => renderPage(p, maxWidth, maxHeight)));
+    if (token !== renderToken) return;
+    spreadEl.replaceChildren(...canvases);
+    spreadEl.hidden = false;
+    statusEl.hidden = true;
+
+    const last = pages[pages.length - 1];
+    pageEl.textContent =
+      pages.length > 1 ? `${pages[0]}–${last} / ${doc.numPages}` : `${pages[0]} / ${doc.numPages}`;
+    root.querySelector<HTMLButtonElement>('[data-action="next"]')!.disabled = index >= spreads.length - 1;
+    root.querySelector<HTMLButtonElement>('[data-action="prev"]')!.disabled = index <= 0;
+
+    // 次の見開きを先に読み込んでおく
+    spreads[index + 1]?.forEach((p) => doc.getPage(p));
+  }
+
+  function go(step: number) {
+    const next = Math.min(Math.max(index + step, 0), spreads.length - 1);
+    if (next === index) return;
+    index = next;
+    show();
+  }
+
+  function currentFirstPage() {
+    return spreads[index]?.[0] ?? 1;
+  }
+
+  function relayout() {
+    const first = currentFirstPage();
+    spreads = buildSpreads();
+    index = Math.max(0, spreads.findIndex((s) => s.includes(first)));
+    show();
+  }
+
+  root.querySelector('[data-action="next"]')!.addEventListener('click', () => go(1));
+  root.querySelector('[data-action="prev"]')!.addEventListener('click', () => go(-1));
+  root.querySelector('.pamphlet-hit.is-next')!.addEventListener('click', () => go(1));
+  root.querySelector('.pamphlet-hit.is-prev')!.addEventListener('click', () => go(-1));
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') go(1);
+    if (event.key === 'ArrowRight') go(-1);
+  });
+
+  // スワイプ：右へ払うと次のページ（右から左へめくる本と同じ向き）
+  let touchX: number | null = null;
+  stage.addEventListener('touchstart', (e) => (touchX = e.touches[0].clientX), { passive: true });
+  stage.addEventListener('touchend', (e) => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    touchX = null;
+    if (Math.abs(dx) > 40) go(dx > 0 ? 1 : -1);
+  });
+
+  let resizeTimer: number | undefined;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(relayout, 200);
+  });
+
+  pdfjs
+    .getDocument({ url: root.dataset.src! })
+    .promise.then((loaded) => {
+      doc = loaded;
+      spreads = buildSpreads();
+      return show();
+    })
+    .catch(() => {
+      statusEl.textContent =
+        'パンフレットを読み込めませんでした。下のリンクからダウンロードしてご覧ください。';
+    });
+</script>
+
+<style>
+  .pamphlet {
+    padding: 2rem 0 3rem;
+  }
+
+  .pamphlet-back {
+    font-size: 13px;
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  .pamphlet-title {
+    margin: 0.75rem 0 1.25rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .pamphlet-stage {
+    position: relative;
+    height: min(78vh, 900px);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+    max-width: calc(var(--content-width) + var(--gutter) * 2);
+    display: grid;
+    place-items: center;
+    user-select: none;
+  }
+
+  .pamphlet-spread {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+  }
+
+  .pamphlet-spread :global(canvas) {
+    display: block;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+
+  .pamphlet-status {
+    font-size: 14px;
+    color: var(--color-muted);
+    text-align: center;
+  }
+
+  /* 画面の左半分で次、右半分で前 */
+  .pamphlet-hit {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    cursor: pointer;
+  }
+
+  .pamphlet-hit.is-next {
+    left: 0;
+  }
+
+  .pamphlet-hit.is-prev {
+    right: 0;
+  }
+
+  .pamphlet-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .pamphlet-btn {
+    font-size: 14px;
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  .pamphlet-btn:disabled {
+    color: var(--color-faint);
+    text-decoration: none;
+    cursor: default;
+  }
+
+  .pamphlet-page {
+    min-width: 6rem;
+    text-align: center;
+    font-size: 13px;
+    color: var(--color-muted);
+  }
+
+  .pamphlet-download {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 13px;
+  }
+
+  .pamphlet-download a {
+    color: var(--color-muted);
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  @media (max-width: 760px) {
+    .pamphlet-stage {
+      height: 70vh;
+    }
+  }
+</style>

@@ -51,14 +51,30 @@ export async function getNewsById(id: string): Promise<NewsItem | null> {
   return fetchOne<NewsItem>('news', id);
 }
 
-/** 書展一覧（開催日が新しい順） */
-export async function getExhibitions(limit = 20): Promise<Exhibition[]> {
-  return fetchList<Exhibition>('exhibitions', { limit, orders: '-startDate' });
+/** タイトルの「第◯回」 */
+const editionOf = (e: Exhibition) => Number(e.title.match(/第(\d+)回/)?.[1] ?? 0);
+
+/** 会期が分かる回を新しい順に並べ、そのあとに会期不明の回を回数の新しい順に並べる */
+function sortExhibitions(list: Exhibition[]): Exhibition[] {
+  return [...list].sort((a, b) => {
+    if (a.startDate && b.startDate) return b.startDate.localeCompare(a.startDate);
+    if (a.startDate || b.startDate) return a.startDate ? -1 : 1;
+    return editionOf(b) - editionOf(a);
+  });
 }
 
 /** 書展全件（開催日が新しい順） */
 export async function getAllExhibitions(): Promise<Exhibition[]> {
-  return fetchAll<Exhibition>('exhibitions', { orders: '-startDate' });
+  return sortExhibitions(await fetchAll<Exhibition>('exhibitions'));
+}
+
+/** 会期が分かる書展（開催日が新しい順） */
+export async function getExhibitions(limit = 20): Promise<Exhibition[]> {
+  return fetchList<Exhibition>('exhibitions', {
+    limit,
+    orders: '-startDate',
+    filters: 'startDate[exists]',
+  });
 }
 
 /**
@@ -72,7 +88,8 @@ export async function getHeroExhibition(): Promise<{
 } | null> {
   const list = await getExhibitions(10);
   const now = Date.now();
-  const isUpcoming = (e: Exhibition) => new Date(e.endDate).getTime() + 86_400_000 > now;
+  const isUpcoming = (e: Exhibition) =>
+    !!e.endDate && new Date(e.endDate).getTime() + 86_400_000 > now;
 
   const featured = list.find((e) => e.featured);
   if (featured) return { exhibition: featured, upcoming: isUpcoming(featured) };

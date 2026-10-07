@@ -46,7 +46,8 @@ export function formatDateJPWithoutYear(iso: string | Date): string {
 }
 
 /** 開始日〜終了日 を表示用文字列に。0時ちょうどでなければ時刻も出す */
-export function formatDateRange(startIso: string, endIso: string): string {
+export function formatDateRange(startIso?: string, endIso?: string): string {
+  if (!startIso || !endIso) return '';
   const s = toJst(startIso);
   const e = toJst(endIso);
   if (!s || !e) return '';
@@ -62,8 +63,8 @@ export function formatDateRange(startIso: string, endIso: string): string {
 }
 
 /** 開催年（日本時間） */
-export function yearOf(iso: string): number | null {
-  return toJst(iso)?.y ?? null;
+export function yearOf(iso?: string): number | null {
+  return iso ? (toJst(iso)?.y ?? null) : null;
 }
 
 /** HTML本文をプレーンテキストに（お知らせ一覧の抜粋用） */

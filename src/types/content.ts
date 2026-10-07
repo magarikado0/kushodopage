@@ -34,16 +34,16 @@ export interface Exhibition {
   id: string;
   /** 例: 第136回 冬樟展 */
   title: string;
-  /** 開催日（ISO 文字列） */
-  startDate: string;
+  /** 開催日（ISO 文字列）。古い回は不明なことがある */
+  startDate?: string;
   /** 終了日（ISO 文字列） */
-  endDate: string;
+  endDate?: string;
   /** 会場名 */
-  venue: string;
+  venue?: string;
   /** 住所（任意） */
   address?: string;
   /** 書展の紹介文 */
-  description: string;
+  description?: string;
   /** メインビジュアル（任意） */
   heroImage?: WorkImage;
   /** 書展パンフレットへのリンク */

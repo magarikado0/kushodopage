@@ -1,25 +1,26 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Base from '~/layouts/Base.astro';
-import { getAllExhibitions, getExhibitionById } from '~/libs/microcms';
+import { getAllExhibitions } from '~/libs/microcms';
+import { pamphletHref, resolvePamphlet } from '~/libs/pamphlet';
 import { formatDateRange, excerpt } from '~/libs/format';
 
 export const getStaticPaths = (async () => {
   const list = await getAllExhibitions();
-  return list.map(({ id }) => ({ params: { id } }));
+  return list.map((exhibition) => ({ params: { id: exhibition.id }, props: { exhibition } }));
 }) satisfies GetStaticPaths;
 
-const { id } = Astro.params;
-const exhibition = id ? await getExhibitionById(id) : null;
-
-if (!exhibition) {
-  return Astro.redirect('/activities');
-}
+const { exhibition } = Astro.props;
+const pamphlet = resolvePamphlet(exhibition.id, exhibition.brochureUrl);
+const dateRange =
+  exhibition.startDate && exhibition.endDate
+    ? formatDateRange(exhibition.startDate, exhibition.endDate)
+    : '';
 ---
 
 <Base
   title={exhibition.title}
-  description={excerpt(exhibition.description, 120)}
+  description={excerpt(exhibition.description ?? `京都大学書道部 ${exhibition.title}`, 120)}
   current="/activities"
 >
   <article class="ex">
@@ -27,17 +28,25 @@ if (!exhibition) {
       <a class="ex-back" href="/activities">作品紹介に戻る</a>
       <h1 class="ex-title">{exhibition.title}</h1>
       <dl class="ex-info">
-        <div>
-          <dt>会期</dt>
-          <dd>{formatDateRange(exhibition.startDate, exhibition.endDate)}</dd>
-        </div>
-        <div>
-          <dt>会場</dt>
-          <dd>
-            {exhibition.venue}
-            {exhibition.address ? `（${exhibition.address}）` : ''}
-          </dd>
-        </div>
+        {
+          dateRange && (
+            <div>
+              <dt>会期</dt>
+              <dd>{dateRange}</dd>
+            </div>
+          )
+        }
+        {
+          exhibition.venue && (
+            <div>
+              <dt>会場</dt>
+              <dd>
+                {exhibition.venue}
+                {exhibition.address ? `（${exhibition.address}）` : ''}
+              </dd>
+            </div>
+          )
+        }
       </dl>
     </div>
 
@@ -53,13 +62,17 @@ if (!exhibition) {
     }
 
     <div class="container">
-      <div class="ex-body">
-        <h2 class="ex-h2">書展について</h2>
-        <p>{exhibition.description}</p>
-      </div>
+      {
+        exhibition.description && (
+        <div class="ex-body">
+          <h2 class="ex-h2">書展について</h2>
+          <p>{exhibition.description}</p>
+        </div>
+        )
+      }
 
       {
-        (exhibition.brochureUrl || exhibition.artoirUrl) && (
+        (pamphlet || exhibition.artoirUrl) && (
           <div class="ex-links">
             <h2 class="ex-h2">作品と記録</h2>
             <div class="ex-link-list">
@@ -69,8 +82,11 @@ if (!exhibition) {
                   <strong>Artoirで作品を見る</strong>
                 </a>
               )}
-              {exhibition.brochureUrl && (
-                <a href={exhibition.brochureUrl} target="_blank" rel="noreferrer">
+              {pamphlet && (
+                <a
+                  href={pamphletHref(exhibition.id, pamphlet)}
+                  {...(pamphlet.kind === 'external' ? { target: '_blank', rel: 'noreferrer' } : {})}
+                >
                   <span>書展資料</span>
                   <strong>パンフレットを見る</strong>
                 </a>
