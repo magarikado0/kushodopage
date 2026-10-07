@@ -1,12 +1,12 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Base from '~/layouts/Base.astro';
-import { getAllNewsIds, getNewsById, getNews } from '~/libs/microcms';
+import { getAllNews, getNewsById } from '~/libs/microcms';
 import { formatDate, excerpt } from '~/libs/format';
 
 export const getStaticPaths = (async () => {
-  const ids = await getAllNewsIds();
-  return ids.map((id) => ({ params: { id } }));
+  const list = await getAllNews();
+  return list.map(({ id }) => ({ params: { id } }));
 }) satisfies GetStaticPaths;
 
 const { id } = Astro.params;
@@ -17,7 +17,7 @@ if (!item) {
 }
 
 // 前後のお知らせ（簡易: 全件取得して位置を探す）
-const all = await getNews(100);
+const all = await getAllNews();
 const idx = all.findIndex((n) => n.id === item.id);
 const prev = idx > 0 ? all[idx - 1] : null;
 const next = idx < all.length - 1 ? all[idx + 1] : null;
@@ -26,7 +26,7 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
 <Base title={item.title} description={excerpt(item.content, 120)} current="/news">
   <article class="article">
     <div class="container article-head">
-      <a class="article-back" href="/news">← お知らせ一覧</a>
+      <a class="article-back" href="/news">お知らせ一覧に戻る</a>
       <div class="article-meta">
         <span class="news-date">{formatDate(item.publishedAt)}</span>
         <span class="news-tag">
@@ -84,11 +84,10 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
     font-size: 13px;
     color: var(--color-primary);
     font-family: var(--font-sans);
-    font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.04em;
     margin-bottom: 2rem;
-    padding-bottom: 2px;
-    border-bottom: 1px solid currentColor;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
   }
 
   .article-meta {
@@ -108,12 +107,9 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
 
   .news-tag {
     font-size: 11px;
-    color: var(--color-primary);
-    border: 1px solid var(--color-primary);
-    padding: 2px 8px;
-    letter-spacing: 0.1em;
+    color: var(--color-muted);
+    letter-spacing: 0.06em;
     font-family: var(--font-sans);
-    font-weight: 500;
   }
 
   .article-title {
@@ -125,17 +121,6 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
     color: var(--color-ink);
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--color-line);
-    position: relative;
-  }
-
-  .article-title::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -1px;
-    width: 80px;
-    height: 2px;
-    background: var(--color-primary);
   }
 
   .article-body {
@@ -157,9 +142,7 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
     font-size: 22px;
     font-weight: 500;
     margin: 2.5rem 0 1rem;
-    padding-left: 0.85rem;
-    border-left: 3px solid var(--color-primary);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.05em;
   }
 
   .article-body :global(a) {
@@ -219,17 +202,11 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
 
   .article-nav-item {
     display: block;
-    padding: 1rem 1.2rem;
-    border: 1px solid var(--color-line);
-    background: var(--color-paper);
-    transition:
-      border-color 0.2s ease,
-      background 0.2s ease;
+    padding: 0.5rem 0;
   }
 
-  .article-nav-item:hover {
-    border-color: var(--color-primary);
-    background: #fff;
+  .article-nav-item:hover strong {
+    color: var(--color-primary);
   }
 
   .article-nav-item.is-next {
@@ -238,13 +215,11 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
 
   .article-nav-item span {
     display: block;
-    font-size: 11px;
-    color: var(--color-primary);
+    font-size: 12px;
+    color: var(--color-muted);
     font-family: var(--font-sans);
-    font-weight: 500;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.04em;
     margin-bottom: 0.35rem;
-    text-transform: uppercase;
   }
 
   .article-nav-item strong {

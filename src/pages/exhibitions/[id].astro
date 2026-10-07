@@ -1,12 +1,12 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Base from '~/layouts/Base.astro';
-import { getAllExhibitionIds, getExhibitionById } from '~/libs/microcms';
+import { getAllExhibitions, getExhibitionById } from '~/libs/microcms';
 import { formatDateRange, excerpt } from '~/libs/format';
 
 export const getStaticPaths = (async () => {
-  const ids = await getAllExhibitionIds();
-  return ids.map((id) => ({ params: { id } }));
+  const list = await getAllExhibitions();
+  return list.map(({ id }) => ({ params: { id } }));
 }) satisfies GetStaticPaths;
 
 const { id } = Astro.params;
@@ -24,8 +24,7 @@ if (!exhibition) {
 >
   <article class="ex">
     <div class="container ex-head">
-      <a class="ex-back" href="/activities">← 作品紹介</a>
-      <div class="ex-label">書展アーカイブ</div>
+      <a class="ex-back" href="/activities">作品紹介に戻る</a>
       <h1 class="ex-title">{exhibition.title}</h1>
       <dl class="ex-info">
         <div>
@@ -67,13 +66,13 @@ if (!exhibition) {
               {exhibition.artoirUrl && (
                 <a href={exhibition.artoirUrl} target="_blank" rel="noreferrer">
                   <span>展示作品</span>
-                  <strong>Artoirで作品を見る ↗</strong>
+                  <strong>Artoirで作品を見る</strong>
                 </a>
               )}
               {exhibition.brochureUrl && (
                 <a href={exhibition.brochureUrl} target="_blank" rel="noreferrer">
                   <span>書展資料</span>
-                  <strong>パンフレットを見る ↗</strong>
+                  <strong>パンフレットを見る</strong>
                 </a>
               )}
             </div>
@@ -98,21 +97,10 @@ if (!exhibition) {
     font-size: 13px;
     color: var(--color-primary);
     font-family: var(--font-sans);
-    font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.04em;
     margin-bottom: 2rem;
-    padding-bottom: 2px;
-    border-bottom: 1px solid currentColor;
-  }
-
-  .ex-label {
-    font-size: 12px;
-    letter-spacing: 0.2em;
-    color: var(--color-primary);
-    font-family: var(--font-sans);
-    font-weight: 500;
-    margin-bottom: 0.7rem;
-    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
   }
 
   .ex-title {
@@ -124,18 +112,7 @@ if (!exhibition) {
     margin-bottom: 1.5rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--color-line);
-    position: relative;
     line-height: 1.3;
-  }
-
-  .ex-title::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -1px;
-    width: 80px;
-    height: 2px;
-    background: var(--color-primary);
   }
 
   .ex-info {
@@ -151,11 +128,10 @@ if (!exhibition) {
 
   .ex-info dt {
     font-size: 12px;
-    color: var(--color-primary);
-    letter-spacing: 0.15em;
-    font-weight: 500;
+    color: var(--color-muted);
+    font-size: 13px;
+    letter-spacing: 0.04em;
     padding-top: 0.15rem;
-    text-transform: uppercase;
   }
 
   .ex-info dd {
@@ -183,11 +159,8 @@ if (!exhibition) {
     font-family: var(--font-display);
     font-size: 19px;
     font-weight: 500;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.05em;
     color: var(--color-ink);
-    padding-left: 0.85rem;
-    border-left: 2px solid var(--color-primary);
-    display: inline-block;
     margin-bottom: 1.3rem;
   }
 
@@ -226,12 +199,10 @@ if (!exhibition) {
   }
 
   .ex-link-list span {
-    font-size: 11px;
-    color: var(--color-faint);
+    font-size: 12px;
+    color: var(--color-muted);
     font-family: var(--font-sans);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    font-weight: 500;
+    letter-spacing: 0.04em;
   }
 
   .ex-link-list strong {

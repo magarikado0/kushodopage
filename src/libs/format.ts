@@ -1,53 +1,69 @@
+/**
+ * microCMS の日付は JST 0時を UTC で表した値（例: 2025-06-27T15:00:00.000Z）なので、
+ * ビルド環境のタイムゾーン（Cloudflare は UTC）に関係なく日本時間で読む。
+ */
+const jstParts = new Intl.DateTimeFormat('ja-JP', {
+  timeZone: 'Asia/Tokyo',
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  weekday: 'short',
+  hour: '2-digit',
+  minute: '2-digit',
+  hourCycle: 'h23',
+});
+
+function toJst(iso: string | Date) {
+  const d = typeof iso === 'string' ? new Date(iso) : iso;
+  if (Number.isNaN(d.getTime())) return null;
+  const parts = Object.fromEntries(jstParts.formatToParts(d).map((p) => [p.type, p.value]));
+  return {
+    y: Number(parts.year),
+    m: Number(parts.month),
+    d: Number(parts.day),
+    dow: parts.weekday,
+    time: `${parts.hour}:${parts.minute}`,
+  };
+}
+
 /** 日付を「2024.11.02」形式に整形 */
 export function formatDate(iso: string | Date): string {
-  const d = typeof iso === 'string' ? new Date(iso) : iso;
-  if (Number.isNaN(d.getTime())) return '';
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}.${m}.${day}`;
+  const t = toJst(iso);
+  if (!t) return '';
+  return `${t.y}.${String(t.m).padStart(2, '0')}.${String(t.d).padStart(2, '0')}`;
 }
 
 /** 日付を「2024年12月13日（金）」形式に整形 */
 export function formatDateJP(iso: string | Date): string {
-  const d = typeof iso === 'string' ? new Date(iso) : iso;
-  if (Number.isNaN(d.getTime())) return '';
-  const dow = ['日', '月', '火', '水', '木', '金', '土'][d.getDay()];
-  return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日（${dow}）`;
+  const t = toJst(iso);
+  return t ? `${t.y}年${t.m}月${t.d}日（${t.dow}）` : '';
 }
 
 /** 日付を「12月13日（金）」形式に整形 */
 export function formatDateJPWithoutYear(iso: string | Date): string {
-  const d = typeof iso === 'string' ? new Date(iso) : iso;
-  if (Number.isNaN(d.getTime())) return '';
-  const dow = ['日', '月', '火', '水', '木', '金', '土'][d.getDay()];
-  return `${d.getMonth() + 1}月${d.getDate()}日（${dow}）`;
+  const t = toJst(iso);
+  return t ? `${t.m}月${t.d}日（${t.dow}）` : '';
 }
 
-/** 開始日〜終了日 を表示用文字列に */
+/** 開始日〜終了日 を表示用文字列に。0時ちょうどでなければ時刻も出す */
 export function formatDateRange(startIso: string, endIso: string): string {
-  const s = new Date(startIso);
-  const e = new Date(endIso);
-  if (Number.isNaN(s.getTime()) || Number.isNaN(e.getTime())) return '';
-  const sameDay = s.toDateString() === e.toDateString();
+  const s = toJst(startIso);
+  const e = toJst(endIso);
+  if (!s || !e) return '';
+  const sameDay = s.y === e.y && s.m === e.m && s.d === e.d;
+  const hasTime = s.time !== '00:00' || e.time !== '00:00';
 
-  // microCMSの「日時」で登録された場合は開催時刻も表示する。
-  // 日付だけの既存データは従来どおり日付のみ表示する。
-  if (startIso.includes('T') || endIso.includes('T')) {
-    const timeFormatter = new Intl.DateTimeFormat('ja-JP', {
-      timeZone: 'Asia/Tokyo',
-      hour: '2-digit',
-      minute: '2-digit',
-      hourCycle: 'h23',
-    });
-    const startTime = timeFormatter.format(s);
-    const endTime = timeFormatter.format(e);
-    if (sameDay) return `${formatDateJP(startIso)} ${startTime}〜${endTime}`;
-    return `${formatDateJP(startIso)} ${startTime}〜${formatDateJP(endIso)} ${endTime}`;
+  if (hasTime) {
+    if (sameDay) return `${formatDateJP(startIso)} ${s.time}〜${e.time}`;
+    return `${formatDateJP(startIso)} ${s.time}〜${formatDateJP(endIso)} ${e.time}`;
   }
-
   if (sameDay) return formatDateJP(startIso);
   return `${formatDateJP(startIso)}〜${formatDateJPWithoutYear(endIso)}`;
+}
+
+/** 開催年（日本時間） */
+export function yearOf(iso: string): number | null {
+  return toJst(iso)?.y ?? null;
 }
 
 /** HTML本文をプレーンテキストに（お知らせ一覧の抜粋用） */

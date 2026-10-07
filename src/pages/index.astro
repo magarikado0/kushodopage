@@ -13,11 +13,11 @@ const exhibitions = await getExhibitions(3);
 <Base current="/">
   <Hero />
 
-  <Section title="お知らせ" index="01" moreHref="/news">
+  <Section title="お知らせ" moreHref="/news">
     <NewsList items={news} showDescription />
   </Section>
 
-  <Section title="書展" index="02" moreHref="/activities" flush>
+  <Section title="書展" moreHref="/activities" flush>
     <ExhibitionList exhibitions={exhibitions} />
   </Section>
 </Base>

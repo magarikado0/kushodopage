@@ -6,26 +6,20 @@ interface Props {
   moreLabel?: string;
   /** 下線を引かない（ページ末尾のセクション用） */
   flush?: boolean;
-  /** セクション番号（01, 02…）を表示する */
-  index?: string;
 }
 
 const {
   title,
   moreHref,
-  moreLabel = '一覧を見る →',
+  moreLabel = 'すべて見る',
   flush = false,
-  index,
 } = Astro.props;
 ---
 
 <section class:list={['section', { 'is-flush': flush }]}>
   <div class="container">
     <div class="section-head">
-      <div class="section-title-wrap">
-        {index && <span class="section-index">{index}</span>}
-        <h2 class="section-title">{title}</h2>
-      </div>
+      <h2 class="section-title">{title}</h2>
       {
         moreHref && (
           <a class="section-more" href={moreHref}>
@@ -56,28 +50,11 @@ const {
     gap: 1rem;
   }
 
-  .section-title-wrap {
-    display: flex;
-    align-items: baseline;
-    gap: 0.9rem;
-    position: relative;
-    padding-left: 0.95rem;
-    border-left: 2px solid var(--color-primary);
-  }
-
-  .section-index {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    color: var(--color-primary);
-    font-weight: 500;
-  }
-
   .section-title {
     font-family: var(--font-display);
     font-size: clamp(1.4rem, 2.4vw, 1.7rem);
     font-weight: 500;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.06em;
     color: var(--color-ink);
     line-height: 1.3;
   }
@@ -86,15 +63,14 @@ const {
     font-size: 13px;
     color: var(--color-primary);
     font-family: var(--font-sans);
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    padding-bottom: 2px;
-    border-bottom: 1px solid currentColor;
-    transition: opacity 0.2s ease;
+    letter-spacing: 0.06em;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+    text-decoration-thickness: 1px;
   }
 
   .section-more:hover {
-    opacity: 0.6;
+    text-decoration: none;
   }
 
   @media (max-width: 760px) {
@@ -107,17 +83,9 @@ const {
       gap: 0.7rem;
     }
 
-    .section-title-wrap {
-      gap: 0.6rem;
-      padding-left: 0.75rem;
-    }
-
-    .section-index {
-      font-size: 11px;
-    }
 
     .section-more {
-      font-size: 11px;
+      font-size: 12px;
     }
   }
 </style>

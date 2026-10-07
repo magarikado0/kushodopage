@@ -1,10 +1,10 @@
 ---
 import Base from '~/layouts/Base.astro';
-import Section from '~/components/Section.astro';
+import PageHeader from '~/components/PageHeader.astro';
 import NewsList from '~/components/NewsList.astro';
-import { getNews } from '~/libs/microcms';
+import { getAllNews } from '~/libs/microcms';
 
-const news = await getNews(200);
+const news = await getAllNews();
 ---
 
 <Base
@@ -12,80 +12,22 @@ const news = await getNews(200);
   description="京都大学書道部からのお知らせ。書展や活動、入部関連の最新情報。"
   current="/news"
 >
-  <section class="page-hero">
-    <div class="container">
-      <div class="page-hero-meta">
-        <span class="page-hero-label">News</span>
-        <span class="page-hero-divider" aria-hidden="true"></span>
-        <span class="page-hero-en">latest updates</span>
-      </div>
-      <h1 class="page-hero-title">お知らせ</h1>
-      <p class="page-hero-sub">書展や活動、入部関連の最新情報をお届けします。</p>
-    </div>
-  </section>
+  <PageHeader title="お知らせ" />
 
-  <Section title="お知らせ一覧" flush>
+  <div class="container news-page">
     <NewsList items={news} />
-  </Section>
+  </div>
 </Base>
 
 <style>
-  .page-hero {
-    padding: 4rem var(--gutter) 1.8rem;
-    border-bottom: 1px solid var(--color-line);
-  }
-
-  .page-hero-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    margin-bottom: 1rem;
-    font-family: var(--font-sans);
-  }
-
-  .page-hero-label {
-    font-size: 12px;
-    letter-spacing: 0.2em;
-    color: var(--color-primary);
-    font-weight: 500;
-    text-transform: uppercase;
-  }
-
-  .page-hero-divider {
-    width: 28px;
-    height: 1px;
-    background: var(--color-line);
-  }
-
-  .page-hero-en {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--color-faint);
-    text-transform: uppercase;
-  }
-
-  .page-hero-title {
-    font-family: var(--font-display);
-    font-size: clamp(1.9rem, 4vw, 2.6rem);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: var(--color-ink);
-    line-height: 1.3;
-    margin-bottom: 0.75rem;
-  }
-
-  .page-hero-sub {
-    font-size: 14px;
-    font-family: var(--font-sans);
-    font-weight: 400;
-    color: var(--color-muted);
-    line-height: 1.8;
-    letter-spacing: 0.03em;
+  .news-page {
+    padding-block: 2.5rem 4rem;
   }
 
   @media (max-width: 760px) {
-    .page-hero {
-      padding: 2.5rem var(--gutter) 1.4rem;
+    .news-page {
+      padding-block: 1.5rem 2.5rem;
     }
   }
 </style>
+

@@ -32,7 +32,6 @@ const { items, showDescription = false } = Astro.props;
               </span>
             )}
           </span>
-          <span class="news-arrow" aria-hidden="true">→</span>
         </a>
       ))
     )
@@ -48,16 +47,15 @@ const { items, showDescription = false } = Astro.props;
 
   .news-item {
     display: grid;
-    grid-template-columns: 12rem 1fr auto;
+    grid-template-columns: 9rem 1fr;
     align-items: start;
     gap: 1.5rem;
     padding: 1.3rem 0.25rem;
     border-bottom: 1px solid var(--color-line);
-    transition: background 0.2s ease;
-  }
+    }
 
-  .news-item:hover {
-    background: rgba(155, 35, 53, 0.035);
+  .news-item:hover .news-ttl {
+    color: var(--color-primary);
   }
 
   .news-item.is-rich {
@@ -85,11 +83,8 @@ const { items, showDescription = false } = Astro.props;
     align-self: flex-start;
     font-family: var(--font-sans);
     font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    color: var(--color-primary);
-    border: 1px solid var(--color-primary);
-    padding: 2px 8px;
+    letter-spacing: 0.06em;
+    color: var(--color-muted);
     white-space: nowrap;
   }
 
@@ -107,6 +102,7 @@ const { items, showDescription = false } = Astro.props;
     letter-spacing: 0.04em;
     color: var(--color-ink);
     line-height: 1.5;
+    transition: color 0.2s ease;
   }
 
   .news-description {
@@ -122,20 +118,6 @@ const { items, showDescription = false } = Astro.props;
     -webkit-line-clamp: 2;
   }
 
-  .news-arrow {
-    align-self: center;
-    font-size: 15px;
-    color: var(--color-faint);
-    transition:
-      color 0.2s ease,
-      transform 0.2s ease;
-  }
-
-  .news-item:hover .news-arrow {
-    color: var(--color-primary);
-    transform: translateX(3px);
-  }
-
   .news-empty {
     padding: 2.5rem 0;
     color: var(--color-faint);
@@ -146,28 +128,15 @@ const { items, showDescription = false } = Astro.props;
 
   @media (max-width: 760px) {
     .news-item {
-      grid-template-columns: 1fr auto;
-      grid-template-areas:
-        'meta meta'
-        'body arrow';
-      gap: 0.5rem 0.8rem;
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
       padding: 1.1rem 0.2rem;
     }
 
     .news-meta {
-      grid-area: meta;
       flex-direction: row;
       align-items: center;
       gap: 0.75rem;
-    }
-
-    .news-body {
-      grid-area: body;
-    }
-
-    .news-arrow {
-      grid-area: arrow;
-      align-self: center;
     }
 
     .news-date {
@@ -175,8 +144,7 @@ const { items, showDescription = false } = Astro.props;
     }
 
     .news-tag {
-      font-size: 10px;
-      padding: 1px 6px;
+      font-size: 11px;
     }
 
     .news-ttl {

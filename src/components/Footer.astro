@@ -5,10 +5,7 @@ import { NAV_ITEMS, SITE } from '~/libs/site';
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <div class="footer-name">
-        <span class="footer-ja">{SITE.name}</span>
-        <span class="footer-en">{SITE.nameEn}</span>
-      </div>
+      <span class="footer-ja">{SITE.name}</span>
     </div>
 
     <nav class="footer-links" aria-label="フッターナビゲーション">
@@ -24,8 +21,7 @@ import { NAV_ITEMS, SITE } from '~/libs/site';
     </nav>
 
     <div class="footer-copy">
-      <span>© {new Date().getFullYear()} {SITE.name}</span>
-      <span class="footer-domain">{SITE.domain}</span>
+      © {new Date().getFullYear()} {SITE.name}
     </div>
   </div>
 </footer>
@@ -54,27 +50,12 @@ import { NAV_ITEMS, SITE } from '~/libs/site';
     gap: 0.85rem;
   }
 
-  .footer-name {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-
   .footer-ja {
     font-family: var(--font-display);
     font-size: 15px;
     font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.05em;
     color: var(--color-footer-text);
-  }
-
-  .footer-en {
-    font-family: var(--font-sans);
-    font-size: 10px;
-    font-weight: 400;
-    letter-spacing: 0.14em;
-    color: var(--color-footer-muted);
-    text-transform: uppercase;
   }
 
   .footer-links ul {
@@ -99,19 +80,10 @@ import { NAV_ITEMS, SITE } from '~/libs/site';
   }
 
   .footer-copy {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.15rem;
     font-family: var(--font-sans);
-    font-size: 11px;
-    letter-spacing: 0.08em;
+    font-size: 12px;
+    letter-spacing: 0.04em;
     color: var(--color-footer-copy);
-  }
-
-  .footer-domain {
-    font-size: 10px;
-    letter-spacing: 0.12em;
   }
 
   @media (max-width: 760px) {
@@ -121,10 +93,6 @@ import { NAV_ITEMS, SITE } from '~/libs/site';
 
     .footer-links ul {
       gap: 1rem;
-    }
-
-    .footer-copy {
-      align-items: flex-start;
     }
   }
 </style>

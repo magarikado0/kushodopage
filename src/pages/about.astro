@@ -1,5 +1,6 @@
 ---
 import Base from '~/layouts/Base.astro';
+import PageHeader from '~/components/PageHeader.astro';
 import Section from '~/components/Section.astro';
 import { SITE } from '~/libs/site';
 ---
@@ -9,122 +10,139 @@ import { SITE } from '~/libs/site';
   description="京都大学書道部の紹介。漢字・かな・篆刻の練習、年2回の学外書展、書道パフォーマンスなどの活動を紹介します。"
   current="/about"
 >
-  <section class="page-hero">
-    <div class="container">
-      <div class="page-hero-meta">
-        <span class="page-hero-label">About</span>
-        <span class="page-hero-divider" aria-hidden="true"></span>
-        <span class="page-hero-en">kyoto-u calligraphy club</span>
-      </div>
-      <h1 class="page-hero-title">書道部について</h1>
-    </div>
-  </section>
+  <PageHeader title="書道部について" />
 
-  <Section title="部の紹介" index="01">
+  <Section title="部の紹介">
     <div class="about-grid">
       <div class="about-lead">
         <p>
-          京都大学書道部は、京都大学の<strong>公認文化系団体</strong>です。漢字・かな・篆刻を中心に、古典の臨書から創作まで、各自が興味に応じて幅広く活動しています。
+          京都大学書道部は、京都大学の<strong>公認文化系団体</strong>です。漢字・かな・篆刻を中心に、古典の臨書から創作まで、各自が興味に応じて活動しています。
         </p>
         <p>
-          毎週水曜日と土曜日を一斉練習日とし、各自のペースで作品制作に取り組んでいます。練習への参加は強制ではありません。
+          部室は24時間・365日使えるので、好きなときに練習できます。毎週水曜日と土曜日は一斉練習日ですが、参加は自由です。水曜日には月に1回、講師の先生に来ていただいています。
         </p>
         <p>
-          初夏と冬に年2回の学外書展を開催するほか、新歓期や11月祭では書道パフォーマンスも行っています。経験の有無を問わず、随時入部を受け付けています。
+          大学から書道を始めた部員も多く、2回生・3回生になってから始めた人もいます。経験の有無は気にしなくて大丈夫です。
         </p>
       </div>
       <dl class="about-table">
         <div><dt>正式名称</dt><dd>{SITE.name}</dd></div>
-        <div><dt>主な活動</dt><dd>練習・学外書展・書道パフォーマンス</dd></div>
+        <div><dt>主な活動</dt><dd>練習・学外書展・書道パフォーマンス・合宿</dd></div>
         <div><dt>練習日</dt><dd>毎週水曜日・土曜日（参加自由）</dd></div>
+        <div><dt>指導</dt><dd>月1回、水曜日に講師の先生</dd></div>
+        <div><dt>部室</dt><dd>西部課外活動棟 E201（24時間利用可）</dd></div>
         <div><dt>対象</dt><dd>京都大学の学生。経験不問。</dd></div>
       </dl>
     </div>
   </Section>
 
-  <Section title="活動内容" index="02">
+  <Section title="活動内容">
     <ul class="activity-list">
       <li>
-        <span class="activity-num">01</span>
-        <h3 class="activity-ttl">書展</h3>
-        <p>
-          初夏と冬の年2回、学外書展を開催しています。漢字・かな・篆刻をはじめ、日頃の練習や制作の成果を発表します。
-        </p>
-      </li>
-      <li>
-        <span class="activity-num">02</span>
-        <h3 class="activity-ttl">書道パフォーマンス</h3>
-        <p>
-          新歓期や京都大学11月祭（NF）などで、音楽に合わせて大きな紙に作品を書き上げる書道パフォーマンスを行っています。
-        </p>
-      </li>
-      <li>
-        <span class="activity-num">03</span>
         <h3 class="activity-ttl">練習</h3>
         <p>
-          毎週水曜日と土曜日が一斉練習日です。参加は強制ではなく、部室も利用しながら各自のペースで臨書や創作に取り組めます。部員同士で作品を見せ合い、助言しながら仕上げていきます。
+          水曜日と土曜日の一斉練習日には、部室の上の階にある共用室（広い和室）で練習します。部員同士で教え合ったり、アドバイスをもらったりできます。書展が近づくと品評会を開き、自分の作品に部員からコメントをもらって仕上げていきます。
+        </p>
+      </li>
+      <li>
+        <h3 class="activity-ttl">書展</h3>
+        <p>
+          初夏（鴨夏展）と冬（冬樟展）の年2回、学外で書展を開いています。出品作品に厳しい決まりはなく、書道の枠を越えたような作品も認められる自由な雰囲気です。歴代部長いわく「書展は祭やで！」。来場者の方からは、接客やアンケートを通して感想をいただいています。
+        </p>
+      </li>
+      <li>
+        <h3 class="activity-ttl">11月祭（NF）</h3>
+        <p>
+          NF書展・模擬店・書道パフォーマンスの3つの企画を行っています。NF書展は1年で唯一の学内展で、テーマを決めて作品を作ります。軸作品のほか、書道のイメージを覆すような作品も並びます。
+        </p>
+      </li>
+      <li>
+        <h3 class="activity-ttl">合宿</h3>
+        <p>
+          春休みと夏休みに2泊3日で出かけます。大広間を借りて夜中まで練習したり、品評会で先輩からアドバイスをもらったり。参加は自由です。これまでに淡路島、鳥取県三朝町、福井県あわら市、愛知県蒲郡市などに行きました。
         </p>
       </li>
     </ul>
   </Section>
 
-  <Section title="年間行事" index="03">
+  <Section title="年間行事">
     <ol class="annual-list">
       <li>
         <span class="annual-month">4月</span>
-        <div><strong>新歓</strong><p>書道体験や新歓書道パフォーマンスなど、新入生に向けた企画を行います。</p></div>
+        <div><strong>新歓</strong><p>書道体験、リレー書道、新歓書道パフォーマンスなどを行います。</p></div>
+      </li>
+      <li>
+        <span class="annual-month">5月</span>
+        <div><strong>新歓コンパ</strong><p>新入生と先輩の顔合わせです。</p></div>
       </li>
       <li>
         <span class="annual-month">6月</span>
-        <div><strong>鴨夏展</strong><p>初夏に開催する学外書展です。日頃の練習や制作の成果を展示します。</p></div>
+        <div><strong>鴨夏展</strong><p>年度1回目の学外書展です（第134回までは「初夏書展」）。この書展で幹部の代が交代します。</p></div>
       </li>
       <li>
         <span class="annual-month">8月</span>
-        <div><strong>夏合宿</strong><p>まとまった時間を使って作品制作や品評を行い、学年を越えて交流します。参加は任意です。</p></div>
+        <div><strong>夏合宿</strong><p>新入生にとっては初めての合宿です。</p></div>
+      </li>
+      <li>
+        <span class="annual-month">夏休み</span>
+        <div><strong>旧帝展</strong><p>旧帝国大学の書道部による合同書展です。参加は任意で、他大学の書道部と交流できます。</p></div>
       </li>
       <li>
         <span class="annual-month">10月</span>
-        <div><strong>響都展</strong><p>京都の大学書道団体が集まって開催する合同書展です。</p></div>
+        <div><strong>響都展</strong><p>京都市内の大学書道部が集まる合同書展です。</p></div>
       </li>
       <li>
         <span class="annual-month">11月</span>
-        <div><strong>京都大学11月祭（NF）</strong><p>学内での書展や、音楽に合わせて作品を書き上げるNF書道パフォーマンスを行います。</p></div>
+        <div><strong>11月祭（NF）</strong><p>NF書展・模擬店・書道パフォーマンスを行います。</p></div>
       </li>
       <li>
         <span class="annual-month">12月</span>
-        <div><strong>冬樟展</strong><p>冬に開催する学外書展です。一年の制作の締めくくりとして作品を展示します。</p></div>
+        <div><strong>冬樟展</strong><p>年度2回目の学外書展です。京都大学のシンボルの「樟（くすのき）」から名付けました。卒業する部員にとっては最後の出品になります。</p></div>
       </li>
       <li>
         <span class="annual-month">2月</span>
-        <div><strong>春合宿</strong><p>次の学外書展に向けて作品制作や品評を行います。夏合宿と同様に参加は任意です。</p></div>
+        <div><strong>春合宿</strong><p>初夏の書展に向けて集中して練習します。</p></div>
+      </li>
+      <li>
+        <span class="annual-month">3月</span>
+        <div><strong>追い出しコンパ</strong><p>卒業する4回生を送り出します。</p></div>
       </li>
     </ol>
-    <p class="annual-note">※ 開催時期や内容は年度によって変更する場合があります。</p>
+    <p class="annual-note">※ 開催時期や内容は年度によって変わることがあります。</p>
   </Section>
 
-  <Section title="部室・活動場所" index="04">
+  <Section title="部室・活動場所">
     <div class="place-grid">
       <div class="place-item">
         <span class="place-label">部室</span>
         <h3>西部課外活動棟 E201</h3>
         <p>
-          ルネの隣にある西部課外活動棟E棟の2階です。紙や墨、書道に関する本などを置いています。
+          紙や墨、書道に関する本、冷蔵庫まであります。部員は24時間いつでも使えます。
         </p>
       </div>
       <div class="place-item">
         <span class="place-label">練習場所</span>
-        <h3>西部課外活動棟 E305</h3>
+        <h3>西部課外活動棟 E305（共用室）</h3>
         <p>
-          E棟3階の共用室です。水曜日と土曜日の一斉練習日を中心に、作品制作や品評会を行います。
+          部室の上の階にある広い和室です。一斉練習日はここで練習します。見学に来る方はこちらへどうぞ。
         </p>
       </div>
     </div>
+
+    <h3 class="route-title">行き方</h3>
+    <ol class="route">
+      <li>京都大学博物館から東大路通をはさんだ向かい側に「ルネ」があり、その隣が西部課外活動棟（サークルのBOX棟）です。</li>
+      <li>BOX棟とルネの間の道を進み、いちばん奥の建物（E棟）まで行きます。体育館とルネの間の道から回り込むこともできます。</li>
+      <li>E棟に入って奥の階段を上がります。2階で左に曲がってすぐ右手が部室（E201）、3階で左に曲がってすぐ左手が共用室（E305）です。</li>
+    </ol>
+    <p class="route-note">
+      新歓期の水曜日と新歓イベントのある平日には、クスノキ前と4共前で書道部パーカーを着た部員が案内しています。
+    </p>
   </Section>
 
-  <Section title="入部案内" index="05" flush>
+  <Section title="入部案内" flush>
     <div class="join" id="join">
       <div class="join-lead">
-        <h2 class="join-title">入部をご希望の方へ</h2>
         <p>
           随時入部を受け付けています。まずは見学にお越しください。例会の日程や場所、疑問点など、X（旧 Twitter）の DM または下記連絡先までお気軽にどうぞ。
         </p>
@@ -133,16 +151,15 @@ import { SITE } from '~/libs/site';
           <li>道具の選び方や購入方法も先輩がサポートします。</li>
           <li>見学だけでも歓迎しています。事前にご連絡ください。</li>
         </ul>
-        <a class="join-cta" href="/news">最新のお知らせを見る →</a>
       </div>
       <div class="join-card">
-        <div class="join-card-label">お問い合わせ</div>
+        <h3 class="join-card-label">連絡先</h3>
         <div class="join-card-row">
           <span>X (Twitter)</span>
           <a href="https://x.com/kucc_E201" target="_blank" rel="noopener">@kucc_E201</a>
         </div>
         <div class="join-card-row">
-          <span>MAIL</span>
+          <span>メール</span>
           <a href="mailto:kshodobu.sakura@gmail.com">kshodobu.sakura@gmail.com</a>
         </div>
         <p class="join-card-note">
@@ -154,48 +171,11 @@ import { SITE } from '~/libs/site';
 </Base>
 
 <style>
-  .page-hero {
-    padding: 4rem var(--gutter) 1.8rem;
-    border-bottom: 1px solid var(--color-line);
-  }
 
-  .page-hero-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    margin-bottom: 1rem;
-    font-family: var(--font-sans);
-  }
 
-  .page-hero-label {
-    font-size: 12px;
-    letter-spacing: 0.2em;
-    color: var(--color-primary);
-    font-weight: 500;
-    text-transform: uppercase;
-  }
 
-  .page-hero-divider {
-    width: 28px;
-    height: 1px;
-    background: var(--color-line);
-  }
 
-  .page-hero-en {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--color-faint);
-    text-transform: uppercase;
-  }
 
-  .page-hero-title {
-    font-family: var(--font-display);
-    font-size: clamp(1.9rem, 4vw, 2.6rem);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: var(--color-ink);
-    line-height: 1.3;
-  }
 
   .about-grid {
     display: grid;
@@ -232,9 +212,9 @@ import { SITE } from '~/libs/site';
   }
 
   .about-table dt {
-    font-size: 12px;
-    color: var(--color-primary);
-    letter-spacing: 0.15em;
+    font-size: 13px;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
     font-weight: 500;
     padding-top: 0.2rem;
   }
@@ -249,26 +229,16 @@ import { SITE } from '~/libs/site';
   .activity-list {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.5rem;
-  }
-
-  .activity-num {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--color-primary);
-    letter-spacing: 0.15em;
-    font-weight: 500;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem 3rem;
   }
 
   .activity-ttl {
     font-family: var(--font-display);
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 500;
-    letter-spacing: 0.08em;
-    margin: 0.6rem 0 0.85rem;
-    padding-left: 0.85rem;
-    border-left: 2px solid var(--color-primary);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.6rem;
     color: var(--color-ink);
   }
 
@@ -301,10 +271,10 @@ import { SITE } from '~/libs/site';
   }
 
   .annual-month {
-    color: var(--color-primary);
+    color: var(--color-ink);
     font-family: var(--font-display);
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 17px;
+    font-weight: 500;
     letter-spacing: 0.05em;
   }
 
@@ -347,16 +317,14 @@ import { SITE } from '~/libs/site';
 
   .place-item {
     padding-top: 1.2rem;
-    border-top: 2px solid var(--color-ink);
+    border-top: 1px solid var(--color-line);
   }
 
   .place-label {
-    color: var(--color-primary);
+    color: var(--color-muted);
     font-family: var(--font-sans);
-    font-size: 12px;
-    letter-spacing: 0.18em;
-    font-weight: 500;
-    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.04em;
   }
 
   .place-item h3 {
@@ -376,20 +344,41 @@ import { SITE } from '~/libs/site';
     letter-spacing: 0.03em;
   }
 
+  .route-title {
+    margin: 2.5rem 0 0.8rem;
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--color-ink);
+  }
+
+  .route {
+    padding-left: 1.4rem;
+    max-width: 48rem;
+  }
+
+  .route li {
+    padding: 0.2rem 0;
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--color-subtext);
+    letter-spacing: 0.03em;
+  }
+
+  .route-note {
+    margin-top: 1rem;
+    max-width: 48rem;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--color-muted);
+  }
+
   .join {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
     gap: 3.5rem;
     align-items: start;
-  }
-
-  .join-title {
-    font-family: var(--font-display);
-    font-size: clamp(1.4rem, 2.4vw, 1.7rem);
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    margin-bottom: 1.2rem;
-    color: var(--color-ink);
   }
 
   .join-lead p {
@@ -403,8 +392,7 @@ import { SITE } from '~/libs/site';
   }
 
   .join-points {
-    list-style: none;
-    margin-bottom: 1.8rem;
+    padding-left: 1.2rem;
   }
 
   .join-points li {
@@ -412,97 +400,65 @@ import { SITE } from '~/libs/site';
     font-family: var(--font-sans);
     font-weight: 400;
     color: var(--color-subtext);
-    padding: 0.55rem 0 0.55rem 1.3rem;
-    position: relative;
-    line-height: 1.7;
-    border-bottom: 1px solid var(--color-line-soft);
+    padding: 0.2rem 0;
+    line-height: 1.8;
     letter-spacing: 0.03em;
   }
 
-  .join-points li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 1rem;
-    width: 6px;
-    height: 6px;
-    background: var(--color-primary);
-  }
-
-  .join-cta {
-    display: inline-block;
-    font-size: 13px;
-    color: #fff;
-    background: var(--color-primary);
-    font-family: var(--font-sans);
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    padding: 0.7rem 1.5rem;
-    transition: background 0.2s ease;
-  }
-
-  .join-cta:hover {
-    background: var(--color-primary-ink);
-  }
-
   .join-card {
-    background: var(--color-panel);
-    padding: 1.8rem;
-    border-left: 2px solid var(--color-primary);
+    border-top: 1px solid var(--color-line);
+    padding-top: 1.2rem;
   }
 
   .join-card-label {
-    font-size: 12px;
-    letter-spacing: 0.2em;
-    color: var(--color-primary-soft);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
     font-family: var(--font-sans);
     font-weight: 500;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
+    margin-bottom: 0.5rem;
   }
 
   .join-card-row {
     display: flex;
     justify-content: space-between;
     padding: 0.7rem 0;
-    border-bottom: 1px solid var(--color-panel-line);
+    border-bottom: 1px solid var(--color-line-soft);
     font-family: var(--font-sans);
     font-size: 14px;
     gap: 1rem;
   }
 
   .join-card-row span {
-    color: var(--color-panel-muted);
-    letter-spacing: 0.15em;
-    font-size: 12px;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+    font-size: 13px;
     flex-shrink: 0;
   }
 
   .join-card-row a {
-    color: var(--color-panel-text);
-    transition: color 0.2s ease;
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
     word-break: break-all;
     text-align: right;
   }
 
   .join-card-row a:hover {
-    color: var(--color-primary-soft);
+    text-decoration: none;
   }
 
   .join-card-note {
     font-size: 12px;
     font-family: var(--font-sans);
     font-weight: 400;
-    color: var(--color-panel-muted);
+    color: var(--color-muted);
     margin-top: 1rem;
     line-height: 1.7;
     letter-spacing: 0.03em;
   }
 
   @media (max-width: 760px) {
-    .page-hero {
-      padding: 2.5rem var(--gutter) 1.4rem;
-    }
 
     .about-grid,
     .join {

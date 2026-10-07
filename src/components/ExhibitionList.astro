@@ -1,6 +1,6 @@
 ---
 import type { Exhibition } from '~/types/content';
-import { formatDateRange } from '~/libs/format';
+import { formatDateRange, yearOf } from '~/libs/format';
 
 interface Props {
   exhibitions: Exhibition[];
@@ -18,7 +18,7 @@ const { exhibitions } = Astro.props;
         <li class="ex-item">
           <a class="ex-link" href={`/exhibitions/${exhibition.id}`}>
             <div class="ex-meta">
-              <div class="ex-year">{new Date(exhibition.startDate).getFullYear()}</div>
+              <div class="ex-year">{yearOf(exhibition.startDate)}</div>
               <div class="ex-venue">
                 {exhibition.venue}
                 {exhibition.address ? <span>　{exhibition.address}</span> : null}
@@ -31,7 +31,6 @@ const { exhibitions } = Astro.props;
               </div>
               <p class="ex-description">{exhibition.description}</p>
             </div>
-            <span class="ex-arrow" aria-hidden="true">→</span>
           </a>
         </li>
       ))
@@ -51,15 +50,10 @@ const { exhibitions } = Astro.props;
 
   .ex-link {
     display: grid;
-    grid-template-columns: 9rem 1fr auto;
+    grid-template-columns: 9rem 1fr;
     gap: 2rem;
     padding: 1.8rem 0.25rem;
     align-items: start;
-    transition: background 0.2s ease;
-  }
-
-  .ex-link:hover {
-    background: rgba(155, 35, 53, 0.035);
   }
 
   .ex-meta {
@@ -68,9 +62,9 @@ const { exhibitions } = Astro.props;
 
   .ex-year {
     font-family: var(--font-display);
-    font-size: 30px;
-    font-weight: 600;
-    color: var(--color-primary);
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--color-ink);
     letter-spacing: 0.03em;
     line-height: 1;
   }
@@ -115,20 +109,10 @@ const { exhibitions } = Astro.props;
     line-height: 1.85;
     color: var(--color-muted);
     letter-spacing: 0.03em;
-  }
-
-  .ex-arrow {
-    align-self: center;
-    font-size: 16px;
-    color: var(--color-faint);
-    transition:
-      color 0.2s ease,
-      transform 0.2s ease;
-  }
-
-  .ex-link:hover .ex-arrow {
-    color: var(--color-primary);
-    transform: translateX(3px);
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .empty {
@@ -141,30 +125,16 @@ const { exhibitions } = Astro.props;
 
   @media (max-width: 760px) {
     .ex-link {
-      grid-template-columns: 1fr auto;
-      grid-template-areas:
-        'meta arrow'
-        'body body';
+      grid-template-columns: 1fr;
       gap: 0.6rem 0.8rem;
       padding: 1.3rem 0.2rem;
     }
 
     .ex-meta {
-      grid-area: meta;
       display: flex;
       align-items: baseline;
       gap: 0.8rem;
       padding-top: 0;
-    }
-
-    .ex-body {
-      grid-area: body;
-    }
-
-    .ex-arrow {
-      grid-area: arrow;
-      align-self: start;
-      padding-top: 0.4rem;
     }
 
     .ex-year {
