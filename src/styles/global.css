@@ -1,9 +1,11 @@
 :root {
-  /* --- 朱・墨・和紙 のパレット（維持、微調整のみ） --- */
-  --color-primary: #9b2335;
-  --color-primary-soft: #e0c0c4;
-  --color-primary-tint: #f5c0c0;
-  --color-primary-ink: #7a1b2a;
+  /* --- 朱と白 --- */
+  --color-shu: #d0402b; /* 朱色の面（背景用） */
+  --color-shu-deep: #a52a1c; /* 朱の濃い飛沫 */
+  --color-primary: #b33220; /* 白地の上の文字・リンク用（読みやすさのため少し濃い朱） */
+  --color-primary-soft: #f2c4bb;
+  --color-primary-tint: #fbe3de;
+  --color-primary-ink: #8e2618;
 
   --color-black: #14110d;
   --color-ink: #1c1814; /* 墨、ほんのり暖色 */
@@ -12,12 +14,12 @@
   --color-muted: #6b635a;
   --color-faint: #9a9089;
 
-  --color-line: #d6cfc1; /* 境界線：暖ベージュグレー */
-  --color-line-soft: #e7e1d4;
-  --color-line-faint: #efe9dd;
+  --color-line: #e6ddd6;
+  --color-line-soft: #efe8e2;
+  --color-line-faint: #f5f0ec;
 
-  --color-page: #f4f1e9; /* 和紙クリーム */
-  --color-paper: #fbf9f3; /* より白い和紙 */
+  --color-page: #fffdfa; /* 白 */
+  --color-paper: #ffffff;
 
   --color-panel: var(--color-black);
   --color-panel-soft: #1f1b16;
@@ -25,10 +27,10 @@
   --color-panel-muted: #9a9089;
   --color-panel-line: rgba(241, 237, 228, 0.12);
 
-  --color-footer-bg: var(--color-black);
-  --color-footer-text: #f1ede4;
-  --color-footer-muted: #9a9089;
-  --color-footer-copy: #6b635a;
+  --color-footer-bg: var(--color-shu-deep);
+  --color-footer-text: #ffffff;
+  --color-footer-muted: rgba(255, 255, 255, 0.82);
+  --color-footer-copy: rgba(255, 255, 255, 0.72);
 
   /* --- シャドウは原則使わない。階層は罫線で作る --- */
   --shadow-paper: none;
@@ -66,12 +68,20 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* 和紙の極めて繊細な粒子感（書道文脈ではなく、紙の質感として） */
-  background-image: radial-gradient(
-    rgba(28, 24, 20, 0.018) 1px,
-    transparent 1px
-  );
-  background-size: 3px 3px;
+}
+
+/* 朱色の面の上では文字や線を白にする（中の部品は同じ変数を使っているのでそのまま白くなる） */
+.on-shu {
+  --color-ink: #ffffff;
+  --color-text: #ffffff;
+  --color-subtext: #ffffff;
+  --color-muted: rgba(255, 255, 255, 0.86);
+  --color-faint: rgba(255, 255, 255, 0.78);
+  --color-primary: #ffffff;
+  --color-line: rgba(255, 255, 255, 0.38);
+  --color-line-soft: rgba(255, 255, 255, 0.25);
+  background: var(--color-shu);
+  color: #ffffff;
 }
 
 img {
