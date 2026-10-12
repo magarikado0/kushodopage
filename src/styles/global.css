@@ -90,10 +90,9 @@ body {
   color: #ffffff;
 }
 
-/* 朱の地に小さな飛沫を散らす（模様は src/libs/splash.ts、色は src/pages/splash.svg.ts） */
+/* 朱の地に毛氈のようなごく細かいざらつきを重ねる（src/pages/texture.svg.ts） */
 body.on-shu {
-  background-image: url('/splash.svg');
-  background-repeat: repeat;
+  background-image: url('/texture.svg');
 }
 
 /*
