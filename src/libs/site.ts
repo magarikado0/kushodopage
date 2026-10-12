@@ -18,3 +18,13 @@ export const SITE = {
   description:
     '京都大学公認の書道部。漢字・かな・篆刻の練習、年2回の学外書展、書道パフォーマンスなどを行っています。経験不問。',
 };
+
+/** 部の SNS。ヘッダーと入部案内の連絡先に表示する */
+export const SOCIAL = {
+  x: { label: 'X', handle: 'kucc_E201', url: 'https://x.com/kucc_E201' },
+  instagram: {
+    label: 'Instagram',
+    handle: 'ku_shodobu',
+    url: 'https://www.instagram.com/ku_shodobu/',
+  },
+};

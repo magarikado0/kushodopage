@@ -1,11 +1,15 @@
 ---
-import { NAV_ITEMS, SITE } from '~/libs/site';
+import { NAV_ITEMS, SITE, SOCIAL } from '~/libs/site';
 
 interface Props {
   current?: string;
 }
 
 const { current } = Astro.props;
+
+// 最後の項目（入部案内）はボタンとして別扱いにし、その手前に SNS を置く
+const links = NAV_ITEMS.slice(0, -1);
+const joinLink = NAV_ITEMS[NAV_ITEMS.length - 1];
 ---
 
 <header class="nav">
@@ -27,12 +31,39 @@ const { current } = Astro.props;
     <nav class="nav-links" id="global-navigation" aria-label="グローバルナビゲーション">
       <ul>
         {
-          NAV_ITEMS.map((item) => (
+          links.map((item) => (
             <li class={current === item.href ? 'is-active' : ''}>
               <a href={item.href}>{item.label}</a>
             </li>
           ))
         }
+        <li class="nav-sns">
+          <a href={SOCIAL.x.url} target="_blank" rel="noopener" aria-label={`${SITE.name}の X`}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.78L17.75 3Zm-1.08 16.18h1.7L7.4 4.73H5.58l11.09 14.45Z"
+              />
+            </svg>
+            <span class="nav-sns-label">X</span>
+          </a>
+          <a
+            href={SOCIAL.instagram.url}
+            target="_blank"
+            rel="noopener"
+            aria-label={`${SITE.name}の Instagram`}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8" />
+              <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8" />
+              <circle cx="17.3" cy="6.7" r="1.2" fill="currentColor" />
+            </svg>
+            <span class="nav-sns-label">Instagram</span>
+          </a>
+        </li>
+        <li class={current === joinLink.href ? 'is-active' : ''}>
+          <a href={joinLink.href}>{joinLink.label}</a>
+        </li>
       </ul>
     </nav>
   </div>
@@ -121,6 +152,38 @@ const { current } = Astro.props;
 
   .nav-links li.is-active a::after {
     right: 0;
+  }
+
+  /* SNS はロゴだけを小さく。下線アニメーションは付けない */
+  .nav-sns {
+    display: flex;
+    gap: 0.9rem;
+    margin-left: 0.25rem;
+  }
+
+  .nav-links .nav-sns a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+  }
+
+  .nav-links .nav-sns a::after {
+    display: none;
+  }
+
+  .nav-sns svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .nav-sns-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 
   /* 最後の項目（入部案内）だけ朱の塗りボタン */
@@ -244,6 +307,27 @@ const { current } = Astro.props;
       border: 1px solid var(--color-primary);
       text-align: center;
       padding: 0.75rem 0.9rem;
+    }
+  }
+
+  /* スマホのメニューでは、ロゴの横に名前も出す */
+  @media (max-width: 760px) {
+    .nav-sns {
+      gap: 1.5rem;
+      margin-left: 0;
+    }
+
+    .nav-links .nav-sns a {
+      display: flex;
+      padding: 0.85rem 0.1rem;
+    }
+
+    .nav-sns-label {
+      position: static;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip: auto;
     }
   }
 </style>

@@ -3,7 +3,7 @@ import Base from '~/layouts/Base.astro';
 import Paper from '~/components/Paper.astro';
 import PageHeader from '~/components/PageHeader.astro';
 import Section from '~/components/Section.astro';
-import { SITE } from '~/libs/site';
+import { SITE, SOCIAL } from '~/libs/site';
 ---
 
 <Base
@@ -158,7 +158,11 @@ import { SITE } from '~/libs/site';
           <h3 class="join-card-label">連絡先</h3>
           <div class="join-card-row">
             <span>X (Twitter)</span>
-            <a href="https://x.com/kucc_E201" target="_blank" rel="noopener">@kucc_E201</a>
+            <a href={SOCIAL.x.url} target="_blank" rel="noopener">@{SOCIAL.x.handle}</a>
+          </div>
+          <div class="join-card-row">
+            <span>Instagram</span>
+            <a href={SOCIAL.instagram.url} target="_blank" rel="noopener">@{SOCIAL.instagram.handle}</a>
           </div>
           <div class="join-card-row">
             <span>メール</span>

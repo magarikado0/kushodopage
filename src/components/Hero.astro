@@ -164,11 +164,9 @@ const exhibition = hero?.exhibition;
     margin-top: 0.75rem;
   }
 
-  /* 書展名はポスターの上端、会期と会場は下端にそろえる */
+  /* 書展名・会期・会場はひとかたまりにして、ポスターの高さの中央に置く */
   .has-poster .hero-next-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    align-self: center;
   }
 
   .hero-next-body.has-poster .hero-next-title {
