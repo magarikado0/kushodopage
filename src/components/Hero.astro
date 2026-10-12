@@ -126,28 +126,28 @@ const exhibition = hero?.exhibition;
   .hero-btn {
     display: inline-block;
     padding: 0.65rem 1.4rem;
-    border: 1px solid #fff;
+    border: 1px solid var(--color-primary);
     border-radius: 4px;
-    color: #fff;
+    color: var(--color-primary);
     transition:
       background 0.2s ease,
       color 0.2s ease;
   }
 
   .hero-btn.is-main {
-    background: #fff;
-    color: var(--color-shu);
+    background: var(--color-primary);
+    color: #fff;
     font-weight: 500;
   }
 
   .hero-btn:hover {
-    background: #fff;
-    color: var(--color-shu);
+    background: var(--color-primary);
+    color: #fff;
   }
 
   .hero-btn.is-main:hover {
     background: transparent;
-    color: #fff;
+    color: var(--color-primary);
   }
 
   .hero-next {
@@ -185,7 +185,7 @@ const exhibition = hero?.exhibition;
     font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.08em;
-    color: var(--color-muted);
+    color: var(--color-primary);
   }
 
   .hero-next-title {
