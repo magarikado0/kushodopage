@@ -42,12 +42,12 @@ const exhibition = hero?.exhibition;
                 <img
                   src={`${exhibition.heroImage.url}?w=360&fm=webp`}
                   alt={`${exhibition.title} ポスター`}
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                 />
               </a>
             )}
-            <div>
+            <div class="hero-next-text">
               <p class="hero-next-title">
                 <a href={`/exhibitions/${exhibition.id}`}>{exhibition.title}</a>
               </p>
@@ -89,7 +89,7 @@ const exhibition = hero?.exhibition;
 
   .hero-inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 30rem);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 36rem);
     gap: 2.5rem;
     padding: 2.25rem 0 3rem;
     border-bottom: 1px solid var(--color-line);
@@ -158,14 +158,22 @@ const exhibition = hero?.exhibition;
   /* 書展のポスターがあれば、書展名の横に小さく添える */
   .hero-next-body.has-poster {
     display: grid;
-    grid-template-columns: 7.5rem minmax(0, 1fr);
-    gap: 1.25rem;
-    align-items: start;
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: stretch;
     margin-top: 0.75rem;
+  }
+
+  /* 書展名はポスターの上端、会期と会場は下端にそろえる */
+  .has-poster .hero-next-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   .hero-next-body.has-poster .hero-next-title {
     margin-top: 0;
+    font-size: 1.6rem;
   }
 
   .hero-next-poster img {
