@@ -2,7 +2,6 @@
   /* --- 朱と白 --- */
   --color-shu: #d0402b; /* 朱色の面（背景用） */
   --color-shu-deep: #a52a1c; /* フッターなど濃い朱 */
-  --color-shu-splash: #bf3624; /* 背景の飛沫。地の朱に近づけて目立ちすぎないように */
   --color-primary: #b33220; /* 白地の上の文字・リンク用（読みやすさのため少し濃い朱） */
   --color-primary-soft: #f2c4bb;
   --color-primary-tint: #fbe3de;
@@ -88,6 +87,12 @@ body {
   --color-paper: rgba(255, 255, 255, 0.12);
   background: var(--color-shu);
   color: #ffffff;
+}
+
+/* 朱の地に小さな飛沫を散らす（模様は src/libs/splash.ts、色は src/pages/splash.svg.ts） */
+body.on-shu {
+  background-image: url('/splash.svg');
+  background-repeat: repeat;
 }
 
 /*

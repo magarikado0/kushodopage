@@ -3,7 +3,6 @@ import '~/styles/global.css';
 import Nav from '~/components/Nav.astro';
 import Footer from '~/components/Footer.astro';
 import { SITE } from '~/libs/site';
-import InkSplash from '~/components/InkSplash.astro';
 
 interface Props {
   title?: string;
@@ -55,9 +54,6 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
     />
   </head>
   <body class="on-shu">
-    <div class="page-splash" aria-hidden="true">
-      <InkSplash color="var(--color-shu-splash)" seed={11} blots={5} scale={0.55} />
-    </div>
     <a class="visually-hidden" href="#main">本文へ移動</a>
     <Nav current={current} />
     <main id="main">
@@ -66,18 +62,3 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
     <Footer />
   </body>
 </html>
-
-<style>
-  /* 朱の地に散る飛沫。画面に固定し、スクロールしても背景として残る */
-  .page-splash {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  :global(body > :is(header, main, footer)) {
-    position: relative;
-    z-index: 1;
-  }
-</style>
