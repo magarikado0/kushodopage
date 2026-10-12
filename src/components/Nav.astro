@@ -39,10 +39,11 @@ const { current } = Astro.props;
 </header>
 
 <style>
+  /* ヘッダーは墨色にして、朱の本文と分ける */
   .nav {
     position: relative;
     z-index: 30;
-    border-bottom: 1px solid var(--color-line);
+    background: var(--color-black);
   }
 
   .nav-inner {
@@ -203,8 +204,7 @@ const { current } = Astro.props;
       top: 100%;
       right: 0;
       left: 0;
-      background: var(--color-page);
-      border-bottom: 1px solid var(--color-line);
+      background: var(--color-black);
       padding: 0.5rem var(--gutter) 1.1rem;
     }
 
