@@ -1,7 +1,6 @@
 :root {
   /* --- 朱と白 --- */
   --color-shu: #d0402b; /* 朱色の面（背景用） */
-  --color-shu-header: #bb3826; /* ヘッダー。本文の朱より少しだけ濃い */
   --color-shu-deep: #a52a1c; /* フッターなど濃い朱 */
   --color-primary: #b33220; /* 白地の上の文字・リンク用（読みやすさのため少し濃い朱） */
   --color-primary-soft: #f2c4bb;

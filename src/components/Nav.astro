@@ -8,7 +8,7 @@ interface Props {
 const { current } = Astro.props;
 ---
 
-<header class="nav">
+<header class="nav paper">
   <div class="nav-inner">
     <a class="nav-logo" href="/" aria-label={`${SITE.name} トップページ`}>
       <img src="/header.png" alt={SITE.name} />
@@ -39,12 +39,10 @@ const { current } = Astro.props;
 </header>
 
 <style>
-  /* ヘッダーは本文より少しだけ濃い朱にして、ゆるく分ける */
+  /* ヘッダーは白地に黒文字（.paper で文字色を戻している） */
   .nav {
     position: relative;
     z-index: 30;
-    background: var(--color-shu-header);
-    border-bottom: 2px solid var(--color-black);
   }
 
   .nav-inner {
@@ -63,12 +61,10 @@ const { current } = Astro.props;
     flex: 0 1 240px;
   }
 
-  /* 黒い筆文字のロゴを、朱の地の上で白く見せる */
   .nav-logo img {
     display: block;
     width: 100%;
     height: auto;
-    filter: brightness(0) invert(1);
   }
 
   .nav-toggle {
@@ -141,13 +137,13 @@ const { current } = Astro.props;
   }
 
   .nav-links li:last-child a:hover {
-    background: #fff;
-    color: var(--color-shu);
+    background: var(--color-primary);
+    color: #fff;
   }
 
   .nav-links li.is-active:last-child a {
-    background: #fff;
-    color: var(--color-shu);
+    background: var(--color-primary);
+    color: #fff;
   }
 
   @media (max-width: 760px) {
@@ -205,7 +201,8 @@ const { current } = Astro.props;
       top: 100%;
       right: 0;
       left: 0;
-      background: var(--color-shu-header);
+      background: #fff;
+      border-bottom: 1px solid var(--color-line);
       padding: 0.5rem var(--gutter) 1.1rem;
     }
 
