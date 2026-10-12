@@ -1,7 +1,8 @@
 :root {
   /* --- 朱と白 --- */
   --color-shu: #d0402b; /* 朱色の面（背景用） */
-  --color-shu-deep: #a52a1c; /* 朱の濃い飛沫 */
+  --color-shu-deep: #a52a1c; /* フッターなど濃い朱 */
+  --color-shu-splash: #bf3624; /* 背景の飛沫。地の朱に近づけて目立ちすぎないように */
   --color-primary: #b33220; /* 白地の上の文字・リンク用（読みやすさのため少し濃い朱） */
   --color-primary-soft: #f2c4bb;
   --color-primary-tint: #fbe3de;

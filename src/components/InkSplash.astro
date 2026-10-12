@@ -13,6 +13,8 @@ interface Props {
   seed?: number;
   /** 大きな飛沫の数 */
   blots?: number;
+  /** 飛沫の大きさの倍率（1 で標準。小さくすると控えめになる） */
+  scale?: number;
   class?: string;
 }
 
@@ -21,6 +23,7 @@ const {
   opacity = 1,
   seed = 7,
   blots = 6,
+  scale = 1,
   class: className,
 } = Astro.props;
 
@@ -46,14 +49,14 @@ const shapes: Shape[] = [];
 for (let i = 0; i < blots; i++) {
   const cx = rand() * W;
   const cy = rand() * H;
-  const r = 14 + rand() * 42;
+  const r = (14 + rand() * 42) * scale;
   shapes.push({ kind: 'circle', cx, cy, r });
 
   // 中心から外へ勢いよく伸びる筋。先端に小さな滴が残る
   const streaks = 14 + Math.floor(rand() * 12);
   for (let j = 0; j < streaks; j++) {
     const angle = rand() * Math.PI * 2;
-    const len = 18 + rand() * rand() * 140;
+    const len = (18 + rand() * rand() * 140) * scale;
     const start = r * (0.6 + rand() * 0.3);
     const mid = start + len / 2;
     shapes.push({
@@ -61,16 +64,16 @@ for (let i = 0; i < blots; i++) {
       cx: cx + Math.cos(angle) * mid,
       cy: cy + Math.sin(angle) * mid,
       rx: len / 2,
-      ry: 1 + rand() * (len > 60 ? 3 : 5),
+      ry: (1 + rand() * (len > 60 ? 3 : 5)) * Math.max(scale, 0.6),
       angle: (angle * 180) / Math.PI,
     });
     if (rand() < 0.6) {
-      const tip = start + len + 4 + rand() * 18;
+      const tip = start + len + (4 + rand() * 18) * scale;
       shapes.push({
         kind: 'circle',
         cx: cx + Math.cos(angle) * tip,
         cy: cy + Math.sin(angle) * tip,
-        r: 1.5 + rand() * 4.5,
+        r: (1.5 + rand() * 4.5) * Math.max(scale, 0.6),
       });
     }
   }
@@ -84,7 +87,7 @@ for (let i = 0; i < blots; i++) {
       kind: 'circle',
       cx: cx + Math.cos(angle) * dist,
       cy: cy + Math.sin(angle) * dist,
-      r: 0.8 + rand() * rand() * 7,
+      r: (0.8 + rand() * rand() * 7) * Math.max(scale, 0.6),
     });
   }
 }

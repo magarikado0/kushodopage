@@ -1,5 +1,6 @@
 ---
 import Base from '~/layouts/Base.astro';
+import Paper from '~/components/Paper.astro';
 import PageHeader from '~/components/PageHeader.astro';
 import Section from '~/components/Section.astro';
 import ExhibitionList from '~/components/ExhibitionList.astro';
@@ -21,35 +22,37 @@ const undated = exhibitions.filter((e) => !e.startDate);
 >
   <PageHeader title="作品紹介" />
 
-  <Section title="書展">
-    <p class="section-lead">
-      初夏（鴨夏展）と冬（冬樟展）の年2回、学外で書展を開いています。各回のページからパンフレットを見られます。
-    </p>
-    <ExhibitionList exhibitions={dated} />
+  <Paper>
+    <Section title="書展">
+      <p class="section-lead">
+        初夏（鴨夏展）と冬（冬樟展）の年2回、学外で書展を開いています。各回のページからパンフレットを見られます。
+      </p>
+      <ExhibitionList exhibitions={dated} />
 
-    {
-      undated.length > 0 && (
-        <>
-          <h3 class="sub-heading">そのほかの回</h3>
-          <ul class="brochure-list">
-            {undated.map((e) => (
-              <li>
-                <a href={`/exhibitions/${e.id}`}>{e.title.replace(/\s*書展$/, '')}</a>
-              </li>
-            ))}
-          </ul>
-          <p class="note">会期・会場の記録が残っていない回です。パンフレットをご覧いただけます。</p>
-        </>
-      )
-    }
-  </Section>
+      {
+        undated.length > 0 && (
+          <>
+            <h3 class="sub-heading">そのほかの回</h3>
+            <ul class="brochure-list">
+              {undated.map((e) => (
+                <li>
+                  <a href={`/exhibitions/${e.id}`}>{e.title.replace(/\s*書展$/, '')}</a>
+                </li>
+              ))}
+            </ul>
+            <p class="note">会期・会場の記録が残っていない回です。パンフレットをご覧いただけます。</p>
+          </>
+        )
+      }
+    </Section>
 
-  <Section title="書道パフォーマンス" flush>
-    <p class="section-lead">
-      これまでに行ってきた書道パフォーマンスの写真や動画です。
-    </p>
-    <PerformanceList groups={performanceGroups} />
-  </Section>
+    <Section title="書道パフォーマンス" flush>
+      <p class="section-lead">
+        これまでに行ってきた書道パフォーマンスの写真や動画です。
+      </p>
+      <PerformanceList groups={performanceGroups} />
+    </Section>
+  </Paper>
 </Base>
 
 <style>

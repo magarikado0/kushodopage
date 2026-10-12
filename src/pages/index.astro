@@ -1,5 +1,6 @@
 ---
 import Base from '~/layouts/Base.astro';
+import Paper from '~/components/Paper.astro';
 import Hero from '~/components/Hero.astro';
 import Section from '~/components/Section.astro';
 import NewsList from '~/components/NewsList.astro';
@@ -13,11 +14,13 @@ const exhibitions = await getExhibitions(3);
 <Base current="/">
   <Hero />
 
-  <Section title="お知らせ" moreHref="/news">
-    <NewsList items={news} showDescription />
-  </Section>
+  <Paper>
+    <Section title="お知らせ" moreHref="/news">
+      <NewsList items={news} showDescription />
+    </Section>
 
-  <Section title="書展" moreHref="/activities" flush>
-    <ExhibitionList exhibitions={exhibitions} />
-  </Section>
+    <Section title="書展" moreHref="/activities" flush>
+      <ExhibitionList exhibitions={exhibitions} />
+    </Section>
+  </Paper>
 </Base>

@@ -1,5 +1,6 @@
 ---
 import Base from '~/layouts/Base.astro';
+import Paper from '~/components/Paper.astro';
 import PageHeader from '~/components/PageHeader.astro';
 import NewsList from '~/components/NewsList.astro';
 import { getAllNews } from '~/libs/microcms';
@@ -14,9 +15,11 @@ const news = await getAllNews();
 >
   <PageHeader title="お知らせ" />
 
-  <div class="container news-page">
-    <NewsList items={news} />
-  </div>
+  <Paper>
+    <div class="container news-page">
+      <NewsList items={news} />
+    </div>
+  </Paper>
 </Base>
 
 <style>
