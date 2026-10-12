@@ -17,7 +17,7 @@ const exhibitions = await getExhibitions(3);
     <NewsList items={news} showDescription />
   </Section>
 
-  <Section title="書展" moreHref="/activities" flush tone="shu" seed={23}>
+  <Section title="書展" moreHref="/activities" flush>
     <ExhibitionList exhibitions={exhibitions} />
   </Section>
 </Base>

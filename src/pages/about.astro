@@ -1,5 +1,6 @@
 ---
 import Base from '~/layouts/Base.astro';
+import Paper from '~/components/Paper.astro';
 import PageHeader from '~/components/PageHeader.astro';
 import Section from '~/components/Section.astro';
 import { SITE } from '~/libs/site';
@@ -12,162 +13,164 @@ import { SITE } from '~/libs/site';
 >
   <PageHeader title="書道部について" />
 
-  <Section title="部の紹介">
-    <div class="about-grid">
-      <div class="about-lead">
-        <p>
-          京都大学書道部は、京都大学の<strong>公認文化系団体</strong>です。漢字・かな・篆刻を中心に、古典の臨書から創作まで、各自が興味に応じて活動しています。
-        </p>
-        <p>
-          部室は24時間・365日使えるので、好きなときに練習できます。毎週水曜日と土曜日は一斉練習日ですが、参加は自由です。水曜日には月に1回、講師の先生に来ていただいています。
-        </p>
-        <p>
-          大学から書道を始めた部員も多く、2回生・3回生になってから始めた人もいます。経験の有無は気にしなくて大丈夫です。
-        </p>
-      </div>
-      <dl class="about-table">
-        <div><dt>正式名称</dt><dd>{SITE.name}</dd></div>
-        <div><dt>主な活動</dt><dd>練習・学外書展・書道パフォーマンス・合宿</dd></div>
-        <div><dt>練習日</dt><dd>毎週水曜日・土曜日（参加自由）</dd></div>
-        <div><dt>指導</dt><dd>月1回、水曜日に講師の先生</dd></div>
-        <div><dt>部室</dt><dd>西部課外活動棟 E201（24時間利用可）</dd></div>
-        <div><dt>対象</dt><dd>京都大学の学生。経験不問。</dd></div>
-      </dl>
-    </div>
-  </Section>
-
-  <Section title="活動内容">
-    <ul class="activity-list">
-      <li>
-        <h3 class="activity-ttl">練習</h3>
-        <p>
-          水曜日と土曜日の一斉練習日には、部室の上の階にある共用室（広い和室）で練習します。部員同士で教え合ったり、アドバイスをもらったりできます。書展が近づくと品評会を開き、自分の作品に部員からコメントをもらって仕上げていきます。
-        </p>
-      </li>
-      <li>
-        <h3 class="activity-ttl">書展</h3>
-        <p>
-          初夏（鴨夏展）と冬（冬樟展）の年2回、学外で書展を開いています。出品作品に厳しい決まりはなく、書道の枠を越えたような作品も認められる自由な雰囲気です。歴代部長いわく「書展は祭やで！」。来場者の方からは、接客やアンケートを通して感想をいただいています。
-        </p>
-      </li>
-      <li>
-        <h3 class="activity-ttl">11月祭（NF）</h3>
-        <p>
-          NF書展・模擬店・書道パフォーマンスの3つの企画を行っています。NF書展は1年で唯一の学内展で、テーマを決めて作品を作ります。軸作品のほか、書道のイメージを覆すような作品も並びます。
-        </p>
-      </li>
-      <li>
-        <h3 class="activity-ttl">合宿</h3>
-        <p>
-          春休みと夏休みに2泊3日で出かけます。大広間を借りて夜中まで練習したり、品評会で先輩からアドバイスをもらったり。参加は自由です。これまでに淡路島、鳥取県三朝町、福井県あわら市、愛知県蒲郡市などに行きました。
-        </p>
-      </li>
-    </ul>
-  </Section>
-
-  <Section title="年間行事">
-    <ol class="annual-list">
-      <li>
-        <span class="annual-month">4月</span>
-        <div><strong>新歓</strong><p>書道体験、リレー書道、新歓書道パフォーマンスなどを行います。</p></div>
-      </li>
-      <li>
-        <span class="annual-month">5月</span>
-        <div><strong>新歓コンパ</strong><p>新入生と先輩の顔合わせです。</p></div>
-      </li>
-      <li>
-        <span class="annual-month">6月</span>
-        <div><strong>鴨夏展</strong><p>年度1回目の学外書展です（第134回までは「初夏書展」）。この書展で幹部の代が交代します。</p></div>
-      </li>
-      <li>
-        <span class="annual-month">8月</span>
-        <div><strong>夏合宿</strong><p>新入生にとっては初めての合宿です。</p></div>
-      </li>
-      <li>
-        <span class="annual-month">夏休み</span>
-        <div><strong>旧帝展</strong><p>旧帝国大学の書道部による合同書展です。参加は任意で、他大学の書道部と交流できます。</p></div>
-      </li>
-      <li>
-        <span class="annual-month">10月</span>
-        <div><strong>響都展</strong><p>京都市内の大学書道部が集まる合同書展です。</p></div>
-      </li>
-      <li>
-        <span class="annual-month">11月</span>
-        <div><strong>11月祭（NF）</strong><p>NF書展・模擬店・書道パフォーマンスを行います。</p></div>
-      </li>
-      <li>
-        <span class="annual-month">12月</span>
-        <div><strong>冬樟展</strong><p>年度2回目の学外書展です。京都大学のシンボルの「樟（くすのき）」から名付けました。卒業する部員にとっては最後の出品になります。</p></div>
-      </li>
-      <li>
-        <span class="annual-month">2月</span>
-        <div><strong>春合宿</strong><p>初夏の書展に向けて集中して練習します。</p></div>
-      </li>
-      <li>
-        <span class="annual-month">3月</span>
-        <div><strong>追い出しコンパ</strong><p>卒業する4回生を送り出します。</p></div>
-      </li>
-    </ol>
-    <p class="annual-note">※ 開催時期や内容は年度によって変わることがあります。</p>
-  </Section>
-
-  <Section title="部室・活動場所">
-    <div class="place-grid">
-      <div class="place-item">
-        <span class="place-label">部室</span>
-        <h3>西部課外活動棟 E201</h3>
-        <p>
-          紙や墨、書道に関する本、冷蔵庫まであります。部員は24時間いつでも使えます。
-        </p>
-      </div>
-      <div class="place-item">
-        <span class="place-label">練習場所</span>
-        <h3>西部課外活動棟 E305（共用室）</h3>
-        <p>
-          部室の上の階にある広い和室です。一斉練習日はここで練習します。見学に来る方はこちらへどうぞ。
-        </p>
-      </div>
-    </div>
-
-    <h3 class="route-title">行き方</h3>
-    <ol class="route">
-      <li>京都大学博物館から東大路通をはさんだ向かい側に「ルネ」があり、その隣が西部課外活動棟（サークルのBOX棟）です。</li>
-      <li>BOX棟とルネの間の道を進み、いちばん奥の建物（E棟）まで行きます。体育館とルネの間の道から回り込むこともできます。</li>
-      <li>E棟に入って奥の階段を上がります。2階で左に曲がってすぐ右手が部室（E201）、3階で左に曲がってすぐ左手が共用室（E305）です。</li>
-    </ol>
-    <p class="route-note">
-      新歓期の水曜日と新歓イベントのある平日には、クスノキ前と4共前で書道部パーカーを着た部員が案内しています。
-    </p>
-  </Section>
-
-  <Section title="入部案内" flush>
-    <div class="join" id="join">
-      <div class="join-lead">
-        <p>
-          随時入部を受け付けています。まずは見学にお越しください。例会の日程や場所、疑問点など、X（旧 Twitter）の DM または下記連絡先までお気軽にどうぞ。
-        </p>
-        <ul class="join-points">
-          <li>経験は一切問いません。大学から書道を始めた部員もいます。</li>
-          <li>道具の選び方や購入方法も先輩がサポートします。</li>
-          <li>見学だけでも歓迎しています。事前にご連絡ください。</li>
-        </ul>
-      </div>
-      <div class="join-card">
-        <h3 class="join-card-label">連絡先</h3>
-        <div class="join-card-row">
-          <span>X (Twitter)</span>
-          <a href="https://x.com/kucc_E201" target="_blank" rel="noopener">@kucc_E201</a>
+  <Paper>
+    <Section title="部の紹介">
+      <div class="about-grid">
+        <div class="about-lead">
+          <p>
+            京都大学書道部は、京都大学の<strong>公認文化系団体</strong>です。漢字・かな・篆刻を中心に、古典の臨書から創作まで、各自が興味に応じて活動しています。
+          </p>
+          <p>
+            部室は24時間・365日使えるので、好きなときに練習できます。毎週水曜日と土曜日は一斉練習日ですが、参加は自由です。水曜日には月に1回、講師の先生に来ていただいています。
+          </p>
+          <p>
+            大学から書道を始めた部員も多く、2回生・3回生になってから始めた人もいます。経験の有無は気にしなくて大丈夫です。
+          </p>
         </div>
-        <div class="join-card-row">
-          <span>メール</span>
-          <a href="mailto:kshodobu.sakura@gmail.com">kshodobu.sakura@gmail.com</a>
-        </div>
-        <p class="join-card-note">
-          ※ 数日以内に返信がない場合は、迷惑メールフォルダをご確認ください。
-        </p>
+        <dl class="about-table">
+          <div><dt>正式名称</dt><dd>{SITE.name}</dd></div>
+          <div><dt>主な活動</dt><dd>練習・学外書展・書道パフォーマンス・合宿</dd></div>
+          <div><dt>練習日</dt><dd>毎週水曜日・土曜日（参加自由）</dd></div>
+          <div><dt>指導</dt><dd>月1回、水曜日に講師の先生</dd></div>
+          <div><dt>部室</dt><dd>西部課外活動棟 E201（24時間利用可）</dd></div>
+          <div><dt>対象</dt><dd>京都大学の学生。経験不問。</dd></div>
+        </dl>
       </div>
-    </div>
-  </Section>
+    </Section>
+
+    <Section title="活動内容">
+      <ul class="activity-list">
+        <li>
+          <h3 class="activity-ttl">練習</h3>
+          <p>
+            水曜日と土曜日の一斉練習日には、部室の上の階にある共用室（広い和室）で練習します。部員同士で教え合ったり、アドバイスをもらったりできます。書展が近づくと品評会を開き、自分の作品に部員からコメントをもらって仕上げていきます。
+          </p>
+        </li>
+        <li>
+          <h3 class="activity-ttl">書展</h3>
+          <p>
+            初夏（鴨夏展）と冬（冬樟展）の年2回、学外で書展を開いています。出品作品に厳しい決まりはなく、書道の枠を越えたような作品も認められる自由な雰囲気です。歴代部長いわく「書展は祭やで！」。来場者の方からは、接客やアンケートを通して感想をいただいています。
+          </p>
+        </li>
+        <li>
+          <h3 class="activity-ttl">11月祭（NF）</h3>
+          <p>
+            NF書展・模擬店・書道パフォーマンスの3つの企画を行っています。NF書展は1年で唯一の学内展で、テーマを決めて作品を作ります。軸作品のほか、書道のイメージを覆すような作品も並びます。
+          </p>
+        </li>
+        <li>
+          <h3 class="activity-ttl">合宿</h3>
+          <p>
+            春休みと夏休みに2泊3日で出かけます。大広間を借りて夜中まで練習したり、品評会で先輩からアドバイスをもらったり。参加は自由です。これまでに淡路島、鳥取県三朝町、福井県あわら市、愛知県蒲郡市などに行きました。
+          </p>
+        </li>
+      </ul>
+    </Section>
+
+    <Section title="年間行事">
+      <ol class="annual-list">
+        <li>
+          <span class="annual-month">4月</span>
+          <div><strong>新歓</strong><p>書道体験、リレー書道、新歓書道パフォーマンスなどを行います。</p></div>
+        </li>
+        <li>
+          <span class="annual-month">5月</span>
+          <div><strong>新歓コンパ</strong><p>新入生と先輩の顔合わせです。</p></div>
+        </li>
+        <li>
+          <span class="annual-month">6月</span>
+          <div><strong>鴨夏展</strong><p>年度1回目の学外書展です（第134回までは「初夏書展」）。この書展で幹部の代が交代します。</p></div>
+        </li>
+        <li>
+          <span class="annual-month">8月</span>
+          <div><strong>夏合宿</strong><p>新入生にとっては初めての合宿です。</p></div>
+        </li>
+        <li>
+          <span class="annual-month">夏休み</span>
+          <div><strong>旧帝展</strong><p>旧帝国大学の書道部による合同書展です。参加は任意で、他大学の書道部と交流できます。</p></div>
+        </li>
+        <li>
+          <span class="annual-month">10月</span>
+          <div><strong>響都展</strong><p>京都市内の大学書道部が集まる合同書展です。</p></div>
+        </li>
+        <li>
+          <span class="annual-month">11月</span>
+          <div><strong>11月祭（NF）</strong><p>NF書展・模擬店・書道パフォーマンスを行います。</p></div>
+        </li>
+        <li>
+          <span class="annual-month">12月</span>
+          <div><strong>冬樟展</strong><p>年度2回目の学外書展です。京都大学のシンボルの「樟（くすのき）」から名付けました。卒業する部員にとっては最後の出品になります。</p></div>
+        </li>
+        <li>
+          <span class="annual-month">2月</span>
+          <div><strong>春合宿</strong><p>初夏の書展に向けて集中して練習します。</p></div>
+        </li>
+        <li>
+          <span class="annual-month">3月</span>
+          <div><strong>追い出しコンパ</strong><p>卒業する4回生を送り出します。</p></div>
+        </li>
+      </ol>
+      <p class="annual-note">※ 開催時期や内容は年度によって変わることがあります。</p>
+    </Section>
+
+    <Section title="部室・活動場所">
+      <div class="place-grid">
+        <div class="place-item">
+          <span class="place-label">部室</span>
+          <h3>西部課外活動棟 E201</h3>
+          <p>
+            紙や墨、書道に関する本、冷蔵庫まであります。部員は24時間いつでも使えます。
+          </p>
+        </div>
+        <div class="place-item">
+          <span class="place-label">練習場所</span>
+          <h3>西部課外活動棟 E305（共用室）</h3>
+          <p>
+            部室の上の階にある広い和室です。一斉練習日はここで練習します。見学に来る方はこちらへどうぞ。
+          </p>
+        </div>
+      </div>
+
+      <h3 class="route-title">行き方</h3>
+      <ol class="route">
+        <li>京都大学博物館から東大路通をはさんだ向かい側に「ルネ」があり、その隣が西部課外活動棟（サークルのBOX棟）です。</li>
+        <li>BOX棟とルネの間の道を進み、いちばん奥の建物（E棟）まで行きます。体育館とルネの間の道から回り込むこともできます。</li>
+        <li>E棟に入って奥の階段を上がります。2階で左に曲がってすぐ右手が部室（E201）、3階で左に曲がってすぐ左手が共用室（E305）です。</li>
+      </ol>
+      <p class="route-note">
+        新歓期の水曜日と新歓イベントのある平日には、クスノキ前と4共前で書道部パーカーを着た部員が案内しています。
+      </p>
+    </Section>
+
+    <Section title="入部案内" flush>
+      <div class="join" id="join">
+        <div class="join-lead">
+          <p>
+            随時入部を受け付けています。まずは見学にお越しください。例会の日程や場所、疑問点など、X（旧 Twitter）の DM または下記連絡先までお気軽にどうぞ。
+          </p>
+          <ul class="join-points">
+            <li>経験は一切問いません。大学から書道を始めた部員もいます。</li>
+            <li>道具の選び方や購入方法も先輩がサポートします。</li>
+            <li>見学だけでも歓迎しています。事前にご連絡ください。</li>
+          </ul>
+        </div>
+        <div class="join-card">
+          <h3 class="join-card-label">連絡先</h3>
+          <div class="join-card-row">
+            <span>X (Twitter)</span>
+            <a href="https://x.com/kucc_E201" target="_blank" rel="noopener">@kucc_E201</a>
+          </div>
+          <div class="join-card-row">
+            <span>メール</span>
+            <a href="mailto:kshodobu.sakura@gmail.com">kshodobu.sakura@gmail.com</a>
+          </div>
+          <p class="join-card-note">
+            ※ 数日以内に返信がない場合は、迷惑メールフォルダをご確認ください。
+          </p>
+        </div>
+      </div>
+    </Section>
+  </Paper>
 </Base>
 
 <style>

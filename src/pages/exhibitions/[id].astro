@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Base from '~/layouts/Base.astro';
+import Paper from '~/components/Paper.astro';
 import { getAllExhibitions } from '~/libs/microcms';
 import { pamphletHref, resolvePamphlet } from '~/libs/pamphlet';
 import { formatDateRange, excerpt } from '~/libs/format';
@@ -23,82 +24,84 @@ const dateRange =
   description={excerpt(exhibition.description ?? `京都大学書道部 ${exhibition.title}`, 120)}
   current="/activities"
 >
-  <article class="ex">
-    <div class="container ex-head">
-      <a class="ex-back" href="/activities">作品紹介に戻る</a>
-      <h1 class="ex-title">{exhibition.title}</h1>
-      <dl class="ex-info">
-        {
-          dateRange && (
-            <div>
-              <dt>会期</dt>
-              <dd>{dateRange}</dd>
-            </div>
-          )
-        }
-        {
-          exhibition.venue && (
-            <div>
-              <dt>会場</dt>
-              <dd>
-                {exhibition.venue}
-                {exhibition.address ? `（${exhibition.address}）` : ''}
-              </dd>
-            </div>
-          )
-        }
-      </dl>
-    </div>
-
-    {
-      exhibition.heroImage?.url && (
-        <div class="container ex-hero">
-          <img
-            src={`${exhibition.heroImage.url}?h=1600&fm=webp`}
-            alt={exhibition.heroImage.alt ?? exhibition.title}
-            width={exhibition.heroImage.width}
-            height={exhibition.heroImage.height}
-          />
-        </div>
-      )
-    }
-
-    <div class="container">
-      {
-        exhibition.description && (
-        <div class="ex-body">
-          <h2 class="ex-h2">書展について</h2>
-          <p>{exhibition.description}</p>
-        </div>
-        )
-      }
+  <Paper>
+    <article class="ex">
+      <div class="container ex-head">
+        <a class="ex-back" href="/activities">作品紹介に戻る</a>
+        <h1 class="ex-title">{exhibition.title}</h1>
+        <dl class="ex-info">
+          {
+            dateRange && (
+              <div>
+                <dt>会期</dt>
+                <dd>{dateRange}</dd>
+              </div>
+            )
+          }
+          {
+            exhibition.venue && (
+              <div>
+                <dt>会場</dt>
+                <dd>
+                  {exhibition.venue}
+                  {exhibition.address ? `（${exhibition.address}）` : ''}
+                </dd>
+              </div>
+            )
+          }
+        </dl>
+      </div>
 
       {
-        (pamphlet || exhibition.artoirUrl) && (
-          <div class="ex-links">
-            <h2 class="ex-h2">作品と記録</h2>
-            <div class="ex-link-list">
-              {exhibition.artoirUrl && (
-                <a href={exhibition.artoirUrl} target="_blank" rel="noreferrer">
-                  <span>展示作品</span>
-                  <strong>Artoirで作品を見る</strong>
-                </a>
-              )}
-              {pamphlet && (
-                <a
-                  href={pamphletHref(exhibition.id, pamphlet)}
-                  {...(pamphlet.kind === 'external' ? { target: '_blank', rel: 'noreferrer' } : {})}
-                >
-                  <span>書展資料</span>
-                  <strong>パンフレットを見る</strong>
-                </a>
-              )}
-            </div>
+        exhibition.heroImage?.url && (
+          <div class="container ex-hero">
+            <img
+              src={`${exhibition.heroImage.url}?h=1600&fm=webp`}
+              alt={exhibition.heroImage.alt ?? exhibition.title}
+              width={exhibition.heroImage.width}
+              height={exhibition.heroImage.height}
+            />
           </div>
         )
       }
-    </div>
-  </article>
+
+      <div class="container">
+        {
+          exhibition.description && (
+          <div class="ex-body">
+            <h2 class="ex-h2">書展について</h2>
+            <p>{exhibition.description}</p>
+          </div>
+          )
+        }
+
+        {
+          (pamphlet || exhibition.artoirUrl) && (
+            <div class="ex-links">
+              <h2 class="ex-h2">作品と記録</h2>
+              <div class="ex-link-list">
+                {exhibition.artoirUrl && (
+                  <a href={exhibition.artoirUrl} target="_blank" rel="noreferrer">
+                    <span>展示作品</span>
+                    <strong>Artoirで作品を見る</strong>
+                  </a>
+                )}
+                {pamphlet && (
+                  <a
+                    href={pamphletHref(exhibition.id, pamphlet)}
+                    {...(pamphlet.kind === 'external' ? { target: '_blank', rel: 'noreferrer' } : {})}
+                  >
+                    <span>書展資料</span>
+                    <strong>パンフレットを見る</strong>
+                  </a>
+                )}
+              </div>
+            </div>
+          )
+        }
+      </div>
+    </article>
+  </Paper>
 </Base>
 
 <style>

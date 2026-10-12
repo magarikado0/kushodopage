@@ -1,6 +1,4 @@
 ---
-import InkSplash from '~/components/InkSplash.astro';
-
 interface Props {
   title: string;
   /** 「一覧を見る」等のリンク先。未指定ならリンクを表示しない */
@@ -8,10 +6,6 @@ interface Props {
   moreLabel?: string;
   /** 下線を引かない（ページ末尾のセクション用） */
   flush?: boolean;
-  /** 'shu' で朱色の面に白文字（飛沫つき） */
-  tone?: 'plain' | 'shu';
-  /** 飛沫の模様（セクションごとに変える） */
-  seed?: number;
 }
 
 const {
@@ -19,13 +13,10 @@ const {
   moreHref,
   moreLabel = 'すべて見る',
   flush = false,
-  tone = 'plain',
-  seed = 3,
 } = Astro.props;
 ---
 
-<section class:list={['section', { 'is-flush': flush, 'on-shu': tone === 'shu' }]}>
-  {tone === 'shu' && <InkSplash color="var(--color-shu-deep)" seed={seed} blots={4} />}
+<section class:list={['section', { 'is-flush': flush }]}>
   <div class="container">
     <div class="section-head">
       <h2 class="section-title">{title}</h2>
@@ -43,18 +34,8 @@ const {
 
 <style>
   .section {
-    position: relative;
-    overflow: hidden;
     padding: 3.5rem 0;
     border-bottom: 1px solid var(--color-line);
-  }
-
-  .section.on-shu {
-    border-bottom: none;
-  }
-
-  .section > .container {
-    position: relative;
   }
 
   .section.is-flush {

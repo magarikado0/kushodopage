@@ -1,75 +1,62 @@
 ---
 import { formatDateRange } from '~/libs/format';
 import { getHeroExhibition } from '~/libs/microcms';
-import InkSplash from '~/components/InkSplash.astro';
 
 const hero = await getHeroExhibition();
 const exhibition = hero?.exhibition;
 ---
 
-<div class="hero-band on-shu">
-  <InkSplash color="var(--color-shu-deep)" seed={11} blots={5} />
-  <InkSplash color="#ffffff" opacity={0.55} seed={42} blots={3} />
+<section class="hero">
+  <div class="hero-visual">
+    <img
+      class="hero-image"
+      src="/H30_shoka_header.jpg"
+      alt="書展会場に展示された書作品"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </div>
 
-  <section class="hero">
-    <div class="hero-visual">
-      <img
-        class="hero-image"
-        src="/H30_shoka_header.jpg"
-        alt="書展会場に展示された書作品"
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-      />
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1 class="hero-title">京都大学書道部</h1>
+      <p class="hero-lead">
+        漢字・かな・篆刻、古典の臨書から創作まで。<br />
+        水曜と土曜に西部課外活動棟で練習しています。<br />
+        経験は問いません。
+      </p>
+      <p class="hero-links">
+        <a href="/about#join">入部・見学について</a>
+        <a href="/about">部の紹介</a>
+      </p>
     </div>
 
-    <div class="hero-inner">
-      <div class="hero-text">
-        <h1 class="hero-title">京都大学書道部</h1>
-        <p class="hero-lead">
-          漢字・かな・篆刻、古典の臨書から創作まで。<br />
-          水曜と土曜に西部課外活動棟で練習しています。<br />
-          経験は問いません。
-        </p>
-        <p class="hero-links">
-          <a href="/about#join">入部・見学について</a>
-          <a href="/about">部の紹介</a>
-        </p>
-      </div>
-
-      <div class="hero-next">
-        <h2 class="hero-next-label">{hero && !hero.upcoming ? '前回の書展' : '次回の書展'}</h2>
-        {
-          exhibition ? (
-            <>
-              <p class="hero-next-title">
-                <a href={`/exhibitions/${exhibition.id}`}>{exhibition.title}</a>
-              </p>
-              <p class="hero-next-meta">
-                {formatDateRange(exhibition.startDate, exhibition.endDate)}
-                <br />
-                {exhibition.venue}
-                {exhibition.address ? `（${exhibition.address}）` : ''}
-              </p>
-            </>
-          ) : (
-            <p class="hero-next-meta">日程が決まり次第お知らせします。</p>
-          )
-        }
-      </div>
+    <div class="hero-next">
+      <h2 class="hero-next-label">{hero && !hero.upcoming ? '前回の書展' : '次回の書展'}</h2>
+      {
+        exhibition ? (
+          <>
+            <p class="hero-next-title">
+              <a href={`/exhibitions/${exhibition.id}`}>{exhibition.title}</a>
+            </p>
+            <p class="hero-next-meta">
+              {formatDateRange(exhibition.startDate, exhibition.endDate)}
+              <br />
+              {exhibition.venue}
+              {exhibition.address ? `（${exhibition.address}）` : ''}
+            </p>
+          </>
+        ) : (
+          <p class="hero-next-meta">日程が決まり次第お知らせします。</p>
+        )
+      }
     </div>
-  </section>
-</div>
+  </div>
+</section>
 
 <style>
-  /* 朱色の面と飛沫は画面幅いっぱい。中身の配置は従来どおり */
-  .hero-band {
-    position: relative;
-    overflow: hidden;
-  }
-
   .hero {
-    position: relative;
     width: 100%;
     max-width: calc(var(--content-width) + var(--gutter) + var(--gutter));
     margin: 0 auto;
@@ -93,6 +80,7 @@ const exhibition = hero?.exhibition;
     grid-template-columns: minmax(0, 1fr) 20rem;
     gap: 2.5rem;
     padding: 2.25rem 0 3rem;
+    border-bottom: 1px solid var(--color-line);
   }
 
   .hero-title {

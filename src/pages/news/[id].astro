@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Base from '~/layouts/Base.astro';
+import Paper from '~/components/Paper.astro';
 import { getAllNews, getNewsById } from '~/libs/microcms';
 import { formatDate, excerpt } from '~/libs/format';
 
@@ -33,54 +34,56 @@ const content = isHtml
 ---
 
 <Base title={item.title} description={excerpt(item.content, 120)} current="/news">
-  <article class="article">
-    <div class="container article-head">
-      <a class="article-back" href="/news">お知らせ一覧に戻る</a>
-      <div class="article-meta">
-        <span class="news-date">{formatDate(item.publishedAt)}</span>
-        <span class="news-tag">
-          {Array.isArray(item.category) ? item.category.join('・') : item.category}
-        </span>
+  <Paper>
+    <article class="article">
+      <div class="container article-head">
+        <a class="article-back" href="/news">お知らせ一覧に戻る</a>
+        <div class="article-meta">
+          <span class="news-date">{formatDate(item.publishedAt)}</span>
+          <span class="news-tag">
+            {Array.isArray(item.category) ? item.category.join('・') : item.category}
+          </span>
+        </div>
+        <h1 class="article-title">{item.title}</h1>
       </div>
-      <h1 class="article-title">{item.title}</h1>
-    </div>
 
-    <div class="container">
-      {isHtml && <div class="article-body" set:html={content} />}
-      {
-        !isHtml && item.content ? (
-          <div class="article-body">
-            {item.content.split('\n').map((line) => (
-              <p>{line}</p>
-            ))}
-          </div>
-        ) : null
-      }
-    </div>
+      <div class="container">
+        {isHtml && <div class="article-body" set:html={content} />}
+        {
+          !isHtml && item.content ? (
+            <div class="article-body">
+              {item.content.split('\n').map((line) => (
+                <p>{line}</p>
+              ))}
+            </div>
+          ) : null
+        }
+      </div>
 
-    <nav class="container article-nav">
-      {
-        prev ? (
-          <a class="article-nav-item is-prev" href={`/news/${prev.id}`}>
-            <span>前の記事</span>
-            <strong>{prev.title}</strong>
-          </a>
-        ) : (
-          <span />
-        )
-      }
-      {
-        next ? (
-          <a class="article-nav-item is-next" href={`/news/${next.id}`}>
-            <span>次の記事</span>
-            <strong>{next.title}</strong>
-          </a>
-        ) : (
-          <span />
-        )
-      }
-    </nav>
-  </article>
+      <nav class="container article-nav">
+        {
+          prev ? (
+            <a class="article-nav-item is-prev" href={`/news/${prev.id}`}>
+              <span>前の記事</span>
+              <strong>{prev.title}</strong>
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          next ? (
+            <a class="article-nav-item is-next" href={`/news/${next.id}`}>
+              <span>次の記事</span>
+              <strong>{next.title}</strong>
+            </a>
+          ) : (
+            <span />
+          )
+        }
+      </nav>
+    </article>
+  </Paper>
 </Base>
 
 <style>

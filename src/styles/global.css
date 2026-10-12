@@ -70,7 +70,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 朱色の面の上では文字や線を白にする（中の部品は同じ変数を使っているのでそのまま白くなる） */
+/*
+ * 朱色の地（緋毛氈）。サイト全体に敷き、文字や線を白にする。
+ * 中の部品はすべて同じ変数を使っているので、ここで変数を差し替えるだけで白くなる。
+ */
 .on-shu {
   --color-ink: #ffffff;
   --color-text: #ffffff;
@@ -80,8 +83,29 @@ body {
   --color-primary: #ffffff;
   --color-line: rgba(255, 255, 255, 0.38);
   --color-line-soft: rgba(255, 255, 255, 0.25);
+  --color-page: var(--color-shu);
+  --color-paper: rgba(255, 255, 255, 0.12);
   background: var(--color-shu);
   color: #ffffff;
+}
+
+/*
+ * 白い紙。じっくり読むページの本文を、朱の地の上に1枚敷いた紙に載せる。
+ * 角は丸めず影も付けない（紙を平らに置いただけに見せる）。
+ */
+.paper {
+  --color-ink: #1c1814;
+  --color-text: #2a2520;
+  --color-subtext: #3a342e;
+  --color-muted: #6b635a;
+  --color-faint: #9a9089;
+  --color-primary: #b33220;
+  --color-line: #e6ddd6;
+  --color-line-soft: #efe8e2;
+  --color-page: #ffffff;
+  --color-paper: #ffffff;
+  background: #ffffff;
+  color: var(--color-ink);
 }
 
 img {
@@ -102,7 +126,7 @@ button {
 }
 
 ::selection {
-  background: var(--color-primary);
+  background: #1c1814;
   color: #fff;
 }
 
