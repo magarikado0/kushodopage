@@ -96,7 +96,7 @@ body.on-shu {
 
 /*
  * 白い紙。じっくり読むページの本文を、朱の地の上に1枚敷いた紙に載せる。
- * 角は丸めず影も付けない（紙を平らに置いただけに見せる）。
+ * 角はほんの少しだけ丸め、影は付けない（紙を平らに置いただけに見せる）。
  */
 .paper {
   --color-ink: #1c1814;
@@ -111,6 +111,7 @@ body.on-shu {
   --color-paper: #ffffff;
   background: #ffffff;
   color: var(--color-ink);
+  border-radius: 4px;
 }
 
 img {
