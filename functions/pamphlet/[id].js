@@ -23,9 +23,10 @@ export async function onRequestGet({ params, request, env, waitUntil }) {
   const upstream = await fetch(
     `https://drive.usercontent.google.com/download?id=${encodeURIComponent(fileId)}&export=download&confirm=t`,
   );
+  // Drive は PDF を application/octet-stream で返す。
+  // 共有設定が「リンクを知っている全員」になっていないと HTML のログイン画面が返ってくる
   const type = upstream.headers.get('Content-Type') ?? '';
-  if (!upstream.ok || !type.includes('pdf')) {
-    // 共有設定が「リンクを知っている全員」になっていないと HTML のログイン画面が返ってくる
+  if (!upstream.ok || type.includes('text/html')) {
     return new Response('Pamphlet is not available', { status: 502 });
   }
 

@@ -157,7 +157,18 @@ const exhibitions = [
     address: '京都市中京区',
     description: `この回から夏の書展の名称を「初夏書展」から「鴨夏展（おうかてん）」に改めました。時間は28日11:00〜18:30、29日11:00〜17:00（各日30分前に受付終了）。入場無料。${horikawaAccess}`,
     heroImage: '/legacy/news-assets/332aab3f9246004c523d.jpg',
-    brochureUrl: bib('135.epub'),
+    brochureUrl: 'https://drive.google.com/file/d/1qvBPyG-Y3k85wi_kos-VHQuIO3ZSssZO/view',
+  },
+  {
+    id: 'shoten-134',
+    title: '第134回 冬樟展',
+    startDate: '2025-02-15',
+    endDate: '2025-02-16',
+    venue: '京都市京セラ美術館 1階北西展示室',
+    address: '京都市左京区',
+    description: '時間は15日10:00〜17:30、16日10:00〜16:00（各日30分前に入場終了）。入場無料。',
+    heroImage: '/legacy/news-assets/shoten-134-cover.jpg',
+    brochureUrl: 'https://drive.google.com/file/d/1U5E1kq8DhVeZkdoIGgB7FwNtWXCRkn-a/view',
   },
   {
     id: 'shoten-133',
@@ -247,7 +258,7 @@ const exhibitions = [
 ];
 
 // 会期・会場が分からない回（パンフレットのみ旧サイトに残っていたもの）
-const bibBook = (n) => (n === 134 ? '134.epub' : String(n).padStart(3, '0'));
+const bibBook = (n) => String(n).padStart(3, '0');
 exhibitions.push(
   {
     id: 'shoten-127',
@@ -270,7 +281,7 @@ exhibitions.push(
     endDate: '2020-06-14',
     description: '新型コロナウイルス感染症の拡大を受けて、開催を中止しました。',
   },
-  ...[134, 130, 128, ...Array.from({ length: 23 }, (_, i) => 120 - i)].map((n) => ({
+  ...[130, 128, ...Array.from({ length: 23 }, (_, i) => 120 - i)].map((n) => ({
     id: `shoten-${n}`,
     title: `第${n}回 書展`,
     description: '会期・会場の記録が残っていないため、パンフレットのみ掲載しています。',

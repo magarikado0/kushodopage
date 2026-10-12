@@ -52,10 +52,12 @@ const dateRange =
 
     {
       exhibition.heroImage?.url && (
-        <div class="ex-hero">
+        <div class="container ex-hero">
           <img
-            src={exhibition.heroImage.url}
+            src={`${exhibition.heroImage.url}?h=1600&fm=webp`}
             alt={exhibition.heroImage.alt ?? exhibition.title}
+            width={exhibition.heroImage.width}
+            height={exhibition.heroImage.height}
           />
         </div>
       )
@@ -160,10 +162,12 @@ const dateRange =
     margin: 2.5rem 0;
   }
 
+  /* ポスターは縦長なので切り取らず、全体が画面に収まる大きさで表示する */
   .ex-hero img {
-    width: 100%;
-    max-height: 480px;
-    object-fit: cover;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 80vh;
     border: 1px solid var(--color-line);
   }
 
