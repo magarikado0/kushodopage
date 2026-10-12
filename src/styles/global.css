@@ -29,8 +29,8 @@
 
   --color-footer-bg: var(--color-shu-deep);
   --color-footer-text: #ffffff;
-  --color-footer-muted: rgba(255, 255, 255, 0.82);
-  --color-footer-copy: rgba(255, 255, 255, 0.72);
+  --color-footer-muted: #ffffff;
+  --color-footer-copy: #ffffff;
 
   /* --- シャドウは原則使わない。階層は罫線で作る --- */
   --shadow-paper: none;
@@ -78,8 +78,8 @@ body {
   --color-ink: #ffffff;
   --color-text: #ffffff;
   --color-subtext: #ffffff;
-  --color-muted: rgba(255, 255, 255, 0.86);
-  --color-faint: rgba(255, 255, 255, 0.78);
+  --color-muted: #ffffff;
+  --color-faint: #ffffff;
   --color-primary: #ffffff;
   --color-line: rgba(255, 255, 255, 0.38);
   --color-line-soft: rgba(255, 255, 255, 0.25);
