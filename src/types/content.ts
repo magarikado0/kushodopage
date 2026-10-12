@@ -56,7 +56,8 @@ export interface Exhibition {
   revisedAt?: string;
 }
 
-export type PerformanceType = 'NF書道パフォーマンス' | '新歓書道パフォーマンス';
+/** microCMS の「種類」セレクトの値（例: NF書道パフォーマンス）。管理画面で自由に追加できる */
+export type PerformanceType = string;
 
 /** 書道パフォーマンスの記録 (performances) */
 export interface Performance {

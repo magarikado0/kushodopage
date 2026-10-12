@@ -159,11 +159,13 @@ const dateRange =
   }
 
   .ex-hero {
-    margin: 2.5rem 0;
+    margin-block: 2.5rem;
   }
 
-  /* ポスターは縦長なので切り取らず、全体が画面に収まる大きさで表示する */
+  /* ポスターは縦長なので切り取らず、全体が画面に収まる大きさで中央に表示する */
   .ex-hero img {
+    display: block;
+    margin-inline: auto;
     width: auto;
     height: auto;
     max-width: 100%;

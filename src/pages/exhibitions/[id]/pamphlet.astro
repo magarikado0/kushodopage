@@ -35,9 +35,19 @@ const { exhibition, pdfUrl } = Astro.props;
       <span class="pamphlet-page"></span>
       <button class="pamphlet-btn" type="button" data-action="prev">前のページ</button>
     </div>
+    <p class="container pamphlet-zoom-open">
+      <button class="pamphlet-btn" type="button" data-action="zoom">拡大して読む</button>
+    </p>
     <p class="container pamphlet-download">
       <a href={pdfUrl} download>PDFをダウンロード</a>
     </p>
+    <div class="pamphlet-zoom" role="dialog" aria-modal="true" aria-label="拡大表示" hidden>
+      <div class="pamphlet-zoom-bar">
+        <span class="pamphlet-zoom-page"></span>
+        <button class="pamphlet-btn" type="button" data-action="zoom-close">閉じる</button>
+      </div>
+      <div class="pamphlet-zoom-pages"></div>
+    </div>
   </section>
 </Base>
 
@@ -71,11 +81,14 @@ const { exhibition, pdfUrl } = Astro.props;
     return result;
   }
 
+  // 表示サイズの2倍以上の解像度で描く（小さい文字がつぶれないように。ピンチ拡大にも耐える）
+  const pixelRatio = () => Math.max(window.devicePixelRatio || 1, 2);
+
   async function renderPage(number: number, maxWidth: number, maxHeight: number) {
     const page = await doc.getPage(number);
     const base = page.getViewport({ scale: 1 });
     const scale = Math.min(maxWidth / base.width, maxHeight / base.height);
-    const ratio = window.devicePixelRatio || 1;
+    const ratio = pixelRatio();
     const viewport = page.getViewport({ scale: scale * ratio });
     const canvas = document.createElement('canvas');
     canvas.width = Math.floor(viewport.width);
@@ -130,12 +143,44 @@ const { exhibition, pdfUrl } = Astro.props;
     show();
   }
 
+  // 拡大表示：今の見開きを画面幅いっぱいで縦に並べる
+  const zoomEl = root.querySelector<HTMLElement>('.pamphlet-zoom')!;
+  const zoomPages = root.querySelector<HTMLElement>('.pamphlet-zoom-pages')!;
+  const zoomPageLabel = root.querySelector<HTMLElement>('.pamphlet-zoom-page')!;
+
+  async function openZoom() {
+    if (!doc) return;
+    zoomEl.hidden = false;
+    document.body.style.overflow = 'hidden';
+    zoomPageLabel.textContent = pageEl.textContent;
+    zoomPages.replaceChildren();
+    // 縦スクロールバーの幅ぶん余裕を持たせる
+    const width = Math.min(zoomPages.clientWidth - 40, 1000);
+    for (const p of spreads[index]) {
+      zoomPages.append(await renderPage(p, width, Number.POSITIVE_INFINITY));
+    }
+    zoomPages.scrollTop = 0;
+  }
+
+  function closeZoom() {
+    zoomEl.hidden = true;
+    document.body.style.overflow = '';
+    zoomPages.replaceChildren();
+  }
+
+  root.querySelector('[data-action="zoom"]')!.addEventListener('click', openZoom);
+  root.querySelector('[data-action="zoom-close"]')!.addEventListener('click', closeZoom);
+
   root.querySelector('[data-action="next"]')!.addEventListener('click', () => go(1));
   root.querySelector('[data-action="prev"]')!.addEventListener('click', () => go(-1));
   root.querySelector('.pamphlet-hit.is-next')!.addEventListener('click', () => go(1));
   root.querySelector('.pamphlet-hit.is-prev')!.addEventListener('click', () => go(-1));
 
   document.addEventListener('keydown', (event) => {
+    if (!zoomEl.hidden) {
+      if (event.key === 'Escape') closeZoom();
+      return;
+    }
     if (event.key === 'ArrowLeft') go(1);
     if (event.key === 'ArrowRight') go(-1);
   });
@@ -261,6 +306,53 @@ const { exhibition, pdfUrl } = Astro.props;
     text-align: center;
     font-size: 13px;
     color: var(--color-muted);
+  }
+
+  .pamphlet-zoom-open {
+    margin-top: 0.75rem;
+    text-align: center;
+  }
+
+  .pamphlet-zoom {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    background: rgba(20, 17, 13, 0.92);
+  }
+
+  .pamphlet-zoom[hidden] {
+    display: none;
+  }
+
+  .pamphlet-zoom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem var(--gutter);
+    color: #f1ede4;
+    font-size: 13px;
+  }
+
+  .pamphlet-zoom-bar .pamphlet-btn {
+    color: #f1ede4;
+  }
+
+  .pamphlet-zoom-pages {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 0 8px 24px;
+  }
+
+  .pamphlet-zoom-pages :global(canvas) {
+    display: block;
+    background: #fff;
   }
 
   .pamphlet-download {

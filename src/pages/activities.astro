@@ -4,11 +4,11 @@ import PageHeader from '~/components/PageHeader.astro';
 import Section from '~/components/Section.astro';
 import ExhibitionList from '~/components/ExhibitionList.astro';
 import PerformanceList from '~/components/PerformanceList.astro';
-import { getAllExhibitions, getPerformances } from '~/libs/microcms';
+import { getAllExhibitions, getPerformanceGroups } from '~/libs/microcms';
 
-const [exhibitions, performances] = await Promise.all([
+const [exhibitions, performanceGroups] = await Promise.all([
   getAllExhibitions(),
-  getPerformances(),
+  getPerformanceGroups(),
 ]);
 const dated = exhibitions.filter((e) => e.startDate);
 const undated = exhibitions.filter((e) => !e.startDate);
@@ -46,9 +46,9 @@ const undated = exhibitions.filter((e) => !e.startDate);
 
   <Section title="書道パフォーマンス" flush>
     <p class="section-lead">
-      11月祭（NF）と新歓で行ってきた書道パフォーマンスの写真や動画です。
+      これまでに行ってきた書道パフォーマンスの写真や動画です。
     </p>
-    <PerformanceList performances={performances} />
+    <PerformanceList groups={performanceGroups} />
   </Section>
 </Base>
 

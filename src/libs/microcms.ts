@@ -105,16 +105,55 @@ export async function getExhibitionById(id: string): Promise<Exhibition | null> 
   return fetchOne<Exhibition>('exhibitions', id);
 }
 
-/** 書道パフォーマンスの記録（年度が新しい順） */
-export async function getPerformances(): Promise<Performance[]> {
+export interface PerformanceGroup {
+  type: string;
+  performances: Performance[];
+}
+
+/**
+ * 書道パフォーマンスの「種類」の選択肢を、管理画面での並び順で返す。
+ * 種類を増やす・並べ替えるのは microCMS の API スキーマ側だけで済むようにするため。
+ * 取得できないときは空配列（呼び出し側で登場順に並べる）。
+ */
+async function getPerformanceTypeOrder(): Promise<string[]> {
+  const domain = import.meta.env.MICROCMS_SERVICE_DOMAIN;
+  const apiKey = import.meta.env.MICROCMS_API_KEY;
+  if (!domain || !apiKey) return [];
   try {
-    const performances = await fetchAll<Performance>('performances', { orders: '-year' });
-    const typeOrder = (item: Performance) => {
-      const types = Array.isArray(item.type) ? item.type : [item.type];
-      return types.includes('NF書道パフォーマンス') ? 0 : 1;
+    const res = await fetch(`https://${domain}.microcms-management.io/api/v1/apis/performances`, {
+      headers: { 'X-MICROCMS-API-KEY': apiKey },
+    });
+    if (!res.ok) return [];
+    const schema = (await res.json()) as {
+      apiFields?: { fieldId: string; selectItems?: { value: string }[] }[];
     };
-    return performances.sort((a, b) => b.year - a.year || typeOrder(a) - typeOrder(b));
+    const field = schema.apiFields?.find((f) => f.fieldId === 'type');
+    return field?.selectItems?.map((item) => item.value) ?? [];
   } catch {
     return [];
   }
+}
+
+/** 書道パフォーマンスの記録を種類ごとにまとめる（各種類の中は年度が新しい順） */
+export async function getPerformanceGroups(): Promise<PerformanceGroup[]> {
+  let performances: Performance[];
+  try {
+    performances = await fetchAll<Performance>('performances', { orders: '-year' });
+  } catch {
+    return [];
+  }
+
+  const groups = new Map<string, Performance[]>();
+  for (const type of await getPerformanceTypeOrder()) groups.set(type, []);
+  for (const performance of performances) {
+    const types = Array.isArray(performance.type) ? performance.type : [performance.type];
+    for (const type of types) {
+      if (!groups.has(type)) groups.set(type, []);
+      groups.get(type)!.push(performance);
+    }
+  }
+
+  return [...groups]
+    .filter(([, list]) => list.length > 0)
+    .map(([type, list]) => ({ type, performances: list }));
 }

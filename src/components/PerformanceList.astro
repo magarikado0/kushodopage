@@ -1,57 +1,29 @@
 ---
-import type { Performance } from '~/types/content';
+import type { PerformanceGroup } from '~/libs/microcms';
 
 interface Props {
-  performances: Performance[];
+  /** 種類ごとの記録。種類は microCMS の「種類」セレクトから自動で決まる */
+  groups: PerformanceGroup[];
 }
 
-const { performances } = Astro.props;
-const groups = [
-  {
-    title: 'NF書道パフォーマンス',
-    performances: performances.filter((performance) => {
-      const types = Array.isArray(performance.type)
-        ? performance.type
-        : [performance.type];
-      return types.includes('NF書道パフォーマンス');
-    }),
-  },
-  {
-    title: '新歓書道パフォーマンス',
-    performances: performances.filter((performance) => {
-      const types = Array.isArray(performance.type)
-        ? performance.type
-        : [performance.type];
-      return types.includes('新歓書道パフォーマンス');
-    }),
-  },
-] as const;
+const { groups } = Astro.props;
 ---
 
 <div class="performance-groups">
   {
-    performances.length === 0 ? (
+    groups.length === 0 ? (
       <p class="empty">書道パフォーマンスの記録は順次掲載します。</p>
     ) : (
       groups.map((group) => (
         <section class="performance-group">
-          <h3 class="performance-heading">{group.title}</h3>
-          {group.performances.length === 0 ? (
-            <p class="empty performance-empty">記録は順次掲載します。</p>
-          ) : (
-            <div class="performance-list">
-              {group.performances.map((performance) => (
-                <a
-                  class="performance-item"
-                  href={performance.url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {performance.year}年
-                </a>
-              ))}
-            </div>
-          )}
+          <h3 class="performance-heading">{group.type}</h3>
+          <div class="performance-list">
+            {group.performances.map((performance) => (
+              <a class="performance-item" href={performance.url} target="_blank" rel="noreferrer">
+                {performance.year}年
+              </a>
+            ))}
+          </div>
         </section>
       ))
     )

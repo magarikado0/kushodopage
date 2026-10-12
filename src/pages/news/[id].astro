@@ -21,6 +21,15 @@ const all = await getAllNews();
 const idx = all.findIndex((n) => n.id === item.id);
 const prev = idx > 0 ? all[idx - 1] : null;
 const next = idx < all.length - 1 ? all[idx + 1] : null;
+
+const isHtml = item.content?.includes('<') ?? false;
+// microCMS の画像は原寸だと重いので、表示に十分なサイズの WebP で読み込む
+const content = isHtml
+  ? item.content.replace(
+      /(<img\b[^>]*\bsrc=")(https:\/\/images\.microcms-assets\.io\/[^"?]+)"/g,
+      '$1$2?w=1600&fm=webp"',
+    )
+  : '';
 ---
 
 <Base title={item.title} description={excerpt(item.content, 120)} current="/news">
@@ -37,9 +46,9 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
     </div>
 
     <div class="container">
-      <div class="article-body" set:html={item.content}></div>
+      {isHtml && <div class="article-body" set:html={content} />}
       {
-        !item.content?.includes('<') && item.content ? (
+        !isHtml && item.content ? (
           <div class="article-body">
             {item.content.split('\n').map((line) => (
               <p>{line}</p>
@@ -151,10 +160,15 @@ const next = idx < all.length - 1 ? all[idx + 1] : null;
     text-underline-offset: 2px;
   }
 
+  /* 画像は画面に収まる大きさで中央に（ポスターなど縦長の画像が巨大にならないように） */
   .article-body :global(img) {
-    margin: 1.5rem 0;
-    border: 1px solid var(--color-line);
+    display: block;
+    width: auto;
     height: auto;
+    max-width: 100%;
+    max-height: 80vh;
+    margin: 1.5rem auto;
+    border: 1px solid var(--color-line);
   }
 
   .article-body :global(h3) {
