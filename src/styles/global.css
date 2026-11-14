@@ -42,7 +42,9 @@
     'Yu Mincho', serif;
   --font-serif: 'Shippori Mincho B1', 'Noto Serif JP', 'Hiragino Mincho ProN',
     'Yu Mincho', serif;
-  --font-sans: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  /* 本文。旧サイトと同じく英数字は Times New Roman、和文は游明朝（端末の書体を使う） */
+  --font-sans: 'Times New Roman', 'Yu Mincho', 'YuMincho', '游明朝', 'Hiragino Mincho ProN',
+    'Noto Serif JP', serif;
   --font-mono: ui-monospace, 'SFMono-Regular', 'Shippori Mincho B1', monospace;
 
   --content-width: 1180px;
