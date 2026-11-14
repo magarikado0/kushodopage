@@ -71,12 +71,13 @@ const joinLink = NAV_ITEMS[NAV_ITEMS.length - 1];
 
 <style>
   /* 白い背景の上なので、ヘッダーは細い線で本文と区切る */
+  /* 文字を大きくしたので、メニューが1行に収まらない幅（960px以下）ではメニューボタンに切り替える */
   .nav {
     position: sticky;
     top: 0;
     z-index: 30;
     background: #fff;
-    border-bottom: 3px solid var(--color-rule);
+    border-bottom: 4px solid var(--color-rule);
     box-shadow: 0 4px 12px rgba(28, 24, 20, 0.12);
   }
 
@@ -112,9 +113,10 @@ const joinLink = NAV_ITEMS[NAV_ITEMS.length - 1];
     gap: 1.75rem;
     list-style: none;
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     letter-spacing: 0.08em;
+    white-space: nowrap;
     color: var(--color-text);
   }
 
@@ -213,7 +215,7 @@ const joinLink = NAV_ITEMS[NAV_ITEMS.length - 1];
     color: #fff;
   }
 
-  @media (max-width: 760px) {
+  @media (max-width: 960px) {
     .nav-inner {
       padding: 0.85rem var(--gutter);
       gap: 0.8rem;
@@ -277,7 +279,7 @@ const joinLink = NAV_ITEMS[NAV_ITEMS.length - 1];
       flex-direction: column;
       align-items: stretch;
       gap: 0;
-      font-size: 14px;
+      font-size: 16px;
     }
 
     .nav-links li {
@@ -306,7 +308,7 @@ const joinLink = NAV_ITEMS[NAV_ITEMS.length - 1];
   }
 
   /* スマホのメニューでは、ロゴの横に名前も出す */
-  @media (max-width: 760px) {
+  @media (max-width: 960px) {
     .nav-sns {
       gap: 1.5rem;
       margin-left: 0;
@@ -360,5 +362,5 @@ const joinLink = NAV_ITEMS[NAV_ITEMS.length - 1];
     }
   });
 
-  window.matchMedia('(min-width: 761px)').addEventListener('change', closeMenu);
+  window.matchMedia('(min-width: 961px)').addEventListener('change', closeMenu);
 </script>
