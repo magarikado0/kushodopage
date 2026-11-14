@@ -1,7 +1,6 @@
 ---
 /**
- * 朱の地の上に敷く白い紙。じっくり読むページの本文を載せる。
- * 1ページに1枚だけ使う（小さなカードを並べる用途には使わない）。
+ * ページの本文をまとめる枠。
  */
 ---
 
@@ -12,20 +11,14 @@
 </div>
 
 <style>
+  /* 白背景では紙のまわりに余白を取らず、ほかの部分と左右の位置をそろえる */
   .paper-wrap {
-    width: 100%;
-    max-width: calc(var(--content-width) + var(--gutter) * 4);
-    margin: 0 auto;
-    padding: 2rem var(--gutter) 4rem;
-  }
-
-  .paper {
-    padding-block: 0.5rem;
+    padding-bottom: 4rem;
   }
 
   @media (max-width: 760px) {
     .paper-wrap {
-      padding: 1rem 0.6rem 2.5rem;
+      padding-bottom: 2.5rem;
     }
   }
 </style>

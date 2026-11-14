@@ -58,26 +58,25 @@ const exhibition = hero?.exhibition;
       水曜と土曜に西部課外活動棟で練習しています。<br />
       経験は問いません。
     </p>
+    <p class="hero-links">
+      <a class="hero-btn is-main" href="/about#join">入部・見学について</a>
+      <a class="hero-btn" href="/about">部の紹介</a>
+    </p>
   </div>
-
-  <p class="hero-links">
-    <a class="hero-btn is-main" href="/about#join">入部・見学について</a>
-    <a class="hero-btn" href="/about">部の紹介</a>
-  </p>
 </section>
 
 <style>
   /*
-   * 上段：写真（左）と前回／次回の書展（右）
-   * 下段：部名と紹介文（左）とボタン（右。書展欄の真下にそろえる）
+   * 左：写真、その下に部名・紹介文・ボタン
+   * 右：前回／次回の書展（左の列の高さいっぱいに通す。間は朱の罫線で区切る）
    */
   .hero {
     display: grid;
     grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
     grid-template-areas:
       'visual next'
-      'text links';
-    column-gap: 2.5rem;
+      'text next';
+    column-gap: 2rem;
     width: 100%;
     max-width: calc(var(--content-width) + var(--gutter) + var(--gutter));
     margin: 0 auto;
@@ -87,7 +86,7 @@ const exhibition = hero?.exhibition;
   .hero-visual {
     grid-area: visual;
     position: relative;
-    min-height: clamp(260px, 30vw, 420px);
+    min-height: clamp(240px, 26vw, 360px);
     background: #e9e4dc;
     overflow: hidden;
     border-radius: 4px;
@@ -104,6 +103,9 @@ const exhibition = hero?.exhibition;
 
   .hero-next {
     grid-area: next;
+    margin-bottom: 3rem;
+    padding-left: 2rem;
+    border-left: 1px solid var(--color-rule);
   }
 
   .hero-next-label {
@@ -120,9 +122,8 @@ const exhibition = hero?.exhibition;
 
   .hero-next-poster img {
     display: block;
-    width: auto;
-    max-width: 100%;
-    height: clamp(180px, 21vw, 290px);
+    width: min(100%, 20rem);
+    height: auto;
     border-radius: 4px;
   }
 
@@ -170,11 +171,10 @@ const exhibition = hero?.exhibition;
   }
 
   .hero-links {
-    grid-area: links;
-    align-self: center;
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
+    margin-top: 1.5rem;
     font-size: 14px;
     letter-spacing: 0.04em;
   }
@@ -213,7 +213,6 @@ const exhibition = hero?.exhibition;
       grid-template-areas:
         'visual'
         'text'
-        'links'
         'next';
       padding-top: 1rem;
     }
@@ -236,9 +235,10 @@ const exhibition = hero?.exhibition;
     }
 
     .hero-next {
-      margin-top: 1.75rem;
+      margin: 1.75rem 0 0;
       padding: 1.25rem 0 2.25rem;
-      border-top: 1px solid var(--color-line);
+      border-left: 0;
+      border-top: 1px solid var(--color-rule);
     }
 
     /* ポスターは小さくして、書展名の横に置く */

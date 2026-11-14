@@ -10,15 +10,21 @@ const { title, lead } = Astro.props;
 
 <section class="page-header">
   <div class="container">
-    <h1 class="page-header-title">{title}</h1>
-    {lead && <p class="page-header-lead">{lead}</p>}
+    <div class="page-header-inner">
+      <h1 class="page-header-title">{title}</h1>
+      {lead && <p class="page-header-lead">{lead}</p>}
+    </div>
   </div>
 </section>
 
 <style>
   .page-header {
-    padding: 3.5rem 0 1.8rem;
-    border-bottom: 1px solid var(--color-line);
+    padding-top: 3.5rem;
+  }
+
+  .page-header-inner {
+    padding-bottom: 1.8rem;
+    border-bottom: 1px solid var(--color-rule);
   }
 
   .page-header-title {
@@ -40,7 +46,11 @@ const { title, lead } = Astro.props;
 
   @media (max-width: 760px) {
     .page-header {
-      padding: 2.25rem 0 1.4rem;
+      padding-top: 2.25rem;
+    }
+
+    .page-header-inner {
+      padding-bottom: 1.4rem;
     }
   }
 </style>

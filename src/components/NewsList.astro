@@ -42,7 +42,11 @@ const { items, showDescription = false } = Astro.props;
   .news-list {
     display: flex;
     flex-direction: column;
-    border-top: 1px solid var(--color-line);
+  }
+
+  /* 上の区切りは見出しやページタイトルの朱の罫線が担う */
+  .news-list > .news-item:first-child {
+    padding-top: 0;
   }
 
   .news-item {
