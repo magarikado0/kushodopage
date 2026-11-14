@@ -101,16 +101,19 @@ const exhibition = hero?.exhibition;
     object-position: 30% 40%;
   }
 
-  /* カード：枠はボタンと同じ朱の細線、影はヘッダーと同じ調子 */
+  /*
+   * カード：白いページの上に置いた和紙のような1枚。
+   * 上辺の朱の線と影はヘッダーとそろえ、同じ仲間に見せる。
+   */
   .hero-next {
     grid-area: next;
     align-self: start;
     margin-bottom: 3rem;
     padding: 1.25rem 1.5rem 1.5rem;
-    background: #fff;
-    border: 3px solid var(--color-rule);
-    border-radius: 4px;
-    box-shadow: 0 4px 12px rgba(28, 24, 20, 0.08);
+    background: #f6f2ec;
+    border-top: 3px solid var(--color-rule);
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 4px 12px rgba(28, 24, 20, 0.12);
   }
 
   .hero-next-label {
