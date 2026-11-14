@@ -72,7 +72,8 @@ const joinLink = NAV_ITEMS[NAV_ITEMS.length - 1];
 <style>
   /* 白い背景の上なので、ヘッダーは細い線で本文と区切る */
   .nav {
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 30;
     background: #fff;
     border-bottom: 3px solid var(--color-rule);
