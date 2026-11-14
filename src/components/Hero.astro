@@ -68,7 +68,7 @@ const exhibition = hero?.exhibition;
 <style>
   /*
    * 左：写真、その下に部名・紹介文・ボタン
-   * 右：前回／次回の書展（左の列の高さいっぱいに通す。間は朱の罫線で区切る）
+   * 右：前回／次回の書展（左の列の高さいっぱいに通す）
    */
   .hero {
     display: grid;
@@ -76,7 +76,7 @@ const exhibition = hero?.exhibition;
     grid-template-areas:
       'visual next'
       'text next';
-    column-gap: 2rem;
+    column-gap: 2.5rem;
     width: 100%;
     max-width: calc(var(--content-width) + var(--gutter) + var(--gutter));
     margin: 0 auto;
@@ -104,12 +104,10 @@ const exhibition = hero?.exhibition;
   .hero-next {
     grid-area: next;
     margin-bottom: 3rem;
-    padding-left: 2rem;
-    border-left: 1px solid var(--color-rule);
   }
 
   .hero-next-label {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.08em;
     color: var(--color-primary);
@@ -237,7 +235,6 @@ const exhibition = hero?.exhibition;
     .hero-next {
       margin: 1.75rem 0 0;
       padding: 1.25rem 0 2.25rem;
-      border-left: 0;
       border-top: 1px solid var(--color-rule);
     }
 
@@ -265,7 +262,7 @@ const exhibition = hero?.exhibition;
     }
 
     .has-poster .hero-next-meta {
-      font-size: 13px;
+      font-size: 14px;
     }
   }
 </style>

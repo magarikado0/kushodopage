@@ -12,8 +12,8 @@
   --color-ink: #1c1814; /* 墨、ほんのり暖色 */
   --color-text: #2a2520;
   --color-subtext: #3a342e;
-  --color-muted: #6b635a;
-  --color-faint: #9a9089;
+  --color-muted: #2a2520; /* 補足の文字。グレーにせず本文と同じ墨色 */
+  --color-faint: #2a2520;
 
   --color-line: #e6ddd6;
   --color-line-soft: #efe8e2;
@@ -30,8 +30,8 @@
 
   --color-footer-bg: var(--color-shu);
   --color-footer-text: #ffffff;
-  --color-footer-muted: rgba(255, 255, 255, 0.82);
-  --color-footer-copy: rgba(255, 255, 255, 0.72);
+  --color-footer-muted: #ffffff;
+  --color-footer-copy: #ffffff;
 
   /* --- シャドウは原則使わない。階層は罫線で作る --- */
   --shadow-paper: none;
@@ -98,8 +98,8 @@ body {
   --color-ink: #1c1814;
   --color-text: #2a2520;
   --color-subtext: #3a342e;
-  --color-muted: #6b635a;
-  --color-faint: #9a9089;
+  --color-muted: #2a2520; /* 補足の文字。グレーにせず本文と同じ墨色 */
+  --color-faint: #2a2520;
   --color-primary: #b33220;
   --color-line: #e6ddd6;
   --color-line-soft: #efe8e2;
