@@ -7,7 +7,8 @@ import type { WorkImage } from '~/types/content';
  * 項目が空のとき・取得できないときは、下の DEFAULTS を使うのでページが空になることはない。
  */
 export interface SiteSettings {
-  heroImage?: WorkImage;
+  /** トップの写真。複数あれば順に切り替える */
+  heroImages: WorkImage[];
   heroLead: string;
   practiceDays: string;
   lecturer: string;
@@ -23,6 +24,13 @@ export interface SiteSettings {
 }
 
 const DEFAULTS: SiteSettings = {
+  // 旧サイトのトップで切り替えていた写真（public/hero/）
+  heroImages: [
+    { url: '/hero/H30_shinkan_header.jpg', alt: '新歓書道パフォーマンス（2018年）' },
+    { url: '/hero/H30_shoka_header.jpg', alt: '初夏書展の会場（2018年）' },
+    { url: '/hero/H29_NF_header.JPG', alt: '11月祭の書道パフォーマンス（2017年）' },
+    { url: '/hero/H30_harugasshuku_header.JPG', alt: '春合宿（2018年）' },
+  ],
   heroLead: '漢字・かな・篆刻、古典の臨書から創作まで。\n水曜と土曜に西部課外活動棟で練習しています。',
   practiceDays: '毎週水曜日・土曜日（参加自由）',
   lecturer: '月1回、水曜日に講師の先生',
@@ -49,16 +57,20 @@ async function fetchSettings(): Promise<SiteSettings> {
   if (!domain || !apiKey) return DEFAULTS;
   try {
     const client = createClient({ serviceDomain: domain, apiKey });
-    const cms = await client.getObject<Partial<SiteSettings>>({ endpoint: 'settings' });
+    const cms = await client.getObject<Partial<SiteSettings> & { heroImage?: WorkImage }>({
+      endpoint: 'settings',
+    });
     const merged = { ...DEFAULTS };
     for (const [key, value] of Object.entries(cms)) {
       // 空欄は初期値のまま（消してしまってもページが空にならないように）
-      if (key in DEFAULTS || key === 'heroImage') {
-        if (typeof value === 'string' ? value.trim() : value) {
-          (merged as Record<string, unknown>)[key] = typeof value === 'string' ? value.trim() : value;
-        }
+      if (key === 'heroImages') continue;
+      if (key in DEFAULTS && typeof value === 'string' && value.trim()) {
+        (merged as Record<string, unknown>)[key] = value.trim();
       }
     }
+    // 写真は複数画像の欄（heroImages）を優先。古い1枚の欄（heroImage）にも対応しておく
+    const images = cms.heroImages?.length ? cms.heroImages : cms.heroImage ? [cms.heroImage] : [];
+    if (images.length) merged.heroImages = images;
     return merged;
   } catch {
     return DEFAULTS;

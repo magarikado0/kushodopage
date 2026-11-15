@@ -5,21 +5,44 @@ import { getSettings, lines } from '~/libs/settings';
 
 const [hero, settings] = await Promise.all([getHeroExhibition(), getSettings()]);
 const exhibition = hero?.exhibition;
-const heroImage = settings.heroImage?.url
-  ? `${settings.heroImage.url}?w=1600&fm=webp`
-  : '/H30_shoka_header.jpg';
+// microCMS の画像は表示に十分な大きさの WebP で読み込む（手元の画像はそのまま）
+const slides = settings.heroImages.map((image) => ({
+  src: image.url.startsWith('https://images.microcms-assets.io/')
+    ? `${image.url}?w=1600&fm=webp`
+    : image.url,
+  alt: image.alt || '京都大学書道部の活動の様子',
+}));
 ---
 
 <section class="hero">
-  <div class="hero-visual">
-    <img
-      class="hero-image"
-      src={heroImage}
-      alt={settings.heroImage?.alt || '書展会場に展示された書作品'}
-      loading="eager"
-      fetchpriority="high"
-      decoding="async"
-    />
+  <div class="hero-visual" data-interval="5000">
+    {
+      slides.map((slide, i) => (
+        <img
+          class:list={['hero-image', { 'is-active': i === 0 }]}
+          src={slide.src}
+          alt={slide.alt}
+          loading={i === 0 ? 'eager' : 'lazy'}
+          fetchpriority={i === 0 ? 'high' : 'auto'}
+          decoding="async"
+          aria-hidden={i === 0 ? undefined : 'true'}
+        />
+      ))
+    }
+    {
+      slides.length > 1 && (
+        <div class="hero-dots">
+          {slides.map((slide, i) => (
+            <button
+              type="button"
+              class:list={['hero-dot', { 'is-active': i === 0 }]}
+              aria-label={`${i + 1}枚目の写真を表示：${slide.alt}`}
+              aria-current={i === 0 ? 'true' : undefined}
+            />
+          ))}
+        </div>
+      )
+    }
   </div>
 
   <div class="hero-next">
@@ -74,6 +97,63 @@ const heroImage = settings.heroImage?.url
   </div>
 </section>
 
+<script>
+  // トップの写真を順に切り替える。マウスを乗せている間・動きを減らす設定の端末では止める
+  for (const visual of document.querySelectorAll<HTMLElement>('.hero-visual')) {
+    const images = [...visual.querySelectorAll<HTMLImageElement>('.hero-image')];
+    const dots = [...visual.querySelectorAll<HTMLButtonElement>('.hero-dot')];
+    if (images.length < 2) continue;
+
+    let index = 0;
+    const show = (next: number) => {
+      index = (next + images.length) % images.length;
+      images.forEach((img, i) => {
+        img.classList.toggle('is-active', i === index);
+        img.toggleAttribute('aria-hidden', i !== index);
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('is-active', i === index);
+        if (i === index) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+    };
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const interval = Number(visual.dataset.interval) || 5000;
+    let timer: number | undefined;
+    const start = () => {
+      if (reduceMotion) return;
+      stop();
+      timer = window.setInterval(() => show(index + 1), interval);
+    };
+    const stop = () => window.clearInterval(timer);
+
+    dots.forEach((dot, i) =>
+      dot.addEventListener('click', () => {
+        show(i);
+        start();
+      }),
+    );
+    visual.addEventListener('mouseenter', stop);
+    visual.addEventListener('mouseleave', start);
+
+    // スマホは左右のスワイプでも切り替える
+    let touchX: number | null = null;
+    visual.addEventListener('touchstart', (e) => (touchX = e.touches[0].clientX), { passive: true });
+    visual.addEventListener('touchend', (e) => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      touchX = null;
+      if (Math.abs(dx) > 40) {
+        show(index + (dx < 0 ? 1 : -1));
+        start();
+      }
+    });
+
+    start();
+  }
+</script>
+
 <style>
   /*
    * 左：写真、その下に部名・紹介文・ボタン
@@ -101,13 +181,48 @@ const heroImage = settings.heroImage?.url
     border-radius: 4px;
   }
 
+  /* 写真は重ねて置き、表示中の1枚だけ不透明にしてゆっくり切り替える */
   .hero-image {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 30% 40%;
+    object-position: center 40%;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  .hero-image.is-active {
+    opacity: 1;
+  }
+
+  .hero-dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.75rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .hero-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  }
+
+  .hero-dot.is-active {
+    background: #fff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-image {
+      transition: none;
+    }
   }
 
   /*
