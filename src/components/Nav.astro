@@ -1,11 +1,13 @@
 ---
-import { NAV_ITEMS, SITE, SOCIAL } from '~/libs/site';
+import { NAV_ITEMS, SITE } from '~/libs/site';
+import { getSettings, socialLinks } from '~/libs/settings';
 
 interface Props {
   current?: string;
 }
 
 const { current } = Astro.props;
+const SOCIAL = socialLinks(await getSettings());
 
 // 最後の項目（入部案内）はボタンとして別扱いにし、その手前に SNS を置く
 const links = NAV_ITEMS.slice(0, -1);

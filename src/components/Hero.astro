@@ -1,17 +1,21 @@
 ---
 import { formatDateRange } from '~/libs/format';
 import { getHeroExhibition } from '~/libs/microcms';
+import { getSettings, lines } from '~/libs/settings';
 
-const hero = await getHeroExhibition();
+const [hero, settings] = await Promise.all([getHeroExhibition(), getSettings()]);
 const exhibition = hero?.exhibition;
+const heroImage = settings.heroImage?.url
+  ? `${settings.heroImage.url}?w=1600&fm=webp`
+  : '/H30_shoka_header.jpg';
 ---
 
 <section class="hero">
   <div class="hero-visual">
     <img
       class="hero-image"
-      src="/H30_shoka_header.jpg"
-      alt="書展会場に展示された書作品"
+      src={heroImage}
+      alt={settings.heroImage?.alt || '書展会場に展示された書作品'}
       loading="eager"
       fetchpriority="high"
       decoding="async"
@@ -54,8 +58,14 @@ const exhibition = hero?.exhibition;
   <div class="hero-text">
     <h1 class="hero-title">京都大学書道部</h1>
     <p class="hero-lead">
-      漢字・かな・篆刻、古典の臨書から創作まで。<br />
-      水曜と土曜に西部課外活動棟で練習しています。
+      {
+        lines(settings.heroLead).map((line, i) => (
+          <>
+            {i > 0 && <br />}
+            {line}
+          </>
+        ))
+      }
     </p>
     <p class="hero-links">
       <a class="hero-btn is-main" href="/about#join">入部・見学について</a>

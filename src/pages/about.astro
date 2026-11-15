@@ -3,7 +3,11 @@ import Base from '~/layouts/Base.astro';
 import Paper from '~/components/Paper.astro';
 import PageHeader from '~/components/PageHeader.astro';
 import Section from '~/components/Section.astro';
-import { SITE, SOCIAL } from '~/libs/site';
+import { SITE } from '~/libs/site';
+import { getSettings, lines, socialLinks } from '~/libs/settings';
+
+const settings = await getSettings();
+const SOCIAL = socialLinks(settings);
 ---
 
 <Base
@@ -30,9 +34,9 @@ import { SITE, SOCIAL } from '~/libs/site';
         <dl class="about-table">
           <div><dt>正式名称</dt><dd>{SITE.name}</dd></div>
           <div><dt>主な活動</dt><dd>練習・学外書展・書道パフォーマンス・合宿</dd></div>
-          <div><dt>練習日</dt><dd>毎週水曜日・土曜日（参加自由）</dd></div>
-          <div><dt>指導</dt><dd>月1回、水曜日に講師の先生</dd></div>
-          <div><dt>部室</dt><dd>西部課外活動棟 E201（24時間利用可）</dd></div>
+          <div><dt>練習日</dt><dd>{settings.practiceDays}</dd></div>
+          <div><dt>指導</dt><dd>{settings.lecturer}</dd></div>
+          <div><dt>部室</dt><dd>{settings.clubRoom}</dd></div>
           <div><dt>対象</dt><dd>京都大学の学生。経験不問。</dd></div>
         </dl>
       </div>
@@ -117,17 +121,13 @@ import { SITE, SOCIAL } from '~/libs/site';
       <div class="place-grid">
         <div class="place-item">
           <span class="place-label">部室</span>
-          <h3>西部課外活動棟 E201</h3>
-          <p>
-            紙や墨、書道に関する本、冷蔵庫まであります。部員は24時間いつでも使えます。
-          </p>
+          <h3>{settings.clubRoom}</h3>
+          <p>{settings.clubRoomNote}</p>
         </div>
         <div class="place-item">
           <span class="place-label">練習場所</span>
-          <h3>西部課外活動棟 E305（共用室）</h3>
-          <p>
-            部室の上の階にある広い和室です。一斉練習日はここで練習します。見学に来る方はこちらへどうぞ。
-          </p>
+          <h3>{settings.practicePlace}</h3>
+          <p>{settings.practicePlaceNote}</p>
         </div>
       </div>
 
@@ -145,13 +145,9 @@ import { SITE, SOCIAL } from '~/libs/site';
     <Section title="入部案内" flush>
       <div class="join" id="join">
         <div class="join-lead">
-          <p>
-            随時入部を受け付けています。まずは見学にお越しください。例会の日程や場所、疑問点など、X（旧 Twitter）の DM または下記連絡先までお気軽にどうぞ。
-          </p>
+          {lines(settings.joinText).map((paragraph) => <p>{paragraph}</p>)}
           <ul class="join-points">
-            <li>経験は一切問いません。大学から書道を始めた部員もいます。</li>
-            <li>道具の選び方や購入方法も先輩がサポートします。</li>
-            <li>見学だけでも歓迎しています。事前にご連絡ください。</li>
+            {lines(settings.joinPoints).map((point) => <li>{point}</li>)}
           </ul>
         </div>
         <div class="join-card">
@@ -166,7 +162,7 @@ import { SITE, SOCIAL } from '~/libs/site';
           </div>
           <div class="join-card-row">
             <span>メール</span>
-            <a href="mailto:kshodobu.sakura@gmail.com">kshodobu.sakura@gmail.com</a>
+            <a href={`mailto:${settings.email}`}>{settings.email}</a>
           </div>
           <p class="join-card-note">
             ※ 数日以内に返信がない場合は、迷惑メールフォルダをご確認ください。

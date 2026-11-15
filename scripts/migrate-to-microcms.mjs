@@ -19,7 +19,7 @@ const headers = { 'X-MICROCMS-API-KEY': apiKey };
 const root = process.cwd();
 const mediaMapFile = join(root, 'scripts', 'microcms-media-map.json');
 
-const only = process.argv[2]; // news | exhibitions | performances（省略時は全部）
+const only = process.argv[2]; // news | exhibitions | performances | settings（省略時は全部）
 
 /* ---------------------------------------------------------------- */
 /* HTTP                                                               */
@@ -346,7 +346,42 @@ async function migratePerformances() {
   }
 }
 
+/* ---------------------------------------------------------------- */
+/* サイト設定（オブジェクト形式。サイトに書いてあった文章を初期値にする）  */
+/* ---------------------------------------------------------------- */
+
+async function migrateSettings() {
+  const body = {
+    heroImage: await uploadImage('/H30_shoka_header.jpg'),
+    heroLead: '漢字・かな・篆刻、古典の臨書から創作まで。\n水曜と土曜に西部課外活動棟で練習しています。',
+    practiceDays: '毎週水曜日・土曜日（参加自由）',
+    lecturer: '月1回、水曜日に講師の先生',
+    clubRoom: '西部課外活動棟 E201',
+    clubRoomNote: '紙や墨、書道に関する本、冷蔵庫まであります。部員は24時間いつでも使えます。',
+    practicePlace: '西部課外活動棟 E305（共用室）',
+    practicePlaceNote:
+      '部室の上の階にある広い和室です。一斉練習日はここで練習します。見学に来る方はこちらへどうぞ。',
+    joinText:
+      '随時入部を受け付けています。まずは見学にお越しください。例会の日程や場所、疑問点など、X（旧 Twitter）の DM または下記連絡先までお気軽にどうぞ。',
+    joinPoints: [
+      '経験は一切問いません。大学から書道を始めた部員もいます。',
+      '道具の選び方や購入方法も先輩がサポートします。',
+      '見学だけでも歓迎しています。事前にご連絡ください。',
+    ].join('\n'),
+    xAccount: 'kucc_E201',
+    instagramAccount: 'ku_shodobu',
+    email: 'kshodobu.sakura@gmail.com',
+  };
+  await request(`${contentApi}/settings`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    body: JSON.stringify(body),
+  });
+  console.log('settings');
+}
+
 if (!only || only === 'news') await migrateNews();
 if (!only || only === 'exhibitions') await migrateExhibitions();
 if (!only || only === 'performances') await migratePerformances();
+if (!only || only === 'settings') await migrateSettings();
 console.log('done');
