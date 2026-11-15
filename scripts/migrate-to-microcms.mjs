@@ -141,7 +141,45 @@ async function migrateNews() {
 /* 書展（旧サイトのお知らせ記事に会期・会場が載っているもの）           */
 /* ---------------------------------------------------------------- */
 
-const bib = (book) => `https://www.kushodo.club/bib/i/?book=${book}`;
+// 旧サイトの BiB/i（EPUB）を PDF にして、部の Google Drive「パンフレット」フォルダに置いたもの（回 → ファイル ID）
+const DRIVE_PAMPHLETS = {
+  98: '15zsEmyM-nWKD7VncuBT4zKSGumg73PTt',
+  99: '1Y-55bD_lLRFDaDYstwN6QhceGFBARUtQ',
+  100: '16eS9Sjh-mGNETs2w5N0K336gMm5ZXM3p',
+  101: '1Pg8DAlW-6R-Mx0w87LKmP0QdntlNertZ',
+  102: '11GzudPVlDkBkH1dh92d8FOfJuUKVIktK',
+  103: '1ShOXpiJs-VaQoOfLOs8AVnEhFmj8KW0a',
+  104: '1Mmg60v6HnKKxnCnVX5B36sT-TgHBVEzv',
+  105: '1zvlnEFA1i551WGBJGzt0cixkELdC1NE1',
+  106: '1B-5932H_PRMfx3Iw3iaNH_oIblfYvBY1',
+  107: '1w0pp-EAaqiSkCHDlwFNQN_FA0MqMYXlt',
+  108: '1CzMblbSI8nZ-EEuVzPd7fKwAf744Upxj',
+  109: '1cZWkPaa4XKFrCwurNc8GWYnfP6wiU3K2',
+  110: '1cmQOytH3gNuRLQxKzhcNO300wPnkcx8b',
+  111: '1jsRfFQJf0PBz6qNLa2etTbeOnHNzcbTF',
+  112: '13Vot9d7-9FpccLj4vm1vM8E56Xid9hYB',
+  113: '1wi7bIxNnQS9oIh8XAr0OCMl_aShz77-G',
+  114: '1jkC2QMQwdpDm8TbI-t9pV4M4HT09yyFf',
+  115: '1FtP6XBoWg5Gqd2I0aUvFLxpIWFmVKwVJ',
+  116: '1tSrDJiv_kgaFIcqn0xE0sSFIIX-yjbis',
+  117: '1aTCkXrLvYjSresKBKXQ7L3FdEjrhtvWl',
+  118: '1oMj689qOX5rUslVIqGdinlAeaWsHZrtG',
+  119: '1IW_BhTIiBBgpaf-e-MvRJTEA1Httvzg8',
+  120: '15EI22SaIoLhwApEroa-u_d_1aaoDkIfy',
+  121: '1daTQR-115icmWcmCbhUGHGI-WnbxvTOX',
+  122: '10dz7QA-kzNJgPaMfpNtqd_G-rZNd5jsn',
+  123: '15akyFxv3nHyVko9WfFVI2pbY4fh3FFrh',
+  124: '1iDVbDw1xslWQCk7WpZ-Q58g0RNgJWhac',
+  126: '1djbDi2yPak-aO-lZfR2gwP3f0jN0hsMN',
+  127: '1SpG-rm88UYRcFxwrsDBPf6MxoOQa2tsa',
+  128: '1MMx1ugncbo1EPHWsvz1I2CWNufGWdaUn',
+  129: '1P3H-wujahSoCz9zJvvjrqAhzjNwuJRhx',
+  130: '1mbcNGOxZv-2bIzMpmHN8t4Xj3b7uopN5',
+  131: '11HVYNMobq5HCQSIcZ9FNfGYsXWLouPtz',
+  132: '1QZITuv6dAtvnc0o4AlVJfbGR3ARV6C8D',
+  133: '1z-NbqKmiMXrDmHhSup2JYVuRxgmDQXVA',
+};
+const pamphlet = (n) => `https://drive.google.com/file/d/${DRIVE_PAMPHLETS[n]}/view`;
 const kenninjiAccess =
   'アクセス：阪急「河原町」駅から徒歩12分、京阪「祇園四条」駅から徒歩8分、市バス「東山安井」から徒歩5分。';
 const horikawaAccess =
@@ -179,7 +217,7 @@ const exhibitions = [
     address: '京都市中京区',
     description: `時間は8日11:00〜18:30、9日11:00〜17:00（各日30分前に受付終了）。入場無料。${horikawaAccess}`,
     heroImage: '/legacy/news-assets/3a1f40f4a1a7c49ad984.jpg',
-    brochureUrl: bib('133'),
+    brochureUrl: pamphlet(133),
   },
   {
     id: 'shoten-132',
@@ -191,7 +229,7 @@ const exhibitions = [
     description:
       '時間は10日10:00〜17:00、11日10:00〜16:00（各日30分前に受付終了）。入場無料。アクセス：地下鉄「烏丸御池」駅から徒歩3分、阪急「烏丸」駅から徒歩7分、市バス「堺町御池」から徒歩2分。',
     heroImage: '/legacy/news-assets/456d775258be8e11c01e.jpg',
-    brochureUrl: bib('132'),
+    brochureUrl: pamphlet(132),
   },
   {
     id: 'shoten-131',
@@ -201,7 +239,7 @@ const exhibitions = [
     venue: '建仁寺 西来院・禅居庵',
     address: '京都市東山区',
     description: `時間は10日10:00〜17:00、11日10:00〜16:00（15:30受付終了）。入場無料。${kenninjiAccess}`,
-    brochureUrl: bib('131'),
+    brochureUrl: pamphlet(131),
   },
   {
     id: 'shoten-129',
@@ -212,7 +250,7 @@ const exhibitions = [
     address: '京都市東山区',
     description:
       '新型コロナウイルスの影響で続いたオンライン開催を経て、久しぶりの対面開催となりました。時間は10:00〜17:00（12日は受付16:00まで）。入場無料。',
-    brochureUrl: bib('129'),
+    brochureUrl: pamphlet(129),
   },
   {
     id: 'shoten-124',
@@ -222,7 +260,7 @@ const exhibitions = [
     venue: '建仁寺 西来院・禅居庵',
     address: '京都市東山区',
     description: `時間は10:00〜17:00（15日は受付16:00まで）。入場無料。${kenninjiAccess}`,
-    brochureUrl: bib('124'),
+    brochureUrl: pamphlet(124),
   },
   {
     id: 'shoten-123',
@@ -232,7 +270,7 @@ const exhibitions = [
     venue: '建仁寺 西来院・禅居庵',
     address: '京都市東山区',
     description: `時間は10:00〜17:00（16日は受付16:00まで）。入場無料。${kenninjiAccess}`,
-    brochureUrl: bib('123'),
+    brochureUrl: pamphlet(123),
   },
   {
     id: 'shoten-122',
@@ -243,7 +281,7 @@ const exhibitions = [
     address: '京都市東山区',
     description: `時間は10:00〜17:00（16日は受付16:00まで）。入場無料。${kenninjiAccess}`,
     heroImage: '/legacy/news-assets/aa829f26a2d9359cedd3.jpg',
-    brochureUrl: bib('122'),
+    brochureUrl: pamphlet(122),
   },
   {
     id: 'shoten-121',
@@ -253,26 +291,25 @@ const exhibitions = [
     venue: '建仁寺 西来院・禅居庵',
     address: '京都市東山区',
     description: `時間は10:00〜17:00（17日は受付16:00まで）。${kenninjiAccess}`,
-    brochureUrl: bib('121'),
+    brochureUrl: pamphlet(121),
   },
 ];
 
 // 会期・会場が分からない回（パンフレットのみ旧サイトに残っていたもの）
-const bibBook = (n) => String(n).padStart(3, '0');
 exhibitions.push(
   {
     id: 'shoten-127',
     title: '第127回 初夏書展',
     venue: 'オンライン開催',
     description: '前回の冬樟展に続き、新型コロナウイルスの影響でオンラインで開催しました。',
-    brochureUrl: bib('127'),
+    brochureUrl: pamphlet(127),
   },
   {
     id: 'shoten-126',
     title: '第126回 冬樟展',
     venue: 'オンライン開催',
     description: '新型コロナウイルスの影響で、オンラインで開催しました。',
-    brochureUrl: bib('126'),
+    brochureUrl: pamphlet(126),
   },
   {
     id: 'shoten-125',
@@ -285,7 +322,7 @@ exhibitions.push(
     id: `shoten-${n}`,
     title: `第${n}回 書展`,
     description: '会期・会場の記録が残っていないため、パンフレットのみ掲載しています。',
-    brochureUrl: bib(bibBook(n)),
+    brochureUrl: pamphlet(n),
   })),
 );
 
