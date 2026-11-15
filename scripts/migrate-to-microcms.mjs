@@ -354,10 +354,10 @@ async function migrateSettings() {
   const body = {
     // 旧サイトのトップで切り替えていた写真（複数画像の欄。入れた順に表示）
     heroImages: [
-      await uploadImage('/hero/H30_shinkan_header.jpg'),
       await uploadImage('/hero/H30_shoka_header.jpg'),
       await uploadImage('/hero/H29_NF_header.JPG'),
       await uploadImage('/hero/H30_harugasshuku_header.JPG'),
+      await uploadImage('/hero/H30_shinkan_header.jpg'),
     ],
     heroLead: '漢字・かな・篆刻、古典の臨書から創作まで。\n水曜と土曜に西部課外活動棟で練習しています。',
     practiceDays: '毎週水曜日・土曜日（参加自由）',

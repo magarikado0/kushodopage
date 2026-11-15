@@ -24,12 +24,12 @@ export interface SiteSettings {
 }
 
 const DEFAULTS: SiteSettings = {
-  // 旧サイトのトップで切り替えていた写真（public/hero/）
+  // 旧サイトのトップで切り替えていた写真（public/hero/）。この順に表示する
   heroImages: [
-    { url: '/hero/H30_shinkan_header.jpg', alt: '新歓書道パフォーマンス（2018年）' },
     { url: '/hero/H30_shoka_header.jpg', alt: '初夏書展の会場（2018年）' },
     { url: '/hero/H29_NF_header.JPG', alt: '11月祭の書道パフォーマンス（2017年）' },
     { url: '/hero/H30_harugasshuku_header.JPG', alt: '春合宿（2018年）' },
+    { url: '/hero/H30_shinkan_header.jpg', alt: '新歓書道パフォーマンス（2018年）' },
   ],
   heroLead: '漢字・かな・篆刻、古典の臨書から創作まで。\n水曜と土曜に西部課外活動棟で練習しています。',
   practiceDays: '毎週水曜日・土曜日（参加自由）',
