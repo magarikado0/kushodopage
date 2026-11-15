@@ -1,55 +1,37 @@
 :root {
-  /* --- 朱と白 --- */
-  --color-shu: #d0402b; /* 朱色の面（背景用） */
+  /* --- 色：白地に墨の文字、朱は差し色 --- */
+  --color-shu: #d0402b; /* 朱の面（フッターなど） */
   --color-rule: #d0402b; /* 構造の区切りに引く朱の罫線 */
-  --color-shu-deep: #a52a1c; /* フッターなど濃い朱 */
-  --color-primary: #b33220; /* 白地の上の文字・リンク用（読みやすさのため少し濃い朱） */
-  --color-primary-soft: #f2c4bb;
-  --color-primary-tint: #fbe3de;
-  --color-primary-ink: #8e2618;
+  --color-primary: #b33220; /* リンク・ボタンなど白地の上の朱（読みやすさのため少し濃い） */
 
-  --color-black: #14110d;
   --color-ink: #1c1814; /* 墨、ほんのり暖色 */
   --color-text: #2a2520;
   --color-subtext: #3a342e;
-  --color-muted: #2a2520; /* 補足の文字。グレーにせず本文と同じ墨色 */
+  /* 補足の文字。グレーにすると弱々しく見えるので、本文と同じ墨色にしている */
+  --color-muted: #2a2520;
   --color-faint: #2a2520;
 
-  --color-line: #e6ddd6;
+  --color-line: #e6ddd6; /* 一覧の項目どうしの薄い区切り */
   --color-line-soft: #efe8e2;
-  --color-line-faint: #f5f0ec;
 
-  --color-page: #ffffff; /* 白 */
+  --color-page: #ffffff;
   --color-paper: #ffffff;
-
-  --color-panel: var(--color-black);
-  --color-panel-soft: #1f1b16;
-  --color-panel-text: #f1ede4;
-  --color-panel-muted: #9a9089;
-  --color-panel-line: rgba(241, 237, 228, 0.12);
 
   --color-footer-bg: var(--color-shu);
   --color-footer-text: #ffffff;
   --color-footer-muted: #ffffff;
   --color-footer-copy: #ffffff;
 
-  /* --- シャドウは原則使わない。階層は罫線で作る --- */
-  --shadow-paper: none;
-  --shadow-lift: 0 1px 0 var(--color-line);
-
-  /* --- タイポグラフィ --- */
+  /* --- 文字 --- */
+  /* 見出し */
   --font-display: 'Shippori Mincho B1', 'Noto Serif JP', 'Hiragino Mincho ProN',
-    'Yu Mincho', serif;
-  --font-serif: 'Shippori Mincho B1', 'Noto Serif JP', 'Hiragino Mincho ProN',
     'Yu Mincho', serif;
   /* 本文。旧サイトと同じく英数字は Times New Roman、和文は游明朝（端末の書体を使う） */
   --font-sans: 'Times New Roman', 'Yu Mincho', 'YuMincho', '游明朝', 'Hiragino Mincho ProN',
     'Noto Serif JP', serif;
-  --font-mono: ui-monospace, 'SFMono-Regular', 'Shippori Mincho B1', monospace;
 
   --content-width: 1180px;
   --gutter: 2.5rem;
-  --radius: 2px;
 }
 
 *,
@@ -72,45 +54,6 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/*
- * 朱色の地（緋毛氈）。サイト全体に敷き、文字や線を白にする。
- * 中の部品はすべて同じ変数を使っているので、ここで変数を差し替えるだけで白くなる。
- */
-.on-shu {
-  --color-ink: #ffffff;
-  --color-text: #ffffff;
-  --color-subtext: #ffffff;
-  --color-muted: rgba(255, 255, 255, 0.86);
-  --color-faint: rgba(255, 255, 255, 0.78);
-  --color-primary: #ffffff;
-  --color-line: rgba(255, 255, 255, 0.38);
-  --color-line-soft: rgba(255, 255, 255, 0.25);
-  --color-page: var(--color-shu);
-  --color-paper: rgba(255, 255, 255, 0.12);
-  background: var(--color-shu);
-  color: #ffffff;
-}
-
-/*
- * 白い紙。じっくり読むページの本文を、朱の地の上に1枚敷いた紙に載せる。
- * 角はほんの少しだけ丸め、影は付けない（紙を平らに置いただけに見せる）。
- */
-.paper {
-  --color-ink: #1c1814;
-  --color-text: #2a2520;
-  --color-subtext: #3a342e;
-  --color-muted: #2a2520; /* 補足の文字。グレーにせず本文と同じ墨色 */
-  --color-faint: #2a2520;
-  --color-primary: #b33220;
-  --color-line: #e6ddd6;
-  --color-line-soft: #efe8e2;
-  --color-page: #ffffff;
-  --color-paper: #ffffff;
-  background: #ffffff;
-  color: var(--color-ink);
-  border-radius: 4px;
 }
 
 img {

@@ -1,17 +1,14 @@
 ---
 /**
- * ページの本文をまとめる枠。
+ * ページ本文（見出し付きのセクションなど）をまとめる枠。下に余白を取る。
  */
 ---
 
 <div class="paper-wrap">
-  <div class="paper">
-    <slot />
-  </div>
+  <slot />
 </div>
 
 <style>
-  /* 白背景では紙のまわりに余白を取らず、ほかの部分と左右の位置をそろえる */
   .paper-wrap {
     padding-bottom: 4rem;
   }
