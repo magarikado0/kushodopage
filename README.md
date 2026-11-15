@@ -26,7 +26,7 @@ GitHub に push ─────────────▶ Cloudflare Pages が�
 
 | サービス | 何に使うか | 持ち主・入り方 | 備考 |
 | --- | --- | --- | --- |
-| GitHub `magarikado0/kushodopage` | コード | 京大書道部の Google アカウントでも入れる | |
+| GitHub `publickushodo-art/kushodopage` | コード | 京大書道部のアカウント（publickushodo-art）。開発担当を Collaborator に追加する | 旧リポジトリ `magarikado0/kushodopage` は使わない |
 | microCMS（サービス `kushodo`） | 文章・画像 | 京大書道部の Google アカウントでも入れる | 無料プラン（API は5個まで。4個使用中） |
 | Cloudflare Pages（`kushodopage`） | 公開 | **個人アカウント（要移行）** | 下の「Cloudflare を部のアカウントに移す」 |
 | Google Drive | パンフレット PDF | 京都大学書道部広報係（public.kushodo@gmail.com） | 「パンフレット」フォルダ。「リンクを知っている全員」で共有 |
