@@ -119,7 +119,7 @@ Drive の PDF はブラウザから直接読めないので、`functions/pamphle
 | 環境変数 | `MICROCMS_SERVICE_DOMAIN`、`MICROCMS_API_KEY`（**Production と Preview の両方**に入れる） |
 
 - `master` 以外のブランチを push すると、`ブランチ名.kushodopage.pages.dev` にプレビューができます。Preview に環境変数がないと、プレビューでは microCMS の中身が空になります。
-- 旧サイトの URL からの転送は `public/_redirects` に書きます。
+- 旧サイトの URL（`about.html` など）からの転送は `public/_redirects` に書いてあります。旧サイトのパンフレットのリンク（`/bib/i/?book=123`）は、URL の `?` 以降を `_redirects` で扱えないので、`functions/bib/[[path]].js` でその回のビューアーへ転送しています。
 
 ### microCMS の更新で自動ビルドする
 
@@ -156,7 +156,7 @@ src/
 ├── pages/             URL ごとのページ（about.astro → /about）
 ├── styles/global.css  色・書体などの共通設定
 └── types/content.ts   microCMS のデータの型
-functions/pamphlet/    パンフレット PDF の中継（Cloudflare Pages Functions）
+functions/              Cloudflare Pages Functions（pamphlet/: パンフレット PDF の中継、bib/: 旧パンフレット URL の転送）
 scripts/               旧サイトからの移行スクリプト
 public/                画像・_redirects など、そのまま公開するファイル
 docs/                  運用マニュアル（編集担当向け）

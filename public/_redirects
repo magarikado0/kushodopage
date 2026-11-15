@@ -1,3 +1,4 @@
+# 旧サイト（kushodo.club）の URL を新しいページへ転送する。パンフレット（/bib/i/?book=〇〇）は functions/bib/[[path]].js で転送
 /news/121_shoten.html /news/121_shoten 301
 /news/122_shoten.html /news/122_shoten 301
 /news/123_shoten.html /news/123_shoten 301
@@ -22,3 +23,13 @@
 /news/OBten_4.html /news/obten_4 301
 /news/OBten_5.html /news/obten_5 301
 /news/OBten_6.html /news/obten_6 301
+/index.html / 301
+/about.html /about 301
+/works.html /activities 301
+/contact.html /about#join 301
+/link.html / 301
+/new-information.html /news 301
+/shinkan/howtogo.html /about#place 301
+/shinkan/* /about#join 301
+/old/* / 301
+/old / 301

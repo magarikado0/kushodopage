@@ -6,6 +6,8 @@ interface Props {
   moreLabel?: string;
   /** 下線を引かない（ページ末尾のセクション用） */
   flush?: boolean;
+  /** ページ内リンク用の ID（例: place → /about#place） */
+  id?: string;
 }
 
 const {
@@ -13,10 +15,11 @@ const {
   moreHref,
   moreLabel = 'すべて見る',
   flush = false,
+  id,
 } = Astro.props;
 ---
 
-<section class:list={['section', { 'is-flush': flush }]}>
+<section id={id} class:list={['section', { 'is-flush': flush }]}>
   <div class="container">
     <div class="section-head">
       <h2 class="section-title">{title}</h2>
