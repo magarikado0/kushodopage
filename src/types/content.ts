@@ -5,7 +5,8 @@
  */
 
 /** お知らせ (news) */
-export type NewsCategory = '書展' | '活動' | '入部' | 'お知らせ';
+/** microCMS の「カテゴリ」セレクトの値（例: 書展・活動・入部・お知らせ）。管理画面で自由に追加できる */
+export type NewsCategory = string;
 
 export interface NewsItem {
   id: string;

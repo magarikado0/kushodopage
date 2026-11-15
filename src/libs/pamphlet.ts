@@ -23,7 +23,10 @@ export function resolvePamphlet(exhibitionId: string, brochureUrl?: string): Pam
   if (!url) return null;
 
   const fileId = driveFileId(url);
-  if (fileId) return { kind: 'viewer', pdfUrl: `/pamphlet/${exhibitionId}`, driveFileId: fileId };
+  // ファイル ID を付けておくと、Drive のファイルを差し替えたときに古いキャッシュを使わない
+  if (fileId) {
+    return { kind: 'viewer', pdfUrl: `/pamphlet/${exhibitionId}?f=${fileId}`, driveFileId: fileId };
+  }
 
   if (/\.pdf(?:$|[?#])/i.test(url)) return { kind: 'viewer', pdfUrl: url };
 
